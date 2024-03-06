@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { RiMessage2Fill } from 'react-icons/ri'
 import { IoIosNotifications } from 'react-icons/io'
+import { HiPlus } from 'react-icons/hi'
 
 const Navbar = () => {
   const [keyword, setKeyword] = useState('')
@@ -19,6 +20,9 @@ const Navbar = () => {
         </div>
       </div>
       <div className='flex-1 flex justify-end gap-6'>
+        <div className='w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center'>
+          <HiPlus className='text-lg text-gray-800' />
+        </div>
         <div className='w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center'>
           <RiMessage2Fill className='text-lg text-gray-800' />
         </div>
