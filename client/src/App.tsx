@@ -4,6 +4,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Feeds from './pages/Feeds'
 import Conversation from './pages/Conversation'
+import ForgetPassword from './pages/ForgetPassword'
 
 const App = () => {
   return (
@@ -13,7 +14,8 @@ const App = () => {
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
-          <Route path='/feeds' element={<Feeds />} />
+          <Route path='/forget-password' element={<ForgetPassword />} />
+          <Route path='/feeds/:id' element={<Feeds />} />
           <Route path='/conversation' element={<Conversation />} />
         </Routes>
       </Router>

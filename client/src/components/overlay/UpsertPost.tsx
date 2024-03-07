@@ -31,7 +31,7 @@ const UpsertPost: React.FC<IProps> = ({ openUpsertPostOverlay, setOpenUpsertPost
   }
 
   return (
-    <div className={`z-20 fixed top-0 left-0 bottom-0 right-0 bg-[rgba(0,0,0,.6)] ${openUpsertPostOverlay ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} transition flex items-center justify-center`}>
+    <div className={`z-20 fixed top-0 left-0 bottom-0 right-0 bg-[rgba(0,0,0,.8)] ${openUpsertPostOverlay ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} transition flex items-center justify-center`}>
       <div ref={upsertPostOverlayRef} className={`w-1/3 bg-white rounded-md ${openUpsertPostOverlay ? 'translate-y-0' : '-translate-y-16'} transition`}>
         <div className='flex items-center justify-between px-5 py-3 border-b border-gray-300'>
           <h1 className='font-semibold'>Create Post</h1>
@@ -53,7 +53,7 @@ const UpsertPost: React.FC<IProps> = ({ openUpsertPostOverlay, setOpenUpsertPost
                   {
                     posts.map((item, idx) => (
                       <div className='relative'>
-                        <img src={URL.createObjectURL(item)} className='w-24 h-24 rounded-md object-cover' />
+                        <img src={URL.createObjectURL(item)} alt='Social Sphere' className='w-24 h-24 rounded-md object-cover' />
                         <div onClick={() => handleRemoveImage(idx)} className='text-white bg-red-500 rounded-full w-5 font-semibold h-5 flex items-center justify-center text-xs -top-2 -right-2 absolute outline outline-white outline-2 cursor-pointer'>
                           <AiOutlineClose />
                         </div>

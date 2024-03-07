@@ -1,0 +1,20 @@
+import LatestActivity from './LatestActivity'
+import ProfileOverview from './ProfileOverview'
+
+const LeftContent = () => {
+  return (
+    <div className='flex-1 h-fit sticky top-28 px-8'>
+      <ProfileOverview />
+      <div className='mt-7'>
+        <p className='font-semibold text-blue-500'>Latest Activity</p>
+        <div className='mt-4'>
+          <LatestActivity />
+          <LatestActivity />
+          <LatestActivity />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default LeftContent
