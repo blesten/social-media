@@ -4,17 +4,20 @@ import Followers from './../overlay/Followers'
 import Followings from '../overlay/Followings'
 import FollowRequests from '../overlay/FollowRequests'
 import EditProfile from '../overlay/EditProfile'
+import Setting from '../overlay/Setting'
 
 const Header = () => {
   const [openFollowersOverlay, setOpenFollowersOverlay] = useState(false)
   const [openFollowingsOverlay, setOpenFollowingsOverlay] = useState(false)
   const [openFollowRequestsOverlay, setOpenFollowRequestsOverlay] = useState(false)
   const [openEditProfileOverlay, setOpenEditProfileOverlay] = useState(false)
+  const [openSettingOverlay, setOpenSettingOverlay] = useState(false)
 
   const followersOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const followingsOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const followRequestsOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const editProfileOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
+  const settingOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
 
   useEffect(() => {
     const checkIfClickedOutside = (e: MouseEvent) => {
@@ -60,6 +63,17 @@ const Header = () => {
     return () => document.removeEventListener('mousedown', checkIfClickedOutside)
   }, [openEditProfileOverlay])
 
+  useEffect(() => {
+    const checkIfClickedOutside = (e: MouseEvent) => {
+      if (openSettingOverlay && settingOverlayRef.current && !settingOverlayRef.current.contains(e.target as Node)) {
+        setOpenSettingOverlay(false)
+      }
+    }
+
+    document.addEventListener('mousedown', checkIfClickedOutside)
+    return () => document.removeEventListener('mousedown', checkIfClickedOutside)
+  }, [openSettingOverlay])
+
   return (
     <>
       <div className='w-1/2 m-auto py-10'>
@@ -71,7 +85,7 @@ const Header = () => {
               <div className='flex items-center gap-5'>
                 <button onClick={() => setOpenFollowRequestsOverlay(true)} className='bg-blue-50 text-blue-500 hover:bg-blue-100 transition text-sm font-semibold px-4 py-2 rounded-md'>Follow Requests</button>
                 <button onClick={() => setOpenEditProfileOverlay(true)} className='bg-blue-500 rounded-md text-sm outline-none transition hover:bg-blue-600 px-6 py-2 text-white font-semibold'>Edit Profile</button>
-                <IoMdSettings className='text-xl text-gray-500 cursor-pointer' />
+                <IoMdSettings onClick={() => setOpenSettingOverlay(true)} className='text-xl text-gray-500 cursor-pointer' />
               </div>
             </div>
             <div className='flex items-center gap-14 mt-3'>
@@ -117,6 +131,12 @@ const Header = () => {
         openEditProfileOverlay={openEditProfileOverlay}
         setOpenEditProfileOverlay={setOpenEditProfileOverlay}
         editProfileOverlayRef={editProfileOverlayRef}
+      />
+
+      <Setting
+        openSettingOverlay={openSettingOverlay}
+        setOpenSettingOverlay={setOpenSettingOverlay}
+        settingOverlayRef={settingOverlayRef}
       />
     </>
   )
