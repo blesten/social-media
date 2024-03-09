@@ -152,11 +152,15 @@ const Post = () => {
               <p className='text-sm'>550</p>
             </div>
           </div>
-          <div className='relative rounded-full bg-gray-100 border border-gray-200 flex-1 h-10'>
+          <div className='md:block hidden relative rounded-full bg-gray-100 border border-gray-200 flex-1 h-10'>
             <input type='text' className='outline-none bg-transparent w-full px-4 h-10 text-sm' />
             <p className='absolute top-1/2 -translate-y-1/2 left-4 text-sm text-gray-400'>Write your comment</p>
           </div>
           <FaRegBookmark className='cursor-pointer' />
+        </div>
+        <div className='relative rounded-full bg-gray-100 border border-gray-200 flex-1 h-10 mt-5 md:hidden block'>
+          <input type='text' className='outline-none bg-transparent w-full px-4 h-10 text-sm' />
+          <p className='absolute top-1/2 -translate-y-1/2 left-4 text-sm text-gray-400'>Write your comment</p>
         </div>
         <hr className='my-5' />
         <div className='flex flex-col gap-8'>

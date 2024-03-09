@@ -5,6 +5,8 @@ import Followings from '../overlay/Followings'
 import FollowRequests from '../overlay/FollowRequests'
 import EditProfile from '../overlay/EditProfile'
 import Setting from '../overlay/Setting'
+import { FaUsers } from 'react-icons/fa'
+import { FiEdit } from 'react-icons/fi'
 
 const Header = () => {
   const [openFollowersOverlay, setOpenFollowersOverlay] = useState(false)
@@ -76,35 +78,60 @@ const Header = () => {
 
   return (
     <>
-      <div className='w-1/2 m-auto py-10'>
+      <div className='xl:w-1/2 lg:w-2/3 w-full m-auto lg:py-10 py-7 lg:px-0 px-10'>
         <div className='flex gap-10'>
-          <div className='w-36 h-36 rounded-full bg-gray-200'></div>
+          <div className='md:w-36 md:h-36 w-24 h-24 rounded-full bg-gray-200 flex-shrink-0'></div>
           <div className='flex-1'>
-            <div className='flex items-center justify-between'>
+            <div className='flex md:flex-row flex-col md:items-center justify-between'>
               <p className='text-lg font-semibold'>giannalouis_</p>
-              <div className='flex items-center gap-5'>
-                <button onClick={() => setOpenFollowRequestsOverlay(true)} className='bg-blue-50 text-blue-500 hover:bg-blue-100 transition text-sm font-semibold px-4 py-2 rounded-md'>Follow Requests</button>
-                <button onClick={() => setOpenEditProfileOverlay(true)} className='bg-blue-500 rounded-md text-sm outline-none transition hover:bg-blue-600 px-6 py-2 text-white font-semibold'>Edit Profile</button>
-                <IoMdSettings onClick={() => setOpenSettingOverlay(true)} className='text-xl text-gray-500 cursor-pointer' />
+              <div className='md:mt-0 mt-5 flex items-center gap-5'>
+                <button onClick={() => setOpenFollowRequestsOverlay(true)} className='bg-blue-50 text-blue-500 hover:bg-blue-100 transition text-sm font-semibold px-4 py-2 rounded-md sm:block hidden'>Follow Requests</button>
+                <button onClick={() => setOpenEditProfileOverlay(true)} className='bg-blue-500 rounded-md text-sm outline-none transition hover:bg-blue-600 px-6 py-2 text-white font-semibold sm:block hidden'>Edit Profile</button>
+                <IoMdSettings onClick={() => setOpenSettingOverlay(true)} className='text-xl text-gray-500 cursor-pointer sm:block hidden' />
+                {/* mobile version utility button */}
+                <button onClick={() => setOpenFollowRequestsOverlay(true)} className='bg-blue-50 text-blue-500 hover:bg-blue-100 transition text-sm font-semibold px-6 py-2 rounded-md sm:hidden block'><FaUsers /></button>
+                <button onClick={() => setOpenEditProfileOverlay(true)} className='bg-blue-500 rounded-md text-sm outline-none transition hover:bg-blue-600 px-6 py-2 text-white font-semibold sm:hidden block'><FiEdit /></button>
+                <IoMdSettings onClick={() => setOpenSettingOverlay(true)} className='text-xl text-gray-500 cursor-pointer sm:hidden block' />
               </div>
             </div>
-            <div className='flex items-center gap-14 mt-3'>
-              <div>
-                <p>20 posts</p>
+            <div className='md:block hidden'>
+              <div className='flex items-center gap-14 mt-3'>
+                <div>
+                  <p className='font-semibold'>20 posts</p>
+                </div>
+                <div onClick={() => setOpenFollowersOverlay(true)} className='cursor-pointer'>
+                  <p className='font-semibold'>158 followers</p>
+                </div>
+                <div onClick={() => setOpenFollowingsOverlay(true)} className='cursor-pointer'>
+                  <p className='font-semibold'>80 followings</p>
+                </div>
               </div>
-              <div onClick={() => setOpenFollowersOverlay(true)} className='cursor-pointer'>
-                <p>158 followers</p>
+              <div className='mt-3'>
+                <p className='text-sm text-gray-500 text-justify'>Lorem ipsum dolor sit amet consectetur amet consectetur</p>
               </div>
-              <div onClick={() => setOpenFollowingsOverlay(true)} className='cursor-pointer'>
-                <p>80 followings</p>
+              <div className='mt-3 text-xs font-semibold'>
+                <p>Followed by blestenn_, johndoe</p>
               </div>
             </div>
-            <div className='mt-3'>
-              <p className='text-sm text-gray-500 text-justify'>Lorem ipsum dolor sit amet consectetur amet consectetur</p>
+          </div>
+        </div>
+        <div className='md:hidden block mt-5'>
+          <div className='flex items-center gap-10 mt-3'>
+            <div>
+              <p className='font-semibold'>20 posts</p>
             </div>
-            <div className='mt-3 text-xs font-semibold'>
-              <p>Followed by blestenn_, johndoe</p>
+            <div onClick={() => setOpenFollowersOverlay(true)} className='cursor-pointer'>
+              <p className='font-semibold'>158 followers</p>
             </div>
+            <div onClick={() => setOpenFollowingsOverlay(true)} className='cursor-pointer'>
+              <p className='font-semibold'>80 followings</p>
+            </div>
+          </div>
+          <div className='mt-3'>
+            <p className='text-sm text-gray-500 text-justify'>Lorem ipsum dolor sit amet consectetur amet consectetur</p>
+          </div>
+          <div className='mt-3 text-xs font-semibold'>
+            <p>Followed by blestenn_, johndoe</p>
           </div>
         </div>
       </div>

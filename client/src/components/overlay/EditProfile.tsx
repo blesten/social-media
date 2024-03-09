@@ -24,8 +24,8 @@ const EditProfile: React.FC<IProps> = ({ openEditProfileOverlay, setOpenEditProf
   }
 
   return (
-    <div className={`fixed top-0 left-0 bottom-0 right-0 bg-[rgba(0,0,0,.8)] z-30 transition ${openEditProfileOverlay ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} flex items-center justify-center`}>
-      <div ref={editProfileOverlayRef} className={`bg-white rounded-md w-1/3`}>
+    <div className={`fixed top-0 left-0 bottom-0 right-0 bg-[rgba(0,0,0,.8)] z-30 transition ${openEditProfileOverlay ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} flex items-center justify-center px-12`}>
+      <div ref={editProfileOverlayRef} className={`bg-white rounded-md xl:w-1/3 lg:w-1/2 w-full`}>
         <div className='flex items-center justify-between px-5 py-3 border-b border-gray-300'>
           <h1 className='font-semibold'>Edit Profile</h1>
           <AiOutlineClose onClick={() => setOpenEditProfileOverlay(false)} className='cursor-pointer' />

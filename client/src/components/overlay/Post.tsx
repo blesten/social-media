@@ -67,11 +67,11 @@ const Post: React.FC<IProps> = ({ openPostOverlay, setOpenPostOverlay, postOverl
 
   return (
     <>
-      <div className={`fixed top-0 left-0 bottom-0 right-0 bg-[rgba(0,0,0,.8)] z-20 flex items-center justify-center ${openPostOverlay ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} transition`}>
-        <div ref={postOverlayRef} className={`w-2/3 rounded-md bg-white h-[90vh] flex ${openPostOverlay ? 'translate-y-0 ' : '-translate-y-16'} transition`}>
+      <div className={`fixed top-0 left-0 bottom-0 right-0 bg-[rgba(0,0,0,.8)] z-20 flex items-center justify-center ${openPostOverlay ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} transition px-10`}>
+        <div ref={postOverlayRef} className={`lg:w-2/3 w-full rounded-md bg-white h-[90vh] flex md:flex-row flex-col ${openPostOverlay ? 'translate-y-0 ' : '-translate-y-16'} transition overflow-auto`}>
           <div className='flex-1 flex flex-col border-r border-gray-200'>
             <div className='flex-1'>
-              <img src='https://img.freepik.com/free-photo/view-3d-car_23-2150796904.jpg?t=st=1709814981~exp=1709818581~hmac=2e85b762ccf775937a2bfe0dcf70f541f99e5bc232b1af989c1a64e6e05da9e8&w=740' alt='Social Sphere' className='w-full h-full rounded-tl-md pointer-events-none' />
+              <img src='https://img.freepik.com/free-photo/view-3d-car_23-2150796904.jpg?t=st=1709814981~exp=1709818581~hmac=2e85b762ccf775937a2bfe0dcf70f541f99e5bc232b1af989c1a64e6e05da9e8&w=740' alt='Social Sphere' className='w-full h-full rounded-tl-md md:rounded-tr-none rounded-tr-md pointer-events-none' />
             </div>
             <div className='flex items-center justify-between py-4 px-5'>
               <div className='flex items-center gap-7'>

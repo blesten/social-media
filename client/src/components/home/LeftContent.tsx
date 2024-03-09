@@ -3,7 +3,7 @@ import ProfileOverview from './ProfileOverview'
 
 const LeftContent = () => {
   return (
-    <div className='flex-1 h-fit sticky top-28 px-8'>
+    <div className='xl:flex-1 xl:block hidden h-fit sticky top-28 px-8'>
       <ProfileOverview />
       <div className='mt-7'>
         <p className='font-semibold text-blue-500'>Latest Activity</p>

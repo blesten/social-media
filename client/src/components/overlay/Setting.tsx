@@ -20,8 +20,8 @@ const Setting: React.FC<IProps> = ({ openSettingOverlay, setOpenSettingOverlay, 
   
   return (
     <>
-      <div className={`fixed top-0 left-0 bottom-0 right-0 bg-[rgba(0,0,0,.8)] z-20 flex items-center justify-center transition ${openSettingOverlay ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-        <div ref={settingOverlayRef} className={`bg-white rounded-md w-1/3 transition ${openSettingOverlay ? 'translate-y-0' : '-translate-y-16'} px-5 py-3`}>
+      <div className={`fixed top-0 left-0 bottom-0 right-0 bg-[rgba(0,0,0,.8)] z-20 flex items-center justify-center transition ${openSettingOverlay ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} px-12`}>
+        <div ref={settingOverlayRef} className={`bg-white rounded-md xl:w-1/3 lg:w-1/2 w-full transition ${openSettingOverlay ? 'translate-y-0' : '-translate-y-16'} px-5 py-3`}>
           <div className='flex items-center justify-between'>
             <p className='font-semibold'>Account Privacy</p>
             <div onClick={() => setPrivateAccount(!privateAccount)} className='relative cursor-pointer'>

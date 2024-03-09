@@ -37,7 +37,7 @@ const Utility = () => {
 
   return (
     <>
-      <div className='flex-1 flex justify-end gap-6'>
+      <div className='flex-1 lg:flex hidden justify-end gap-6'>
         <div onClick={() => setOpenUpsertPostOverlay(true)} className='cursor-pointer w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center'>
           <HiPlus className='text-lg text-gray-800' />
         </div>

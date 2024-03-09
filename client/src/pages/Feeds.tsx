@@ -29,11 +29,13 @@ const Feeds = () => {
             <p>Saved</p>
           </div>
         </div>
-        <div className='w-1/2 m-auto pt-8 pb-16 grid grid-cols-3 gap-x-20 gap-y-7'>
-          {/* <p className='bg-red-500 text-white text-center py-2 rounded-md font-semibold text-sm'>Post is empty</p> */}
-          <PostCard />
-          <PostCard />
-          <PostCard />
+        <div className='flex items-center justify-center'>
+          <div className='xl:w-2/3 lg:w-4/5 pt-8 pb-16 grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-7 lg:px-0 px-10 gap-x-10'>
+            {/* <p className='bg-red-500 text-white text-center py-2 rounded-md font-semibold text-sm'>Post is empty</p> */}
+            <PostCard />
+            <PostCard />
+            <PostCard />
+          </div>
         </div>
       </div>
     </>
