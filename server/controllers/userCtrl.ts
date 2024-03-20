@@ -135,12 +135,12 @@ const userCtrl = {
   },
   forgetPassword: async(req: Request, res: Response) => {
     try {
-      const { email } = req.body
+      const { email } = req.query
       const user = await User.findOne({ email })
 
       if (!email)
         return res.status(400).json({ msg: 'Please provide email address to reset password.' })
-      else if (!validEmail(email))
+      else if (!validEmail(`${email}`))
         return res.status(400).json({ msg: 'Please provide valid email address.' })
 
       if (!user)
@@ -154,7 +154,7 @@ const userCtrl = {
       })
       await newMailToken.save()
 
-      await sendEmail(email, `${process.env.CLIENT_URL}/forget-password?token=${mailToken}`, 'Forgot Your Password? No Worries!', user.name)
+      await sendEmail(`${email}`, `${process.env.CLIENT_URL}/forget-password?token=${mailToken}`, 'Forgot Your Password? No Worries!', user.name)
       
       return res.status(200).json({ msg: `An email with reset password subject has been sent to ${email}` })
     } catch (err: any) {

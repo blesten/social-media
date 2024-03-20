@@ -1,5 +1,7 @@
 import { useState, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import ChangePassword from './ChangePassword'
+import useStore from './../../store/store'
 
 interface IProps {
   openSettingOverlay: boolean
@@ -11,11 +13,20 @@ const Setting: React.FC<IProps> = ({ openSettingOverlay, setOpenSettingOverlay, 
   const [openChangePasswordOverlay, setOpenChangePasswordOverlay] = useState(false)
   const [privateAccount, setPrivateAccount] = useState(true)
 
+  const { logout } = useStore()
+
+  const navigate = useNavigate()
+
   const changePasswordOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
 
   const handleClickChangePassword = () => {
     setOpenSettingOverlay(false)
     setOpenChangePasswordOverlay(true)
+  }
+
+  const handleSignOut = async() => {
+    await logout()
+    navigate('/login')
   }
   
   return (
@@ -33,7 +44,7 @@ const Setting: React.FC<IProps> = ({ openSettingOverlay, setOpenSettingOverlay, 
           <hr className='my-5' />
           <div>
             <button onClick={handleClickChangePassword} className='w-full mb-5 text-sm py-2 outline-none transition hover:bg-gray-100 font-semibold'>Change Password</button>
-            <button className='bg-red-500 text-white text-sm rounded-md w-full py-2 outline-none transition hover:bg-red-600'>Sign Out</button>
+            <button onClick={handleSignOut} className='bg-red-500 text-white text-sm rounded-md w-full py-2 outline-none transition hover:bg-red-600'>Sign Out</button>
           </div>
         </div>
       </div>

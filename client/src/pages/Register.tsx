@@ -1,7 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
-import { Link } from 'react-router-dom'
-import { FormChanged } from '../utils/interface'
+import { Link, useNavigate } from 'react-router-dom'
+import { FormChanged, FormSubmitted } from '../utils/interface'
+import { validEmail, validPassword } from '../utils/validator'
+import { postDataAPI } from '../utils/fetchData'
+import useStore from './../store/store'
 import HeadInfo from '../utils/HeadInfo'
 
 const Register = () => {
@@ -12,24 +15,74 @@ const Register = () => {
     password: '',
     passwordConfirmation: ''
   })
+  const [loading, setLoading] = useState(false)
 
   const [showPassword, setShowPassword] = useState(false)
   const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false)
+
+  const { initiate, userState } = useStore()
+
+  const navigate = useNavigate()
 
   const handleChange = (e: FormChanged) => {
     const { name, value } = e.target
     setRegisterData({ ...registerData, [name]: value })
   }
 
+  const handleSubmit = async(e: FormSubmitted) => {
+    e.preventDefault()
+    setLoading(true)
+
+    if (!registerData.name || !registerData.username || !registerData.email || !registerData.password || !registerData.passwordConfirmation) {
+      setLoading(false)
+      return initiate('Please provide required field for registration purpose.', 'error')
+    }
+
+    if (!validEmail(registerData.email)) {
+      setLoading(false)
+      return initiate('Please provide valid email address for registration purpose.', 'error')
+    }
+
+    if (!validPassword(registerData.password)) {
+      setLoading(false)
+      return initiate('Password should be at least 8 characters and should contain capital letter and symbol.', 'error')
+    }
+
+    if (registerData.password !== registerData.passwordConfirmation) {
+      setLoading(false)
+      return initiate('Password confirmation should be matched.', 'error')
+    }
+
+    try {
+      const res = await postDataAPI('/api/v1/users/register', {
+        name: registerData.name,
+        email: registerData.email,
+        username: registerData.username,
+        password: registerData.password
+      })
+      initiate(res.data.msg, 'success')
+      navigate('/login')
+    } catch (err: any) {
+      initiate(err.response.data.msg, 'error')
+    }
+
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    if (userState.data.accessToken)
+      navigate('/')
+  }, [navigate, userState.data.accessToken])
+
   return (
     <>
       <HeadInfo title='Sign Up' />
       <div className='flex min-h-screen max-h-screen'>
-        <div className='flex-[2] bg-gray-200 relative'>
+        <div className='flex-[2] bg-gray-200 relative md:block hidden'>
           <div className='absolute w-full h-full bg-[rgba(0,0,0,.5)]'></div>
           <img src={`${process.env.PUBLIC_URL}/assets/images/register.jpg`} className='w-full h-full object-cover' alt='Social Sphere' />
         </div>
-        <div className='flex-1 px-12 flex flex-col items-center justify-center'>
+        <form onSubmit={handleSubmit} className='flex-1 px-12 flex flex-col items-center justify-center'>
           <div className='w-20 h-20'>
             <img src={`${process.env.PUBLIC_URL}/assets/logo.png`} alt='Social Sphere' className='pointer-events-none' />
           </div>
@@ -59,9 +112,13 @@ const Register = () => {
               : <AiFillEye onClick={() => setShowPasswordConfirmation(true)} className='text-gray-400 cursor-pointer' />
             }
           </div>
-          <button className='bg-blue-500 outline-none transition hover:bg-blue-600 text-white font-semibold w-full rounded-full mt-8 h-10 text-sm'>Sign Up</button>
+          <button type='submit' disabled={loading || !registerData.name || !registerData.email || !registerData.username || !registerData.password || !registerData.passwordConfirmation} className={`${loading || !registerData.name || !registerData.email || !registerData.username || !registerData.password || !registerData.passwordConfirmation ? 'bg-gray-300 hover:bg-gray-300 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600 cursor-pointer'} outline-none transition text-white font-semibold w-full rounded-full mt-8 h-10 text-sm`}>
+            {
+              loading ? 'Loading ...' : 'Sign Up'
+            }
+          </button>
           <p className='outline-none text-sm mt-5 text-gray-400 font-semibold'>Already have an account yet? Click <Link to='/login' className='text-blue-500 underline'>here</Link></p>
-        </div>
+        </form>
       </div>
     </>
   )

@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
@@ -5,10 +6,19 @@ import Register from './pages/Register'
 import Feeds from './pages/Feeds'
 import Conversation from './pages/Conversation'
 import ForgetPassword from './pages/ForgetPassword'
+import Alert from './components/general/Alert'
+import useStore from './store/store'
 
 const App = () => {
+  const { refreshToken } = useStore()
+
+  useEffect(() => {
+    refreshToken()
+  }, [refreshToken])
+
   return (
     <>
+      <Alert />
       <Router>
         <Routes>
           <Route path='/' element={<Home />} />
