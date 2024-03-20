@@ -8,6 +8,7 @@ import Conversation from './pages/Conversation'
 import ForgetPassword from './pages/ForgetPassword'
 import Alert from './components/general/Alert'
 import useStore from './store/store'
+import ResetPassword from './pages/ResetPassword'
 
 const App = () => {
   const { refreshToken } = useStore()
@@ -25,6 +26,7 @@ const App = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/forget-password' element={<ForgetPassword />} />
+          <Route path='/reset-password' element={<ResetPassword />} />
           <Route path='/feeds/:id' element={<Feeds />} />
           <Route path='/conversation' element={<Conversation />} />
         </Routes>

@@ -154,7 +154,7 @@ const userCtrl = {
       })
       await newMailToken.save()
 
-      await sendEmail(`${email}`, `${process.env.CLIENT_URL}/forget-password?token=${mailToken}`, 'Forgot Your Password? No Worries!', user.name)
+      await sendEmail(`${email}`, `${process.env.CLIENT_URL}/reset-password?token=${mailToken}`, 'Forgot Your Password? No Worries!', user.name)
       
       return res.status(200).json({ msg: `An email with reset password subject has been sent to ${email}` })
     } catch (err: any) {
@@ -197,7 +197,7 @@ const userCtrl = {
   },
   checkForgetPasswordToken: async(req: Request, res: Response) => {
     try {
-      const { token } = req.params
+      const { token } = req.query
       const mailToken = await MailToken.findOne({ token, used: 0 })
       if (!mailToken)
         return res.status(404).json({ msg: 'Forget password token is invalid.' })
