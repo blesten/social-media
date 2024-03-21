@@ -14,5 +14,12 @@ router.route('/editProfile').patch(isAuthenticated, userCtrl.editProfile)
 router.route('/changePasswword').patch(isAuthenticated, userCtrl.changePassword)
 router.route('/changeAccountPrivacy').patch(isAuthenticated, userCtrl.changeAccountPrivacy)
 router.route('/checkForgetPasswordToken').get(userCtrl.checkForgetPasswordToken)
+router.route('/followRequests').get(isAuthenticated, userCtrl.getFollowRequests)
+router.route('/:id').get(isAuthenticated, userCtrl.getProfile)
+router.route('/:id/follow').patch(isAuthenticated, userCtrl.follow)
+router.route('/:id/unfollow').patch(isAuthenticated, userCtrl.unfollow)
+router.route('/:id/accept').patch(isAuthenticated, userCtrl.acceptFollowRequest)
+router.route('/:id/followers').get(isAuthenticated, userCtrl.getFollowers)
+router.route('/:id/followings').get(isAuthenticated, userCtrl.getFollowings)
 
 export default router

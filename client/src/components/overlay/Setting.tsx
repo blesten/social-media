@@ -1,7 +1,8 @@
-import { useState, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ChangePassword from './ChangePassword'
 import useStore from './../../store/store'
+import { patchDataAPI } from '../../utils/fetchData'
 
 interface IProps {
   openSettingOverlay: boolean
@@ -12,8 +13,9 @@ interface IProps {
 const Setting: React.FC<IProps> = ({ openSettingOverlay, setOpenSettingOverlay, settingOverlayRef }) => {
   const [openChangePasswordOverlay, setOpenChangePasswordOverlay] = useState(false)
   const [privateAccount, setPrivateAccount] = useState(true)
+  const [loading, setLoading] = useState(false)
 
-  const { logout } = useStore()
+  const { userState, logout, initiate, clear } = useStore()
 
   const navigate = useNavigate()
 
@@ -28,6 +30,28 @@ const Setting: React.FC<IProps> = ({ openSettingOverlay, setOpenSettingOverlay, 
     await logout()
     navigate('/login')
   }
+
+  const handleChangeAccountPrivacy = async() => {
+    clear()
+    setLoading(true)
+
+    try {
+      const res = await patchDataAPI('/api/v1/users/changeAccountPrivacy', {
+        privacyStatus: privateAccount
+      }, userState.data.accessToken)
+      setOpenSettingOverlay(false)
+      initiate(res.data.msg, 'success')
+    } catch (err: any) {
+      initiate(err.response.data.msg, 'error')
+    }
+
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    if (userState.data.user)
+      setPrivateAccount(userState.data.user.private)
+  }, [userState.data.user])
   
   return (
     <>
@@ -40,7 +64,11 @@ const Setting: React.FC<IProps> = ({ openSettingOverlay, setOpenSettingOverlay, 
               <div className={`w-4 h-4 ${privateAccount ? 'bg-blue-500 right-1' : 'bg-gray-500 left-1'} rounded-full absolute top-1/2 -translate-y-1/2`} />
             </div>
           </div>
-          <button className='bg-blue-500 text-white text-sm rounded-md w-full py-2 transition outline-none hover:bg-blue-600 mt-5'>Save Changes</button>
+          <button onClick={handleChangeAccountPrivacy} disabled={loading ? true : false} className={`${loading ? 'bg-gray-300 hover:bg-gray-300 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600 cursor-pointer'} text-white text-sm rounded-md w-full py-2 transition outline-none mt-5`}>
+            {
+              loading ? 'Loading ...' : 'Save Changes'
+            }
+          </button>
           <hr className='my-5' />
           <div>
             <button onClick={handleClickChangePassword} className='w-full mb-5 text-sm py-2 outline-none transition hover:bg-gray-100 font-semibold'>Change Password</button>

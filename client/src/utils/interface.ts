@@ -24,7 +24,7 @@ export interface IUserState {
   loading: boolean
 }
 
-export interface IUser {
+export interface IUser extends IGeneralField {
   name: string
   username: string
   email: string

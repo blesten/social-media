@@ -8,6 +8,8 @@ import jwt from 'jsonwebtoken'
 import User from './../models/User'
 import MailToken from '../models/MailToken'
 import sendEmail from '../utils/mail'
+import Follower from '../models/Follower'
+import Following from '../models/Following'
 
 const userCtrl = {
   register: async(req: Request, res: Response) => {
@@ -45,6 +47,18 @@ const userCtrl = {
         password: passwordHash
       })
       await user.save()
+
+      const follower = new Follower({
+        user: user._id,
+        followers: []
+      })
+      await follower.save()
+
+      const following = new Following({
+        user: user._id,
+        followings: []
+      })
+      await following.save()
 
       return res.status(200).json({ msg: 'User has been successfully registered.' })
     } catch (err: any) {
@@ -284,6 +298,216 @@ const userCtrl = {
       await user.save()
 
       return res.status(200).json({ msg: 'Account privacy status has been changed successfully.' })
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message })
+    }
+  },
+  getProfile: async(req: Request, res: Response) => {
+    try {
+      const { id } = req.params
+
+      const user = await User.findById(id)
+      if (!user)
+        return res.status(404).json({ msg: 'User not found.' })
+
+      return res.status(200).json({
+        user: {
+          ...user._doc,
+          password: ''
+        }
+      })
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message })
+    }
+  },
+  follow: async(req: IReqUser, res: Response) => {
+    try {
+      const { id } = req.params
+
+      const user = await User.findById(id)
+      if (!user)
+        return res.status(404).json({ msg: 'User not found.' })
+
+      const currentUserFollowings = await Following.findOne({ user: req.user?._id })
+      const targetUserFollowers = await Follower.findOne({ user: id })
+
+      if (!currentUserFollowings)
+        return res.status(404).json({ msg: 'User followings not found.' })
+
+      if (!targetUserFollowers)
+        return res.status(404).json({ msg: 'Target followers not found.' })
+
+      const targetUserPrivacyStatus = user.private
+      
+      if (targetUserPrivacyStatus) {
+        const newFollowing = {
+          user: id,
+          status: 0
+        }
+
+        const currentUserFollowingsList = currentUserFollowings.followings
+        currentUserFollowingsList.push(newFollowing)
+
+        currentUserFollowings.followings = currentUserFollowingsList
+        await currentUserFollowings.save()
+
+        const newFollower = {
+          user: req.user?._id,
+          status: 0
+        }
+
+        const targetUserFollowersList = targetUserFollowers.followers
+        targetUserFollowersList.push(newFollower)
+        
+        targetUserFollowers.followers = targetUserFollowersList
+        await targetUserFollowers.save()
+      } else {
+        const newFollowing = {
+          user: id,
+          status: 1
+        }
+
+        const currentUserFollowingsList = currentUserFollowings.followings
+        currentUserFollowingsList.push(newFollowing)
+
+        currentUserFollowings.followings = currentUserFollowingsList
+        await currentUserFollowings.save()
+
+        const newFollower = {
+          user: req.user?._id,
+          status: 1
+        }
+
+        const targetUserFollowersList = targetUserFollowers.followers
+        targetUserFollowersList.push(newFollower)
+        
+        targetUserFollowers.followers = targetUserFollowersList
+        await targetUserFollowers.save()
+      }
+
+      return res.status(200).json({ msg: 'Successfully followed.' })
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message })
+    }
+  },
+  unfollow: async(req: IReqUser, res: Response) => {
+    try {
+      const { id } = req.params
+
+      const user = await User.findById(id)
+      if (!user)
+        return res.status(404).json({ msg: 'User not found.' })
+      
+      const currentUserFollowings = await Following.findOne({ user: req.user?._id })
+      const targetUserFollowers = await Follower.findOne({ user: id })
+
+      if (!currentUserFollowings)
+        return res.status(404).json({ msg: 'User followings not found.' })
+
+      if (!targetUserFollowers)
+        return res.status(404).json({ msg: 'Target followers not found.' })
+
+      let currentUserFollowingsList = currentUserFollowings.followings
+      // @ts-ignore
+      currentUserFollowingsList = currentUserFollowingsList.filter(item => String(item.user) !== String(id))
+
+      currentUserFollowings.followings = currentUserFollowingsList
+      await currentUserFollowings.save()
+
+      let targetUserFollowersList = targetUserFollowers.followers
+      // @ts-ignore
+      targetUserFollowersList = targetUserFollowersList.filter(item => String(item.user) !== String(req.user?._id))
+
+      targetUserFollowers.followers = targetUserFollowersList
+      await targetUserFollowers.save()
+
+      return res.status(200).json({ msg: 'Succesfully unfollowed.' })
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message })
+    }
+  },
+  acceptFollowRequest: async(req: IReqUser, res: Response) => {
+    try {
+      const { id } = req.params
+
+      const user = await User.findById(id)
+      if (!user)
+        return res.status(404).json({ msg: 'User not found.' })
+
+      const currentUserFollowers = await Follower.findOne({ user: req.user?._id })
+      if (!currentUserFollowers)
+        return res.status(404).json({ msg: 'User followers not found.' })
+
+      const targetUserFollowings = await Following.findOne({ user: id })
+      if (!targetUserFollowings)
+        return res.status(404).json({ msg: 'User followings not found.' })
+
+      let currentUserFollowersList = currentUserFollowers.followers
+      // @ts-ignore
+      currentUserFollowersList = currentUserFollowersList.map(item => String(item.user) === String(id) ? { ...item, status: 1 } : item)
+
+      currentUserFollowers.followers = currentUserFollowersList
+      await currentUserFollowers.save()
+
+      let targetUserFollowingsList = targetUserFollowings.followings
+      // @ts-ignore
+      targetUserFollowingsList = targetUserFollowingsList.map(item => String(item.user) === String(req.user?._id) ? { ...item, status: 1 } : item)
+
+      targetUserFollowings.followings = targetUserFollowingsList
+      await targetUserFollowings.save()
+
+      return res.status(200).json({ msg: 'Successfully accepted.' })
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message })
+    }
+  },
+  getFollowers: async(req: IReqUser, res: Response) => {
+    try {
+      const { id } = req.params
+
+      const user = await User.findById(id)
+      if (!user)
+        return res.status(404).json({ msg: 'User not found.' })
+
+      if (user.private && String(id) !== String(req.user?._id))
+        return res.status(400).json({ msg: 'Resource not allowed.' })
+
+      const followers = await Follower.findOne({ user: id }).populate('followers.user').select('-password')
+
+      const filteredFollowers = followers?.followers.filter(item => item.status === 1)
+      
+      return res.status(200).json({ followers: filteredFollowers })
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message })
+    }
+  },
+  getFollowings: async(req: IReqUser, res: Response) => {
+    try {
+      const { id } = req.params
+      
+      const user = await User.findById(id)
+      if (!user)
+        return res.status(404).json({ msg: 'User not found.' })
+
+      if (user.private && String(id) !== String(req.user?._id))
+        return res.status(400).json({ msg: 'Resource not allowed.' })
+
+      const followings = await Following.findOne({ user: id }).populate('followings.user').select('-password')
+
+      const filteredFollowings = followings?.followings.filter(item => item.status === 1)
+
+      return res.status(200).json({ followings: filteredFollowings })
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message })
+    }
+  },
+  getFollowRequests: async(req: IReqUser, res: Response) => {
+    try {
+      const followRequests = await Follower.findOne({ user: req.user?._id }).populate('followers.user').select('-password')
+
+      const filteredFollowRequests = followRequests?.followers.filter(item => item.status === 0)
+
+      return res.status(200).json({ followRequests: filteredFollowRequests })
     } catch (err: any) {
       return res.status(500).json({ msg: err.message })
     }

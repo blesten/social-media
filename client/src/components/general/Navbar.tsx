@@ -5,6 +5,7 @@ import { HiPlus } from 'react-icons/hi'
 import { IoIosNotifications } from 'react-icons/io'
 import { MdNotificationsOff } from 'react-icons/md'
 import { Link } from 'react-router-dom'
+import useStore from './../../store/store'
 import Logo from './../navbar/Logo'
 import Search from './../navbar/Search'
 import Utility from './../navbar/Utility'
@@ -19,6 +20,8 @@ const Navbar = () => {
   const sidebarRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const upsertPostOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const notificationRef = useRef() as React.MutableRefObject<HTMLDivElement>
+
+  const { userState } = useStore()
 
   const handleClickUpsertPost = () => {
     setOpenSidebar(false)
@@ -104,7 +107,7 @@ const Navbar = () => {
                 {/* <NotificationCard /> */}
               </div>
             </div>
-            <Link to='/feeds/639ejfdffd89' className='w-10 h-10 rounded-full bg-gray-100 outline-none'></Link>
+            <Link to={`/feeds/${userState.data.user?._id}`} className='w-10 h-10 rounded-full bg-gray-100 outline-none'></Link>
           </div>
         </div>
       </div>

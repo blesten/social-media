@@ -4,11 +4,14 @@ import { MdNotificationsOff } from 'react-icons/md'
 import { RiMessage2Fill } from 'react-icons/ri'
 import { HiPlus } from 'react-icons/hi'
 import { Link } from 'react-router-dom'
+import useStore from './../../store/store'
 import UpsertPost from './../overlay/UpsertPost'
 
 const Utility = () => {
   const [openUpsertPostOverlay, setOpenUpsertPostOverlay] = useState(false)
   const [openNotification, setOpenNotification] = useState(false)
+
+  const { userState } = useStore()
 
   const upsertPostOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const notificationRef = useRef() as React.MutableRefObject<HTMLDivElement>
@@ -56,7 +59,7 @@ const Utility = () => {
             {/* <NotificationCard /> */}
           </div>
         </div>
-        <Link to='/feeds/639ejfdffd89' className='w-10 h-10 rounded-full bg-gray-200 outline-none'></Link>
+        <Link to={`/feeds/${userState.data.user?._id}`} className='w-10 h-10 rounded-full bg-gray-200 outline-none'></Link>
       </div>
 
       <UpsertPost
