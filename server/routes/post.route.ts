@@ -8,6 +8,8 @@ router.route('/')
   .get(isAuthenticated, postCtrl.read)
   .post(isAuthenticated, postCtrl.create)
 
+router.route('/user/:id').get(isAuthenticated, postCtrl.readUserPosts)
+
 router.route('/:id')
   .patch(isAuthenticated, postCtrl.update)
   .delete(isAuthenticated, postCtrl.delete)

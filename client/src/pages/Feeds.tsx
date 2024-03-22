@@ -4,7 +4,7 @@ import { IoMdGrid } from 'react-icons/io'
 import { HiLockClosed } from 'react-icons/hi2'
 import { FaRegBookmark } from 'react-icons/fa'
 import { getDataAPI } from '../utils/fetchData'
-import { IFollow, IUser } from '../utils/interface'
+import { IFollow, IPost, IUser } from '../utils/interface'
 import useStore from './../store/store'
 import Navbar from './../components/general/Navbar'
 import HeadInfo from './../utils/HeadInfo'
@@ -14,6 +14,7 @@ import PostCard from './../components/feeds/PostCard'
 const Feeds = () => {
   const [tab, setTab] = useState('posts')
   const [user, setUser] = useState<Partial<IUser>>({})
+  const [posts, setPosts] = useState<IPost[]>([])
   const [followers, setFollowers] = useState<IFollow[]>([])
   const [followings, setFollowings] = useState<IFollow[]>([])
   const [followRequests, setFollowRequests] = useState<IFollow[]>([])
@@ -82,6 +83,20 @@ const Feeds = () => {
       getFollowRequests(userState.data.accessToken)
   }, [userState.data.accessToken])
 
+  useEffect(() => {
+    const getUserPosts = async(token: string) => {
+      try {
+        const res = await getDataAPI(`/api/v1/posts/user/${id}`, token)
+        setPosts(res.data.posts)
+      } catch (err: any) {
+        console.log(err.response.data.msg)
+      }
+    }
+
+    if (userState.data.accessToken)
+      getUserPosts(userState.data.accessToken)
+  }, [id, userState.data.accessToken])
+
   return (
     <>
       <HeadInfo title='Feeds' />
@@ -96,36 +111,51 @@ const Feeds = () => {
                 followers={followers}
                 followings={followings}
                 followRequests={followRequests}
+                posts={posts}
               />
               {
-                user.private && userState.data.user?._id !== user._id
+                !user.private || userState.data.user?._id === user._id || followers.some(item => item.user._id === userState.data.user?._id)
                 ? (
-                  <div className='flex items-center justify-center flex-col mt-6'>
-                    <HiLockClosed className='text-7xl text-gray-400' />
-                    <p className='text-lg font-semibold mt-3'>This is a private account</p>
-                  </div>
-                )
-                : (
                   <>
                     <div className='flex items-center justify-center gap-20 pb-5'>
                       <div onClick={() => handleChangeTab('posts')} className={`flex items-center gap-2 text-lg cursor-pointer relative after:content-[ ] after:absolute after:w-[140%] after:left-1/2 after:-translate-x-1/2 after:h-[2px] ${tab === 'posts' ? 'after:bg-black' : 'after:bg-transparent'} after:-bottom-2`}>
                         <IoMdGrid />
                         <p>Posts</p>
                       </div>
-                      <div onClick={() => handleChangeTab('saved')} className={`flex items-center gap-2 text-lg cursor-pointer relative after:content-[ ] after:absolute after:w-[140%] after:left-1/2 after:-translate-x-1/2 after:h-[2px] ${tab === 'saved' ? 'after:bg-black' : 'after:bg-transparent'} after:-bottom-2`}>
-                        <FaRegBookmark />
-                        <p>Saved</p>
-                      </div>
+                      {
+                        userState.data.user?._id === id &&
+                        <div onClick={() => handleChangeTab('saved')} className={`flex items-center gap-2 text-lg cursor-pointer relative after:content-[ ] after:absolute after:w-[140%] after:left-1/2 after:-translate-x-1/2 after:h-[2px] ${tab === 'saved' ? 'after:bg-black' : 'after:bg-transparent'} after:-bottom-2`}>
+                          <FaRegBookmark />
+                          <p>Saved</p>
+                        </div>
+                      }
                     </div>
                     <div className='flex items-center justify-center'>
                       <div className='xl:w-2/3 lg:w-4/5 pt-8 pb-16 grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-7 lg:px-0 px-10 gap-x-10'>
-                        {/* <p className='bg-red-500 text-white text-center py-2 rounded-md font-semibold text-sm'>Post is empty</p> */}
-                        <PostCard />
-                        <PostCard />
-                        <PostCard />
+                        {
+                          posts.length > 0
+                          ? (
+                            <>
+                              {
+                                posts.map((item, idx) => (
+                                  <PostCard key={idx} thumbnail={item.images[0]} />
+                                ))
+                              }
+                            </>
+                          )
+                          : (
+                            <p className='bg-red-500 w-1/2 mt-8 text-white text-center py-2 rounded-md font-semibold text-sm'>Post is empty</p>
+                          )
+                        }
                       </div>
                     </div>
                   </>
+                )
+                : (
+                  <div className='flex items-center justify-center flex-col mt-6'>
+                    <HiLockClosed className='text-7xl text-gray-400' />
+                    <p className='text-lg font-semibold mt-3'>This is a private account</p>
+                  </div>
                 )
               }
             </>

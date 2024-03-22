@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { IoMdSettings } from 'react-icons/io'
 import { FaUsers } from 'react-icons/fa'
 import { FiEdit } from 'react-icons/fi'
-import { IFollow, IUser } from './../../utils/interface'
+import { IFollow, IPost, IUser } from './../../utils/interface'
 import useStore from './../../store/store'
 import Followers from './../overlay/Followers'
 import Followings from '../overlay/Followings'
@@ -15,9 +15,10 @@ interface IProps {
   followers: IFollow[]
   followings: IFollow[]
   followRequests: IFollow[]
+  posts: IPost[]
 }
 
-const Header: React.FC<IProps> = ({ user, followers, followings, followRequests }) => {
+const Header: React.FC<IProps> = ({ user, followers, followings, followRequests, posts }) => {
   const [openFollowersOverlay, setOpenFollowersOverlay] = useState(false)
   const [openFollowingsOverlay, setOpenFollowingsOverlay] = useState(false)
   const [openFollowRequestsOverlay, setOpenFollowRequestsOverlay] = useState(false)
@@ -164,7 +165,7 @@ const Header: React.FC<IProps> = ({ user, followers, followings, followRequests 
             <div className='md:block hidden'>
               <div className='flex items-center gap-14 mt-3'>
                 <div>
-                  <p className='font-semibold'>20 posts</p>
+                  <p className='font-semibold'>{posts.length} {posts.length > 1 ? 'posts' : 'post'}</p>
                 </div>
                 <div onClick={handleOpenFollowers} className='cursor-pointer'>
                   <p className='font-semibold'>{followers.length} {followers.length > 1 ? 'followers' : 'follower'}</p>
@@ -185,7 +186,7 @@ const Header: React.FC<IProps> = ({ user, followers, followings, followRequests 
         <div className='md:hidden block mt-5'>
           <div className='flex items-center gap-10 mt-3'>
             <div>
-              <p className='font-semibold'>20 posts</p>
+              <p className='font-semibold'>{posts.length} {posts.length > 1 ? 'posts' : 'post'}</p>
             </div>
             <div onClick={handleOpenFollowers} className='cursor-pointer'>
               <p className='font-semibold'>{followers.length} {followers.length > 1 ? 'followers' : 'follower'}</p>

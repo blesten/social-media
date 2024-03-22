@@ -3,6 +3,7 @@ import { IReqUser } from './../utils/interface'
 import Post from './../models/Post'
 import Follower from '../models/Follower'
 import Following from '../models/Following'
+import User from '../models/User'
 
 const postCtrl = {
   create: async(req: IReqUser, res: Response) => {
@@ -68,6 +69,30 @@ const postCtrl = {
       const posts = await Post.find({ user: { $in: usersList } }).populate('user').select('-password').sort('-createdAt')
 
       return res.status(200).json({ posts })
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message })
+    }
+  },
+  readUserPosts: async(req: IReqUser, res: Response) => {
+    try {
+      const { id } = req.params
+
+      const user = await User.findById(id)
+      if (!user)
+        return res.status(404).json({ msg: 'User not found.' })
+
+      const userFollowers = await Follower.findOne({ user: id })
+      if (!userFollowers)
+        return res.status(404).json({ msg: 'User follower not found.' })
+
+      const filteredUserFollowers = userFollowers.followers.filter(item => item.status === 1)
+
+      // if (!user.private || String(req.user?._id) === String(id) || filteredUserFollowers.some(item => String(item.user) === String(req.user?._id))) {
+        const posts = await Post.find({ user: id }).populate('user').select('-password').sort('-createdAt')
+        return res.status(200).json({ posts })
+      // }
+
+      // return res.status(400).json({ msg: 'Account is private' })
     } catch (err: any) {
       return res.status(500).json({ msg: err.message })
     }
