@@ -24,7 +24,14 @@ const postCtrl = {
 
       return res.status(200).json({
         msg: 'Post has been created successfully.',
-        post
+        post: {
+          ...post._doc,
+          user: {
+            name: req.user?.name,
+            avatar: req.user?.avatar,
+            _id: req.user?._id
+          }
+        }
       })
     } catch (err: any) {
       return res.status(500).json({ msg: err.message })
@@ -44,7 +51,7 @@ const postCtrl = {
 
       const filteredUserFollowings = userFollowings.followings.filter(item => item.status === 1)
       
-      const usersList: any[] = []
+      const usersList: any[] = [req.user?._id]
 
       for (let i = 0; i < filteredUserFollowers.length; i++) {
         const userID = filteredUserFollowers[i].user
@@ -58,7 +65,7 @@ const postCtrl = {
           usersList.push(userID)
       }
 
-      const posts = await Post.find({ user: { $in: usersList } })
+      const posts = await Post.find({ user: { $in: usersList } }).populate('user').select('-password').sort('-createdAt')
 
       return res.status(200).json({ posts })
     } catch (err: any) {

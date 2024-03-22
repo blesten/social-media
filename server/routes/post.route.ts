@@ -5,7 +5,7 @@ import { isAuthenticated } from './../middlewares/auth'
 const router = express.Router()
 
 router.route('/')
-  .get(postCtrl.read)
+  .get(isAuthenticated, postCtrl.read)
   .post(isAuthenticated, postCtrl.create)
 
 router.route('/:id')

@@ -3,26 +3,32 @@ import { AiOutlineHeart } from 'react-icons/ai'
 import { IoEllipsisVerticalSharp } from 'react-icons/io5'
 import { FaCaretLeft, FaCaretRight, FaCommentDots, FaRegBookmark, FaTrash } from 'react-icons/fa'
 import { FiEdit } from 'react-icons/fi' 
+import { IUser } from './../../utils/interface'
+import moment from 'moment'
+import useStore from './../../store/store'
 import Delete from './../overlay/Delete'
 import Comment from './Comment'
 import UpsertPost from '../overlay/UpsertPost'
 
-const Post = () => {
+interface IProps {
+  user: IUser
+  caption: string
+  images: string[]
+  createdAt: string
+}
+
+const Post: React.FC<IProps> = ({ user, caption, images, createdAt }) => {
   const [openMore, setOpenMore] = useState(false)
   const [openDeleteOverlay, setOpenDeleteOvelay] = useState(false)
   const [openUpsertPostOverlay, setOpenUpsertPostOverlay] = useState(false)
-
-  const [images, setImages] = useState([
-    'https://img.freepik.com/free-photo/view-3d-car_23-2150796904.jpg?t=st=1709814981~exp=1709818581~hmac=2e85b762ccf775937a2bfe0dcf70f541f99e5bc232b1af989c1a64e6e05da9e8&w=740',
-    'https://digital-bucket.prod.bfi.co.id/assets/Blog/Blog%20New/Jenis%20Jenis%20Mobil%20dan%20Merk%20Mobil%20Terlaris%20di%20Indonesia/jenis_jenis_mobil_mobil_sedan%20(1).jpg',
-    'https://play-lh.googleusercontent.com/Gtq3-k_EByT2U3AeVEOXkemgwwfx9MLJR2k0Y-_X7Yvj4pD0idrUjINevdN0kehMyYg=w526-h296-rw'
-  ])
 
   const [currentPosition, setCurrentPosition] = useState(0)
 
   const openMoreRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const deleteOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const upsertPostOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
+
+  const { userState } = useStore()
 
   const handleChangeImage = (position: string) => {
     if (position === 'left') {
@@ -92,33 +98,40 @@ const Post = () => {
       <div className='rounded-xl bg-white px-8 py-5 mb-10'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-5'>
-            <div className='w-14 h-14 rounded-full bg-gray-200'></div>
+            <div className='w-14 h-14 rounded-full bg-blue-500 flex items-center justify-center'>
+              {
+                !user.avatar && <p className='text-2xl font-semibold tracking-widest text-white'>{`${user.name[0]}${user.name.split(' ')[user.name.split(' ').length - 1][0]}`}</p>
+              }
+            </div>
             <div>
-              <h1 className='font-semibold'>Gianna Louis</h1>
-              <p className='text-xs text-gray-500 mt-1'>4 hours ago</p>
+              <h1 className='font-semibold'>{user.name}</h1>
+              <p className='text-xs text-gray-500 mt-1'>{moment(createdAt).fromNow()}</p>
             </div>
           </div>
-          <div ref={openMoreRef} className='relative'>
-            <div onClick={() => setOpenMore(!openMore)} className='cursor-pointer'>
-              <IoEllipsisVerticalSharp />
-            </div>
-            <div className={`absolute bg-white w-[150px] shadow-md border border-gray-300 top-full mt-5 right-0 rounded-md ${openMore ? 'scale-y-100' : 'scale-y-0'} transition origin-top`}>
-              <div onClick={handleClickEdit} className='flex items-center gap-3 px-3 py-2 cursor-pointer rounded-t-md hover:bg-light-gray border-b border-gray-300'>
-                <FiEdit className='text-lg text-orange-500' />
-                <p>Edit</p>
+          {
+            user._id === userState.data.user?._id &&
+            <div ref={openMoreRef} className='relative'>
+              <div onClick={() => setOpenMore(!openMore)} className='cursor-pointer'>
+                <IoEllipsisVerticalSharp />
               </div>
-              <div onClick={handleClickDelete} className='flex items-center gap-3 px-3 py-2 cursor-pointer rounded-b-md hover:bg-light-gray'>
-                <FaTrash className='text-lg text-red-500' />
-                <p>Delete</p>
+              <div className={`absolute bg-white w-[150px] shadow-md border border-gray-300 top-full mt-5 right-0 rounded-md ${openMore ? 'scale-y-100' : 'scale-y-0'} transition origin-top z-10`}>
+                <div onClick={handleClickEdit} className='flex items-center gap-3 px-3 py-2 cursor-pointer rounded-t-md hover:bg-light-gray border-b border-gray-300'>
+                  <FiEdit className='text-lg text-orange-500' />
+                  <p>Edit</p>
+                </div>
+                <div onClick={handleClickDelete} className='flex items-center gap-3 px-3 py-2 cursor-pointer rounded-b-md hover:bg-light-gray'>
+                  <FaTrash className='text-lg text-red-500' />
+                  <p>Delete</p>
+                </div>
               </div>
             </div>
-          </div>
+          }
         </div>
         <div className='mt-6'>
-          <p className='leading-relaxed text-justify'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut a nesciunt adipisci enim quas repudiandae.</p>
+          <p className='leading-relaxed text-justify'>{caption}</p>
           <div className='mt-5 relative'>
             <div className='w-full h-[300px] bg-gray-100 rounded-lg border border-gray-200'>
-              <img src={images[currentPosition]} alt='Social Sphere' className='rounded-md w-full h-full object-cover pointer-events-none' />
+              <img src={images[currentPosition]} alt='Social Sphere' className='rounded-md w-full h-full object-contain pointer-events-none' />
             </div>
             {
               images.length > 1 &&

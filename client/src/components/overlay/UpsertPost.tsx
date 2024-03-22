@@ -1,7 +1,8 @@
 import { useState, useRef } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 import { MdFileUpload } from 'react-icons/md'
-import { FormChanged } from '../../utils/interface'
+import { FormChanged } from './../../utils/interface'
+import useStore from './../../store/store'
 
 interface IProps {
   openUpsertPostOverlay: boolean
@@ -10,9 +11,13 @@ interface IProps {
 }
 
 const UpsertPost: React.FC<IProps> = ({ openUpsertPostOverlay, setOpenUpsertPostOverlay, upsertPostOverlayRef }) => {
+  const [caption, setCaption] = useState('')
   const [posts, setPosts] = useState<File[]>([])
+  const [loading, setLoading] = useState(false)
 
   const fileInputRef = useRef() as React.MutableRefObject<HTMLInputElement>
+
+  const { userState, createPost } = useStore()
 
   const handleClickUpload = () => {
     fileInputRef.current?.click()
@@ -28,6 +33,13 @@ const UpsertPost: React.FC<IProps> = ({ openUpsertPostOverlay, setOpenUpsertPost
     const target = e.target as HTMLInputElement
     const files = [...Object.values(target.files!)]
     setPosts([...posts, ...files])
+  }
+
+  const handleSubmit = async() => {
+    setLoading(true)
+    await createPost(caption, posts, userState.data.accessToken!)
+    setOpenUpsertPostOverlay(false)
+    setLoading(false)
   }
 
   return (
@@ -68,9 +80,15 @@ const UpsertPost: React.FC<IProps> = ({ openUpsertPostOverlay, setOpenUpsertPost
           }
           <div className='mt-5'>
             <label htmlFor='caption' className='text-sm'>Caption</label>
-            <textarea name='caption' id='caption' className='w-full resize-none border border-gray-300 rounded-md h-24 outline-none text-sm p-3 mt-2' />
+            <textarea name='caption' id='caption' value={caption} onChange={e => setCaption(e.target.value)} className='w-full resize-none border border-gray-300 rounded-md h-24 outline-none text-sm p-3 mt-2' />
           </div>  
-          <button className='mt-4 bg-blue-500 rounded-full text-white text-sm font-semibold py-2 w-full hover:bg-blue-600 transition outline-none'>Post</button>
+          <button onClick={handleSubmit} disabled={loading || caption.length < 5 || posts.length < 1} className={`${loading || caption.length < 5 || posts.length < 1 ? 'bg-gray-300 hover:bg-gray-300 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600 cursor-pointer'} mt-4 rounded-full text-white text-sm font-semibold py-2 w-full transition outline-none`}>
+            {
+              loading
+              ? 'Loading ...'
+              : 'Post'
+            }
+          </button>
         </div>
       </div>
     </div>

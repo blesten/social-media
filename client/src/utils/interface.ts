@@ -7,6 +7,7 @@ export type FormSubmitted = FormEvent<HTMLFormElement>
 export interface GlobalStoreState {
   alertState: IAlertState
   userState: IUserState
+  homeState: IHomeState
 }
 
 export interface IGeneralField {
@@ -42,4 +43,17 @@ export interface ILoginResponse {
 export interface IFollow {
   user: IUser
   status: number
+}
+
+export interface IHomeState {
+  posts: IPost[]
+  loading: boolean
+}
+
+export interface IPost extends IGeneralField {
+  user: IUser
+  caption: string
+  images: string[]
+  likes: string[]
+  comments: string[]
 }
