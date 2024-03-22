@@ -141,7 +141,10 @@ const Header: React.FC<IProps> = ({ user, followers, followings, followRequests,
           </div>
           <div className='flex-1'>
             <div className='flex md:flex-row flex-col md:items-center justify-between'>
-              <p className='text-lg font-semibold'>{user.username}</p>
+              <div className='flex items-center gap-5'>
+                <p className='text-lg font-semibold'>{user.name}</p>
+                <p className='text-sm font-semibold bg-blue-50 text-blue-500 rounded-md py-1 px-3'>{user.username}</p>
+              </div>
               {
                 userState.data.user?._id === user._id
                 ? (
