@@ -83,6 +83,8 @@ const userCtrl = {
       const accessToken = generateToken({ id: user._id }, 'accessToken')
       const refreshToken = generateToken({ id: user._id }, 'refreshToken')
 
+      const followings = await Following.findOne({ user: user._id }).populate('followings.user').select('-password')
+
       res.cookie('socialSphere_cookie', refreshToken, {
         httpOnly: true,
         path: '/api/v1/users/refresh_token',
@@ -95,7 +97,8 @@ const userCtrl = {
         user: {
           ...user._doc,
           password: ''
-        }
+        },
+        followings: followings?.followings
       })
     } catch (err: any) {
       return res.status(500).json({ msg: err.message })
@@ -130,6 +133,8 @@ const userCtrl = {
       const accessToken = generateToken({ id: user._id }, 'accessToken')
       const refreshToken = generateToken({ id: user._id }, 'refreshToken')
 
+      const followings = await Following.findOne({ user: user._id }).populate('followings.user').select('-password')
+
       res.cookie('socialSphere_cookie', refreshToken, {
         path: '/api/v1/users/refresh_token',
         httpOnly: true,
@@ -141,7 +146,8 @@ const userCtrl = {
         user: {
           ...user._doc,
           password: ''
-        }
+        },
+        followings: followings?.followings
       })
     } catch (err: any) {
       return res.status(500).json({ msg: err.message })
@@ -385,7 +391,9 @@ const userCtrl = {
         await targetUserFollowers.save()
       }
 
-      return res.status(200).json({ msg: 'Successfully followed.' })
+      const newFollowings = await Following.findOne({ user: req.user?._id }).populate('followings.user').select('-password')
+
+      return res.status(200).json({ followings: newFollowings?.followings })
     } catch (err: any) {
       return res.status(500).json({ msg: err.message })
     }
@@ -421,7 +429,9 @@ const userCtrl = {
       targetUserFollowers.followers = targetUserFollowersList
       await targetUserFollowers.save()
 
-      return res.status(200).json({ msg: 'Succesfully unfollowed.' })
+      const newFollowings = await Following.findOne({ user: req.user?._id }).populate('followings.user').select('-password')
+
+      return res.status(200).json({ followings: newFollowings?.followings })
     } catch (err: any) {
       return res.status(500).json({ msg: err.message })
     }
@@ -469,9 +479,6 @@ const userCtrl = {
       if (!user)
         return res.status(404).json({ msg: 'User not found.' })
 
-      if (user.private && String(id) !== String(req.user?._id))
-        return res.status(400).json({ msg: 'Resource not allowed.' })
-
       const followers = await Follower.findOne({ user: id }).populate('followers.user').select('-password')
 
       const filteredFollowers = followers?.followers.filter(item => item.status === 1)
@@ -488,9 +495,6 @@ const userCtrl = {
       const user = await User.findById(id)
       if (!user)
         return res.status(404).json({ msg: 'User not found.' })
-
-      if (user.private && String(id) !== String(req.user?._id))
-        return res.status(400).json({ msg: 'Resource not allowed.' })
 
       const followings = await Following.findOne({ user: id }).populate('followings.user').select('-password')
 

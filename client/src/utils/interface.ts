@@ -21,6 +21,7 @@ export interface IAlertState {
 
 export interface IUserState {
   data: Partial<ILoginResponse>
+  followings: IFollow[]
   loading: boolean
 }
 
@@ -36,4 +37,9 @@ export interface IUser extends IGeneralField {
 export interface ILoginResponse {
   user: IUser
   accessToken: string
+}
+
+export interface IFollow {
+  user: IUser
+  status: number
 }

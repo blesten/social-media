@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { IoMdSettings } from 'react-icons/io'
 import { FaUsers } from 'react-icons/fa'
 import { FiEdit } from 'react-icons/fi'
-import { IUser } from './../../utils/interface'
+import { IFollow, IUser } from './../../utils/interface'
 import useStore from './../../store/store'
 import Followers from './../overlay/Followers'
 import Followings from '../overlay/Followings'
@@ -12,14 +12,18 @@ import Setting from '../overlay/Setting'
 
 interface IProps {
   user: IUser
+  followers: IFollow[]
+  followings: IFollow[]
+  followRequests: IFollow[]
 }
 
-const Header: React.FC<IProps> = ({ user }) => {
+const Header: React.FC<IProps> = ({ user, followers, followings, followRequests }) => {
   const [openFollowersOverlay, setOpenFollowersOverlay] = useState(false)
   const [openFollowingsOverlay, setOpenFollowingsOverlay] = useState(false)
   const [openFollowRequestsOverlay, setOpenFollowRequestsOverlay] = useState(false)
   const [openEditProfileOverlay, setOpenEditProfileOverlay] = useState(false)
   const [openSettingOverlay, setOpenSettingOverlay] = useState(false)
+  const [followStatus, setFollowStatus] = useState('Follow')
 
   const followersOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const followingsOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
@@ -27,17 +31,35 @@ const Header: React.FC<IProps> = ({ user }) => {
   const editProfileOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const settingOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
 
-  const { userState } = useStore()
+  const { userState, follow, unfollow } = useStore()
 
   const handleOpenFollowers = () => {
-    if (!user.private || userState.data.user?._id === user._id) {
+    if (
+      !user.private ||
+      userState.data.user?._id === user._id ||
+      followers.some(item => item.user._id === userState.data.user?._id)
+    ) {
       setOpenFollowersOverlay(true)
     }
   }
 
   const handleOpenFollowings = () => {
-    if (!user.private || userState.data.user?._id === user._id) {
+    if (
+      !user.private ||
+      userState.data.user?._id === user._id ||
+      followers.some(item => item.user._id === userState.data.user?._id)
+    ) {
       setOpenFollowingsOverlay(true)
+    }
+  }
+  
+  const handleClickFollow = async() => {
+    if (followStatus === 'Follow' ||  followStatus === 'Unfollow') {
+      if (userState.followings.some(item => item.user._id === user?._id)) {
+        await unfollow(user?._id!, userState.data.accessToken!)
+      } else {
+        await follow(user?._id!, userState.data.accessToken!)
+      }
     }
   }
 
@@ -96,6 +118,17 @@ const Header: React.FC<IProps> = ({ user }) => {
     return () => document.removeEventListener('mousedown', checkIfClickedOutside)
   }, [openSettingOverlay])
 
+  useEffect(() => {
+    const curr = userState.followings.find(item => item.user._id === user?._id)
+    if (curr && curr.status === 1) {
+      setFollowStatus('Unfollow')
+    } else if (curr && curr.status === 0) {
+      setFollowStatus('Requested')
+    } else {
+      setFollowStatus('Follow')
+    }
+  }, [userState.followings, user?._id])
+
   return (
     <>
       <div className='xl:w-1/2 lg:w-2/3 w-full m-auto lg:py-10 py-7 lg:px-0 px-10'>
@@ -122,7 +155,9 @@ const Header: React.FC<IProps> = ({ user }) => {
                   </div>
                 )
                 : (
-                  <button className='bg-blue-500 rounded-md text-sm outline-none transition hover:bg-blue-600 px-6 py-2 text-white font-semibold sm:mt-0 mt-3'>Follow</button>
+                  <button onClick={handleClickFollow} className={`${followStatus === 'Unfollow' ? 'bg-blue-50 text-blue-500 hover:bg-blue-100 border border-blue-100' : followStatus === 'Follow' ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-gray-200 text-gray-400 cursor-not-allowed'} rounded-md text-sm outline-none transition px-6 py-2 font-semibold sm:mt-0 mt-3`}>
+                    {followStatus}
+                  </button>
                 )
               }
             </div>
@@ -132,10 +167,10 @@ const Header: React.FC<IProps> = ({ user }) => {
                   <p className='font-semibold'>20 posts</p>
                 </div>
                 <div onClick={handleOpenFollowers} className='cursor-pointer'>
-                  <p className='font-semibold'>158 followers</p>
+                  <p className='font-semibold'>{followers.length} {followers.length > 1 ? 'followers' : 'follower'}</p>
                 </div>
                 <div onClick={handleOpenFollowings} className='cursor-pointer'>
-                  <p className='font-semibold'>80 followings</p>
+                  <p className='font-semibold'>{followings.length} {followings.length > 1 ? 'followings' : 'following'}</p>
                 </div>
               </div>
               <div className='mt-3'>
@@ -153,10 +188,10 @@ const Header: React.FC<IProps> = ({ user }) => {
               <p className='font-semibold'>20 posts</p>
             </div>
             <div onClick={handleOpenFollowers} className='cursor-pointer'>
-              <p className='font-semibold'>158 followers</p>
+              <p className='font-semibold'>{followers.length} {followers.length > 1 ? 'followers' : 'follower'}</p>
             </div>
             <div onClick={handleOpenFollowings} className='cursor-pointer'>
-              <p className='font-semibold'>80 followings</p>
+              <p className='font-semibold'>{followings.length} {followings.length > 1 ? 'followings' : 'following'}</p>
             </div>
           </div>
           <div className='mt-3'>
@@ -172,18 +207,21 @@ const Header: React.FC<IProps> = ({ user }) => {
         openFollowersOverlay={openFollowersOverlay}
         setOpenFollowersOverlay={setOpenFollowersOverlay}
         followersOverlayRef={followersOverlayRef}
+        followers={followers}
       />
 
       <Followings
         openFollowingsOverlay={openFollowingsOverlay}
         setOpenFollowingsOverlay={setOpenFollowingsOverlay}
         followingsOverlayRef={followingsOverlayRef}
+        followings={followings}
       />
 
       <FollowRequests
         openFollowRequestsOverlay={openFollowRequestsOverlay}
         setOpenFollowRequestsOverlay={setOpenFollowRequestsOverlay}
         followRequestOverlayRef={followRequestsOverlayRef}
+        followRequests={followRequests}
       />
 
       <EditProfile

@@ -1,4 +1,4 @@
-import { getDataAPI, postDataAPI } from '../utils/fetchData'
+import { getDataAPI, patchDataAPI, postDataAPI } from '../utils/fetchData'
 import { GlobalStoreState, IUserState } from './../utils/interface'
 
 interface ILoginData {
@@ -8,6 +8,7 @@ interface ILoginData {
 
 const userState: IUserState = {
   data: {},
+  followings: [],
   loading: true
 }
 
@@ -27,7 +28,7 @@ const userStore = (set: any) => {
             user: res.data.user,
             accessToken: res.data.accessToken
           }
-
+          state.userState.followings = res.data.followings
           state.userState.loading = false
           state.alertState.message = res.data.msg
           state.alertState.type = 'success'
@@ -38,6 +39,7 @@ const userStore = (set: any) => {
         set((state: GlobalStoreState) => {
           state.userState.loading = false
           state.userState.data = {}
+          state.userState.followings = []
           state.alertState.message = err.response.data.msg
           state.alertState.type = 'error'
         }, false, 'login/error')
@@ -64,10 +66,12 @@ const userStore = (set: any) => {
             accessToken: res.data.accessToken,
             user: res.data.user
           }
+          state.userState.followings = res.data.followings
         }, false, 'refresh_token/success')
       } catch (err: any) {
         set((state: GlobalStoreState) => {
           state.userState.data = {}
+          state.userState.followings = []
           state.alertState.message = err.response.data.msg
           state.alertState.type = 'error'
         }, false, 'refresh_token/error')
@@ -83,6 +87,7 @@ const userStore = (set: any) => {
 
         set((state: GlobalStoreState) => {
           state.userState.data = {}
+          state.userState.followings = []
           state.alertState.message = res.data.msg
           state.alertState.type = 'success'
         }, false, 'logout/success')
@@ -90,9 +95,37 @@ const userStore = (set: any) => {
         localStorage.removeItem('ss_auth_status')
       } catch (err: any) {
         set((state: GlobalStoreState) => {
-          state.alertState.message = err.response.data.message
+          state.alertState.message = err.response.data.msg
           state.alertState.type = 'error'
         }, false, 'logout/error')
+      }
+    },
+    follow: async(id: string, token: string) => {
+      try {
+        const res = await patchDataAPI(`/api/v1/users/${id}/follow`, {}, token)
+        
+        set((state: GlobalStoreState) => {
+          state.userState.followings = res.data.followings
+        }, false, 'follow/success')
+      } catch (err: any) {
+        set((state: GlobalStoreState) => {
+          state.alertState.message = err.response.data.msg
+          state.alertState.type = 'error'
+        }, false, 'follow/error')
+      }
+    },
+    unfollow: async(id: string, token: string) => {
+      try {
+        const res = await patchDataAPI(`/api/v1/users/${id}/unfollow`, {}, token)
+
+        set((state: GlobalStoreState) => {
+          state.userState.followings = res.data.followings
+        }, false, 'unfollow/success')
+      } catch (err: any) {
+        set((state: GlobalStoreState) => {
+          state.alertState.message = err.response.data.msg
+          state.alertState.type = 'error'
+        }, false, 'unfollow/error')
       }
     }
   }
