@@ -14,8 +14,7 @@ router.route('/:id')
   .patch(isAuthenticated, postCtrl.update)
   .delete(isAuthenticated, postCtrl.delete)
 
-router.route('/:id/like')
-  .get(isAuthenticated, postCtrl.readLikeStatus)
-  .patch(isAuthenticated, postCtrl.changeLikeStatus)
+router.route('/:id/like').patch(isAuthenticated, postCtrl.likePost)
+router.route('/:id/unlike').patch(isAuthenticated, postCtrl.unlikePost)
 
 export default router

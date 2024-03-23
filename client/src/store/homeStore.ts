@@ -1,4 +1,4 @@
-import { getDataAPI, postDataAPI } from '../utils/fetchData'
+import { getDataAPI, patchDataAPI, postDataAPI } from '../utils/fetchData'
 import { uploadImages } from '../utils/image'
 import { GlobalStoreState, IHomeState } from './../utils/interface'
 
@@ -48,6 +48,32 @@ const homeStore = (set: any) => {
           state.alertState.message = err.response.data.msg
           state.alertState.type = 'error'
         }, false, 'createPost/error')
+      }
+    },
+    likePost: async(id: string, userId: string, token: string) => {
+      try {
+        await patchDataAPI(`/api/v1/posts/${id}/like`, {}, token)
+        set((state: GlobalStoreState) => {
+          state.homeState.posts = state.homeState.posts.map(item => item._id === id ? { ...item, likes: [...item.likes, userId] } : item)
+        }, false, 'likePost/success')
+      } catch (err: any) {
+        set((state: GlobalStoreState) => {
+          state.alertState.message = err.response.data.msg
+          state.alertState.type = 'error'
+        }, false, 'likePost/error')
+      }
+    },
+    unlikePost: async(id: string, userId: string, token: string) => {
+      try {
+        await patchDataAPI(`/api/v1/posts/${id}/unlike`, {}, token)
+        set((state: GlobalStoreState) => {
+          state.homeState.posts = state.homeState.posts.map(item => item._id === id ? { ...item, likes: item.likes.filter(u => u !== userId) } : item)
+        }, false, 'unlikePost/success')
+      } catch (err: any) {
+        set((state: GlobalStoreState) => {
+          state.alertState.message = err.response.data.msg
+          state.alertState.type = 'error'
+        }, false, 'unlikePost/error')
       }
     }
   }

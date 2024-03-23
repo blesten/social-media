@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { AiOutlineHeart } from 'react-icons/ai'
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { IoEllipsisVerticalSharp } from 'react-icons/io5'
 import { FaCaretLeft, FaCaretRight, FaCommentDots, FaRegBookmark, FaTrash } from 'react-icons/fa'
 import { FiEdit } from 'react-icons/fi' 
@@ -11,13 +11,15 @@ import Comment from './Comment'
 import UpsertPost from '../overlay/UpsertPost'
 
 interface IProps {
+  id: string
   user: IUser
   caption: string
   images: string[]
   createdAt: string
+  likes: string[]
 }
 
-const Post: React.FC<IProps> = ({ user, caption, images, createdAt }) => {
+const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes }) => {
   const [openMore, setOpenMore] = useState(false)
   const [openDeleteOverlay, setOpenDeleteOvelay] = useState(false)
   const [openUpsertPostOverlay, setOpenUpsertPostOverlay] = useState(false)
@@ -28,7 +30,7 @@ const Post: React.FC<IProps> = ({ user, caption, images, createdAt }) => {
   const deleteOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const upsertPostOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
 
-  const { userState } = useStore()
+  const { userState, likePost, unlikePost } = useStore()
 
   const handleChangeImage = (position: string) => {
     if (position === 'left') {
@@ -157,8 +159,12 @@ const Post: React.FC<IProps> = ({ user, caption, images, createdAt }) => {
         <div className='flex items-center justify-between mt-5 gap-6'>
           <div className='flex items-center gap-5'>
             <div className='flex items-center gap-2'>
-              <AiOutlineHeart className='text-lg' />
-              <p className='text-sm'>1.2K</p>
+              {
+                likes.includes(userState.data.user?._id as string)
+                ? <AiFillHeart onClick={() => unlikePost(id, userState.data.user?._id as string, userState.data.accessToken as string)} className='text-lg cursor-pointer text-red-500' />
+                : <AiOutlineHeart onClick={() => likePost(id, userState.data.user?._id as string, userState.data.accessToken as string)} className='text-lg cursor-pointer' />
+              }
+              <p className='text-sm'>{likes.length}</p>
             </div>
             <div className='flex items-center gap-2'>
               <FaCommentDots className='text-blue-500 text-lg' />

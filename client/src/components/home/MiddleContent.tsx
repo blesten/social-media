@@ -20,9 +20,11 @@ const MiddleContent = () => {
             {
               homeState.posts.map(item => (
                 <Post
+                  id={item._id}
                   user={item.user}
                   caption={item.caption}
                   images={item.images}
+                  likes={item.likes}
                   createdAt={item.createdAt}
                 />
               ))

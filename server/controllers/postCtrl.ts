@@ -138,16 +138,40 @@ const postCtrl = {
       return res.status(500).json({ msg: err.message })
     }
   },
-  readLikeStatus: async(req: IReqUser, res: Response) => {
+  likePost: async(req: IReqUser, res: Response) => {
     try {
-      
+      const { id } = req.params
+
+      const post = await Post.findById(id)
+      if (!post)
+        return res.status(404).json({ msg: 'Post not found.' })
+
+      const findLikes = post.likes.some(item => String(item) === String(req.user?._id))
+      if (findLikes)
+        return res.status(400).json({ msg: 'Post liked.' })
+
+      const newLikes: any[] = [...post.likes, req.user?._id]
+      post.likes = newLikes
+      await post.save()
+
+      return res.status(200).json({ msg: 'Post liked.' })
     } catch (err: any) {
       return res.status(500).json({ msg: err.message })
     }
   },
-  changeLikeStatus: async(req: IReqUser, res: Response) => {
+  unlikePost: async(req: IReqUser, res: Response) => {
     try {
-      
+      const { id } = req.params
+
+      const post = await Post.findById(id)
+      if (!post)
+        return res.status(404).json({ msg: 'Post not found.' })
+
+      const newLikes: any[] = post.likes.filter(item => String(item) !== String(req.user?._id))
+      post.likes = newLikes
+      await post.save()
+
+      return res.status(200).json({ msg: 'Post unliked.' })
     } catch (err: any) {
       return res.status(500).json({ msg: err.message })
     }
