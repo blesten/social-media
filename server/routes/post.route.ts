@@ -17,4 +17,8 @@ router.route('/:id')
 router.route('/:id/like').patch(isAuthenticated, postCtrl.likePost)
 router.route('/:id/unlike').patch(isAuthenticated, postCtrl.unlikePost)
 
+router.route('/:id/save').patch(isAuthenticated, postCtrl.savePost)
+router.route('/:id/unsave').patch(isAuthenticated, postCtrl.unsavePost)
+router.route('/:id/savedStatus').get(isAuthenticated, postCtrl.getUserSavedStatus)
+
 export default router

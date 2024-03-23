@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { IoEllipsisVerticalSharp } from 'react-icons/io5'
-import { FaCaretLeft, FaCaretRight, FaCommentDots, FaRegBookmark, FaTrash } from 'react-icons/fa'
+import { FaBookmark, FaCaretLeft, FaCaretRight, FaCommentDots, FaRegBookmark, FaTrash } from 'react-icons/fa'
 import { FiEdit } from 'react-icons/fi' 
 import { IUser } from './../../utils/interface'
 import moment from 'moment'
@@ -9,6 +9,7 @@ import useStore from './../../store/store'
 import Delete from './../overlay/Delete'
 import Comment from './Comment'
 import UpsertPost from '../overlay/UpsertPost'
+import { getDataAPI, patchDataAPI } from '../../utils/fetchData'
 
 interface IProps {
   id: string
@@ -25,6 +26,8 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
   const [openUpsertPostOverlay, setOpenUpsertPostOverlay] = useState(false)
 
   const [currentPosition, setCurrentPosition] = useState(0)
+
+  const [isSaved, setIsSaved] = useState(false)
 
   const openMoreRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const deleteOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
@@ -52,6 +55,24 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
     }
   }
 
+  const handleUnsavedPost = async() => {
+    try {
+      await patchDataAPI(`/api/v1/posts/${id}/unsave`, {}, userState.data.accessToken)
+      setIsSaved(false)
+    } catch (err: any) {
+      console.log(err.response.data.msg)
+    }
+  }
+
+  const handleSavedPost = async() => {
+    try {
+      await patchDataAPI(`/api/v1/posts/${id}/save`, {}, userState.data.accessToken)
+      setIsSaved(true)
+    } catch (err: any) {
+      console.log(err.response.data.msg)
+    }
+  }
+
   const handleClickDelete = () => {
     setOpenMore(false)
     setOpenDeleteOvelay(true)
@@ -61,6 +82,20 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
     setOpenMore(false)
     setOpenUpsertPostOverlay(true)
   }
+
+  useEffect(() => {
+    const getSavedStatus = async(id: string, token: string) => {
+      try {
+        const res = await getDataAPI(`/api/v1/posts/${id}/savedStatus`, token)
+        setIsSaved(res.data.savedStatus)
+      } catch (err: any) {
+        console.log(err.response.data.msg)
+      }
+    }
+
+    if (userState.data.accessToken)
+      getSavedStatus(id, userState.data.accessToken)
+  }, [id, userState.data.accessToken])
 
   useEffect(() => {
     const checkIfClickedOutside = (e: MouseEvent) => {
@@ -175,7 +210,11 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
             <input type='text' className='outline-none bg-transparent w-full px-4 h-10 text-sm' />
             <p className='absolute top-1/2 -translate-y-1/2 left-4 text-sm text-gray-400'>Write your comment</p>
           </div>
-          <FaRegBookmark className='cursor-pointer' />
+          {
+            isSaved
+            ? <FaBookmark onClick={handleUnsavedPost} className='cursor-pointer text-blue-500' />
+            : <FaRegBookmark onClick={handleSavedPost} className='cursor-pointer' />
+          }
         </div>
         <div className='relative rounded-full bg-gray-100 border border-gray-200 flex-1 h-10 mt-5 md:hidden block'>
           <input type='text' className='outline-none bg-transparent w-full px-4 h-10 text-sm' />

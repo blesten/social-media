@@ -10,6 +10,7 @@ import MailToken from '../models/MailToken'
 import sendEmail from '../utils/mail'
 import Follower from '../models/Follower'
 import Following from '../models/Following'
+import Saved from '../models/Saved'
 
 const userCtrl = {
   register: async(req: Request, res: Response) => {
@@ -59,6 +60,12 @@ const userCtrl = {
         followings: []
       })
       await following.save()
+
+      const saved = new Saved({
+        user: user._id,
+        posts: []
+      })
+      await saved.save()
 
       return res.status(200).json({ msg: 'User has been successfully registered.' })
     } catch (err: any) {

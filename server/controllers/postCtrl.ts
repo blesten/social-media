@@ -4,6 +4,7 @@ import Post from './../models/Post'
 import Follower from '../models/Follower'
 import Following from '../models/Following'
 import User from '../models/User'
+import Saved from '../models/Saved'
 
 const postCtrl = {
   create: async(req: IReqUser, res: Response) => {
@@ -172,6 +173,69 @@ const postCtrl = {
       await post.save()
 
       return res.status(200).json({ msg: 'Post unliked.' })
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message })
+    }
+  },
+  savePost: async(req: IReqUser, res: Response) => {
+    try {
+      const { id } = req.params
+
+      const post = await Post.findById(id)
+      if (!post)
+        return res.status(404).json({ msg: 'Post not found.' })
+
+      const userSaved = await Saved.findOne({ user: req.user?._id })
+      if (!userSaved)
+        return res.status(404).json({ msg: 'User saved not found.' })
+
+      const savedPost = [...userSaved.posts, post._id]
+      // @ts-ignore
+      userSaved.posts = savedPost
+      await userSaved.save()
+
+      return res.status(200).json({ msg: 'Post saved.' })
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message })
+    }
+  },
+  unsavePost: async(req: IReqUser, res: Response) => {
+    try {
+      const { id } = req.params
+
+      const post = await Post.findById(id)
+      if (!post)
+        return res.status(404).json({ msg: 'Post not found.' })
+
+      const userSaved = await Saved.findOne({ user: req.user?._id })
+      if (!userSaved)
+        return res.status(404).json({ msg: 'User saved not found.' })
+
+      const savedPost = userSaved.posts.filter(item => String(item) !== String(id))
+      // @ts-ignore
+      userSaved.posts = savedPost
+      await userSaved.save()
+
+      return res.status(200).json({ msg: 'Post unsaved.' })
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message })
+    }
+  },
+  getUserSavedStatus: async(req: IReqUser, res: Response) => {
+    try {
+      const { id } = req.params
+
+      const post = await Post.findById(id)
+      if (!post)
+        return res.status(404).json({ msg: 'Post not found' })
+
+      const userSaved = await Saved.findOne({ user: req.user?._id })
+      if (!userSaved)
+        return res.status(404).json({ msg: 'User saved not found.' })
+
+      const savedStatus = userSaved.posts.some(item => String(item) === String(id))
+
+      return res.status(200).json({ savedStatus })
     } catch (err: any) {
       return res.status(500).json({ msg: err.message })
     }
