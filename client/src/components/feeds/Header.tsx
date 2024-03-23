@@ -16,9 +16,10 @@ interface IProps {
   followings: IFollow[]
   followRequests: IFollow[]
   posts: IPost[]
+  setUser: React.Dispatch<React.SetStateAction<Partial<IUser>>>
 }
 
-const Header: React.FC<IProps> = ({ user, followers, followings, followRequests, posts }) => {
+const Header: React.FC<IProps> = ({ user, followers, followings, followRequests, posts, setUser }) => {
   const [openFollowersOverlay, setOpenFollowersOverlay] = useState(false)
   const [openFollowingsOverlay, setOpenFollowingsOverlay] = useState(false)
   const [openFollowRequestsOverlay, setOpenFollowRequestsOverlay] = useState(false)
@@ -136,12 +137,14 @@ const Header: React.FC<IProps> = ({ user, followers, followings, followRequests,
         <div className='flex gap-10 items-center  '>
           <div className='md:w-36 md:h-36 w-24 h-24 rounded-full flex-shrink-0 flex items-center justify-center bg-blue-500 text-white'>
             {
-              !user.avatar && <p className='text-5xl font-semibold tracking-widest'>{`${user.name[0]}${user.name.split(' ')[user.name.split(' ').length - 1][0]}`}</p>
+              !user.avatar
+              ? <p className='text-5xl font-semibold tracking-widest'>{`${user.name[0]}${user.name.split(' ')[user.name.split(' ').length - 1][0]}`}</p>
+              : <img src={user.avatar} alt='Social Sphere' className='w-full h-full rounded-full object-cover' />
             }
           </div>
           <div className='flex-1'>
             <div className='flex md:flex-row flex-col md:items-center justify-between'>
-              <div className='flex items-center gap-5'>
+              <div className='flex items-center gap-3'>
                 <p className='text-lg font-semibold'>{user.name}</p>
                 <p className='text-sm font-semibold bg-blue-50 text-blue-500 rounded-md py-1 px-3'>{user.username}</p>
               </div>
@@ -178,10 +181,7 @@ const Header: React.FC<IProps> = ({ user, followers, followings, followRequests,
                 </div>
               </div>
               <div className='mt-3'>
-                <p className='text-sm text-gray-500 text-justify'>{userState.data.user?.description}</p>
-              </div>
-              <div className='mt-3 text-xs font-semibold'>
-                <p>Followed by blestenn_, johndoe</p>
+                <p className='text-sm text-gray-500 text-justify'>{user.description}</p>
               </div>
             </div>
           </div>
@@ -199,10 +199,7 @@ const Header: React.FC<IProps> = ({ user, followers, followings, followRequests,
             </div>
           </div>
           <div className='mt-3'>
-            <p className='text-sm text-gray-500 text-justify'>{userState.data.user?.description}</p>
-          </div>
-          <div className='mt-3 text-xs font-semibold'>
-            <p>Followed by blestenn_, johndoe</p>
+            <p className='text-sm text-gray-500 text-justify'>{user.description}</p>
           </div>
         </div>
       </div>
@@ -232,6 +229,8 @@ const Header: React.FC<IProps> = ({ user, followers, followings, followRequests,
         openEditProfileOverlay={openEditProfileOverlay}
         setOpenEditProfileOverlay={setOpenEditProfileOverlay}
         editProfileOverlayRef={editProfileOverlayRef}
+        user={user}
+        setUser={setUser}
       />
 
       <Setting

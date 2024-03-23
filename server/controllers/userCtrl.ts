@@ -238,7 +238,7 @@ const userCtrl = {
 
       const user = await User.findById(req.user?._id)
     
-      const usernameFound = await User.findOne({ username }, { $ne: { _id: req.user?._id } })
+      const usernameFound = await User.findOne({ username, _id: { $ne: req.user?._id } })
       if (usernameFound)
         return res.status(400).json({ msg: 'Username has been used before.' })
 
@@ -515,7 +515,8 @@ const userCtrl = {
     } catch (err: any) {
       return res.status(500).json({ msg: err.message })
     }
-  }
+  },
+  
 }
 
 export default userCtrl

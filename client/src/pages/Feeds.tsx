@@ -112,6 +112,7 @@ const Feeds = () => {
                 followings={followings}
                 followRequests={followRequests}
                 posts={posts}
+                setUser={setUser}
               />
               {
                 !user.private || userState.data.user?._id === user._id || followers.some(item => item.user._id === userState.data.user?._id)
