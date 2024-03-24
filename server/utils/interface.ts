@@ -30,6 +30,7 @@ export interface IComment extends IGeneralField {
   user: ObjectId
   post: ObjectId
   content: string
+  likes: ObjectId[]
 }
 
 export interface IPost extends IGeneralField {

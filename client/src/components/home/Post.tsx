@@ -3,13 +3,13 @@ import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { IoEllipsisVerticalSharp } from 'react-icons/io5'
 import { FaBookmark, FaCaretLeft, FaCaretRight, FaCommentDots, FaRegBookmark, FaTrash } from 'react-icons/fa'
 import { FiEdit } from 'react-icons/fi' 
-import { IUser } from './../../utils/interface'
+import { FormSubmitted, IComment, IUser } from './../../utils/interface'
 import moment from 'moment'
 import useStore from './../../store/store'
 import Delete from './../overlay/Delete'
 import Comment from './Comment'
 import UpsertPost from '../overlay/UpsertPost'
-import { getDataAPI, patchDataAPI } from '../../utils/fetchData'
+import { getDataAPI, patchDataAPI, postDataAPI } from '../../utils/fetchData'
 
 interface IProps {
   id: string
@@ -29,11 +29,14 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
 
   const [isSaved, setIsSaved] = useState(false)
 
+  const [comment, setComment] = useState('')
+  const [comments, setComments] = useState<IComment[]>([])
+
   const openMoreRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const deleteOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const upsertPostOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
 
-  const { userState, likePost, unlikePost } = useStore()
+  const { userState, initiate, likePost, unlikePost } = useStore()
 
   const handleChangeImage = (position: string) => {
     if (position === 'left') {
@@ -73,6 +76,20 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
     }
   }
 
+  const handlePostComment = async(e: FormSubmitted) => {
+    e.preventDefault()
+    try {
+      const res = await postDataAPI(`/api/v1/comments?postId=${id}`, {
+        content: comment
+      }, userState.data.accessToken)
+
+      setComments([ { ...res.data.comment, user: userState.data.user }, ...comments ])
+      setComment('')
+    } catch (err: any) {
+      initiate(err.response.data.msg, 'error')
+    }
+  }
+
   const handleClickDelete = () => {
     setOpenMore(false)
     setOpenDeleteOvelay(true)
@@ -96,6 +113,19 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
     if (userState.data.accessToken)
       getSavedStatus(id, userState.data.accessToken)
   }, [id, userState.data.accessToken])
+
+  useEffect(() => {
+    const getPostComments = async(id: string) => {
+      try {
+        const res = await getDataAPI(`/api/v1/comments?postId=${id}`)
+        setComments(res.data.comments)
+      } catch (err: any) {
+        console.log(err.response.data.msg)
+      }
+    }
+
+    getPostComments(id)
+  }, [id])
 
   useEffect(() => {
     const checkIfClickedOutside = (e: MouseEvent) => {
@@ -206,25 +236,46 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
               <p className='text-sm'>550</p>
             </div>
           </div>
-          <div className='md:block hidden relative rounded-full bg-gray-100 border border-gray-200 flex-1 h-10'>
-            <input type='text' className='outline-none bg-transparent w-full px-4 h-10 text-sm' />
-            <p className='absolute top-1/2 -translate-y-1/2 left-4 text-sm text-gray-400'>Write your comment</p>
-          </div>
+          <form onSubmit={handlePostComment} className='md:block hidden relative rounded-full bg-gray-100 border border-gray-200 flex-1 h-10'>
+            <input type='text' value={comment} onChange={e => setComment(e.target.value)} className='outline-none bg-transparent w-full px-4 h-10 text-sm' />
+            {
+              !comment &&
+              <p className='absolute top-1/2 -translate-y-1/2 left-4 text-sm text-gray-400 pointer-events-none'>Write your comment</p>
+            }
+          </form>
           {
             isSaved
             ? <FaBookmark onClick={handleUnsavedPost} className='cursor-pointer text-blue-500' />
             : <FaRegBookmark onClick={handleSavedPost} className='cursor-pointer' />
           }
         </div>
-        <div className='relative rounded-full bg-gray-100 border border-gray-200 flex-1 h-10 mt-5 md:hidden block'>
-          <input type='text' className='outline-none bg-transparent w-full px-4 h-10 text-sm' />
-          <p className='absolute top-1/2 -translate-y-1/2 left-4 text-sm text-gray-400'>Write your comment</p>
-        </div>
+        <form onSubmit={handlePostComment} className='relative rounded-full bg-gray-100 border border-gray-200 flex-1 h-10 mt-5 md:hidden block'>
+          <input type='text' value={comment} onChange={e => setComment(e.target.value)} className='outline-none bg-transparent w-full px-4 h-10 text-sm' />
+          {
+            !comment &&
+            <p className='absolute top-1/2 -translate-y-1/2 left-4 text-sm text-gray-400 pointer-events-none'>Write your comment</p>
+          }
+        </form>
         <hr className='my-5' />
         <div className='flex flex-col gap-8'>
-          <Comment />
-          <Comment />
-          <p className='text-xs text-center text-gray-400 cursor-pointer'>Load more comments</p>
+          {
+            comments.length > 1
+            ? (
+              <>
+                {
+                  comments.map((item, idx) => (
+                    <Comment key={idx} comment={item} />
+                  ))
+                }
+              </>
+            )
+            : (
+              <div>
+                <p className='text-center text-sm text-gray-400'>No comments</p>
+              </div>
+            )
+          }
+          {/* <p className='text-xs text-center text-gray-400 cursor-pointer'>Load more comments</p> */}
         </div>
       </div>
 

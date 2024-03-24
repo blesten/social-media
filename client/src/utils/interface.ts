@@ -57,3 +57,10 @@ export interface IPost extends IGeneralField {
   likes: string[]
   comments: string[]
 }
+
+export interface IComment extends IGeneralField {
+  user: IUser
+  post: string
+  content: string
+  likes: string[]
+}

@@ -14,7 +14,13 @@ const commentSchema = new mongoose.Schema<IComment>({
     type: String,
     required: true,
     trim: true
-  }
+  },
+  likes: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: 'user'
+    }
+  ]
 }, {
   timestamps: true
 })
