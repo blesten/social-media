@@ -264,7 +264,12 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
               <>
                 {
                   comments.map((item, idx) => (
-                    <Comment key={idx} comment={item} />
+                    <Comment
+                      key={idx}
+                      comment={item}
+                      comments={comments}
+                      setComments={setComments}
+                    />
                   ))
                 }
               </>
