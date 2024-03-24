@@ -118,7 +118,7 @@ const postCtrl = {
       post.images = images
       await post.save()
 
-      return res.status(200).json({ msg: 'Post has been updated successfully.' })
+      return res.status(200).json({ msg: 'Post has been updated successfully.', post })
     } catch (err: any) {
       return res.status(500).json({ msg: err.message })
     }

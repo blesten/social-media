@@ -90,6 +90,34 @@ const homeStore = (set: any) => {
           state.alertState.type = 'eerror'
         }, false, 'deletePost/error')
       }
+    },
+    updatePost: async(id: string, token: string, caption: string, images: (File | String)[]) => {
+      try {
+        const newImages = images.filter(item => item instanceof File)
+        const oldImages = images.filter(item => !(item instanceof File))
+
+        let newImagesUrl = []
+
+        if (newImages.length > 0) {
+          newImagesUrl = await uploadImages(newImages as File[], 'post')
+        }
+
+        const res = await patchDataAPI(`/api/v1/posts/${id}`, {
+          caption,
+          images: [ ...oldImages, ...newImagesUrl ]
+        }, token)
+
+        set((state: GlobalStoreState) => {
+          state.alertState.message = res.data.msg
+          state.alertState.type = 'success'
+          state.homeState.posts = state.homeState.posts.map(item => item._id === id ? { ...item, caption, images: res.data.post.images } : item)
+        }, false, 'updatePost/success')
+      } catch (err: any) {
+        set((state: GlobalStoreState) => {
+          state.alertState.message = err.response.data.msg
+          state.alertState.type = 'error'
+        }, false, 'updatePost/error')
+      }
     }
   }
 }

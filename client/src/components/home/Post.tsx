@@ -3,7 +3,7 @@ import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { IoEllipsisVerticalSharp } from 'react-icons/io5'
 import { FaBookmark, FaCaretLeft, FaCaretRight, FaCommentDots, FaRegBookmark, FaTrash } from 'react-icons/fa'
 import { FiEdit } from 'react-icons/fi' 
-import { FormSubmitted, IComment, IUser } from './../../utils/interface'
+import { FormSubmitted, IComment, IPost, IUser } from './../../utils/interface'
 import { getDataAPI, patchDataAPI, postDataAPI } from '../../utils/fetchData'
 import moment from 'moment'
 import useStore from './../../store/store'
@@ -24,6 +24,7 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
   const [openMore, setOpenMore] = useState(false)
   const [openDeleteOverlay, setOpenDeleteOvelay] = useState(false)
   const [openUpsertPostOverlay, setOpenUpsertPostOverlay] = useState(false)
+  const [selectedPost, setSelectedPost] = useState<Partial<IPost>>({})
 
   const [currentPosition, setCurrentPosition] = useState(0)
 
@@ -101,6 +102,7 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
 
   const handleClickEdit = () => {
     setOpenMore(false)
+    setSelectedPost({ _id: id, caption, images })
     setOpenUpsertPostOverlay(true)
   }
 
@@ -156,6 +158,7 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
   useEffect(() => {
     const checkIfClickedOutside = (e: MouseEvent) => {
       if (openUpsertPostOverlay && upsertPostOverlayRef.current && !upsertPostOverlayRef.current.contains(e.target as Node)) {
+        setSelectedPost({})
         setOpenUpsertPostOverlay(false)
       }
     }
@@ -301,6 +304,8 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
         openUpsertPostOverlay={openUpsertPostOverlay}
         setOpenUpsertPostOverlay={setOpenUpsertPostOverlay}
         upsertPostOverlayRef={upsertPostOverlayRef}
+        selectedPost={selectedPost}
+        setSelectedPost={setSelectedPost}
       />
     </>
   )
