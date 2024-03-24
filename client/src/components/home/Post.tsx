@@ -4,12 +4,12 @@ import { IoEllipsisVerticalSharp } from 'react-icons/io5'
 import { FaBookmark, FaCaretLeft, FaCaretRight, FaCommentDots, FaRegBookmark, FaTrash } from 'react-icons/fa'
 import { FiEdit } from 'react-icons/fi' 
 import { FormSubmitted, IComment, IUser } from './../../utils/interface'
+import { getDataAPI, patchDataAPI, postDataAPI } from '../../utils/fetchData'
 import moment from 'moment'
 import useStore from './../../store/store'
 import Delete from './../overlay/Delete'
 import Comment from './Comment'
 import UpsertPost from '../overlay/UpsertPost'
-import { getDataAPI, patchDataAPI, postDataAPI } from '../../utils/fetchData'
 
 interface IProps {
   id: string
@@ -36,7 +36,7 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
   const deleteOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const upsertPostOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
 
-  const { userState, initiate, likePost, unlikePost } = useStore()
+  const { userState, initiate, likePost, unlikePost, deletePost } = useStore()
 
   const handleChangeImage = (position: string) => {
     if (position === 'left') {
@@ -93,6 +93,10 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
   const handleClickDelete = () => {
     setOpenMore(false)
     setOpenDeleteOvelay(true)
+  }
+
+  const handleDeletePost = async() => {
+    await deletePost(id, userState.data.accessToken!)
   }
 
   const handleClickEdit = () => {
@@ -167,7 +171,9 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
           <div className='flex items-center gap-5'>
             <div className='w-14 h-14 rounded-full bg-blue-500 flex items-center justify-center'>
               {
-                !user.avatar && <p className='text-2xl font-semibold tracking-widest text-white'>{`${user.name[0]}${user.name.split(' ')[user.name.split(' ').length - 1][0]}`}</p>
+                !user.avatar
+                ? <p className='text-5xl font-semibold tracking-widest'>{`${user.name[0]}${user.name.split(' ')[user.name.split(' ').length - 1][0]}`}</p>
+                : <img src={user.avatar} alt='Social Sphere' className='w-full h-full rounded-full object-cover' />
               }
             </div>
             <div>
@@ -259,7 +265,7 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
         <hr className='my-5' />
         <div className='flex flex-col gap-8'>
           {
-            comments.length > 1
+            comments.length > 0
             ? (
               <>
                 {
@@ -288,6 +294,7 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
         openDeleteOverlay={openDeleteOverlay}
         setOpenDeleteOverlay={setOpenDeleteOvelay}
         deleteOverlayRef={deleteOverlayRef}
+        onSuccess={handleDeletePost}
       />
 
       <UpsertPost

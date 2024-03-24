@@ -4,9 +4,10 @@ interface IProps {
   openDeleteOverlay: boolean
   setOpenDeleteOverlay: React.Dispatch<React.SetStateAction<boolean>>
   deleteOverlayRef: React.MutableRefObject<HTMLDivElement>
+  onSuccess?: () => void
 }
 
-const Delete: React.FC<IProps> = ({ openDeleteOverlay, setOpenDeleteOverlay, deleteOverlayRef }) => {
+const Delete: React.FC<IProps> = ({ openDeleteOverlay, setOpenDeleteOverlay, deleteOverlayRef, onSuccess }) => {
   const handleClickClose = () => {
     setOpenDeleteOverlay(false)
   }
@@ -18,7 +19,7 @@ const Delete: React.FC<IProps> = ({ openDeleteOverlay, setOpenDeleteOverlay, del
         <p className='text-center mt-5 font-semibold'>Are you sure to delete?</p>
         <div className='flex items-center gap-6 mt-5'>
           <button onClick={handleClickClose} className='text-sm outline-none'>No, I'm not sure</button>
-          <button className='bg-red-500 text-white text-sm outline-none rounded-md px-4 py-2 hover:bg-red-600 transition'>Yes, I'm Sure</button>
+          <button onClick={onSuccess} className='bg-red-500 text-white text-sm outline-none rounded-md px-4 py-2 hover:bg-red-600 transition'>Yes, I'm Sure</button>
         </div>
       </div>
     </div>

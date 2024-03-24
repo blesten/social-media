@@ -5,6 +5,7 @@ import Follower from '../models/Follower'
 import Following from '../models/Following'
 import User from '../models/User'
 import Saved from '../models/Saved'
+import Comment from '../models/Comment'
 
 const postCtrl = {
   create: async(req: IReqUser, res: Response) => {
@@ -132,7 +133,7 @@ const postCtrl = {
 
       await Post.findByIdAndDelete(id)
 
-      // delete all saved post
+      await Comment.deleteMany({ post: id })
 
       return res.status(200).json({ msg: 'Post has been deleted successfully.' })
     } catch (err: any) {

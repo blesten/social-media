@@ -1,4 +1,4 @@
-import { getDataAPI, patchDataAPI, postDataAPI } from '../utils/fetchData'
+import { deleteDataAPI, getDataAPI, patchDataAPI, postDataAPI } from '../utils/fetchData'
 import { uploadImages } from '../utils/image'
 import { GlobalStoreState, IHomeState } from './../utils/interface'
 
@@ -74,6 +74,21 @@ const homeStore = (set: any) => {
           state.alertState.message = err.response.data.msg
           state.alertState.type = 'error'
         }, false, 'unlikePost/error')
+      }
+    },
+    deletePost: async(id: string, token: string) => {
+      try {
+        const res = await deleteDataAPI(`/api/v1/posts/${id}`, token)
+        set((state: GlobalStoreState) => {
+          state.homeState.posts = state.homeState.posts.filter(item => item._id !== id)
+          state.alertState.message = res.data.msg
+          state.alertState.type = 'success'
+        }, false, 'deletePost/success')
+      } catch (err: any) {
+        set((state: GlobalStoreState) => {
+          state.alertState.message = err.response.data.msg
+          state.alertState.type = 'eerror'
+        }, false, 'deletePost/error')
       }
     }
   }
