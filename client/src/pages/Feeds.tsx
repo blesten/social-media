@@ -139,7 +139,7 @@ const Feeds = () => {
                             <>
                               {
                                 posts.map((item, idx) => (
-                                  <PostCard key={idx} thumbnail={item.images[0]} />
+                                  <PostCard key={idx} post={item} posts={posts} setPosts={setPosts} />
                                 ))
                               }
                             </>

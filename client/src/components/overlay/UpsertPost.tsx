@@ -49,7 +49,8 @@ const UpsertPost: React.FC<IProps> = ({ openUpsertPostOverlay, setOpenUpsertPost
     } else {
       await createPost(caption, posts as File[], userState.data.accessToken!)
     }
-    setSelectedPost!({})
+    if (setSelectedPost)
+      setSelectedPost!({})
     setOpenUpsertPostOverlay(false)
     setLoading(false)
   }

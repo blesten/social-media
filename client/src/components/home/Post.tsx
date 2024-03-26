@@ -249,7 +249,7 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
             </div>
             <div className='flex items-center gap-2'>
               <FaCommentDots className='text-blue-500 text-lg' />
-              <p className='text-sm'>550</p>
+              <p className='text-sm'>{comments.length}</p>
             </div>
           </div>
           <form onSubmit={handlePostComment} className='md:block hidden relative rounded-full bg-gray-100 border border-gray-200 flex-1 h-10'>
