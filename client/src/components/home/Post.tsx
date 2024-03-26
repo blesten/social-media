@@ -212,12 +212,19 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
             {
               images.length > 1 &&
               <>
-                <div onClick={() => handleChangeImage('left')} className='w-7 h-7 shadow-xl border border-gray-200 text-gray-500 rounded-full bg-white flex items-center justify-center absolute top-1/2 -translate-y-1/2 left-4 cursor-pointer'>
-                  <FaCaretLeft />
-                </div>
-                <div onClick={() => handleChangeImage('right')} className='w-7 h-7 shadow-xl border border-gray-200 text-gray-500 rounded-full bg-white flex items-center justify-center absolute top-1/2 -translate-y-1/2 right-4 cursor-pointer'>
-                  <FaCaretRight />
-                </div>
+                {
+                  currentPosition !== 0 &&
+                  <div onClick={() => handleChangeImage('left')} className='w-7 h-7 shadow-xl border border-gray-200 text-gray-500 rounded-full bg-white flex items-center justify-center absolute top-1/2 -translate-y-1/2 left-4 cursor-pointer'>
+                    <FaCaretLeft />
+                  </div>
+                }
+
+                {
+                  currentPosition !== images.length - 1 &&
+                  <div onClick={() => handleChangeImage('right')} className='w-7 h-7 shadow-xl border border-gray-200 text-gray-500 rounded-full bg-white flex items-center justify-center absolute top-1/2 -translate-y-1/2 right-4 cursor-pointer'>
+                    <FaCaretRight />
+                  </div>
+                }
               </>
             }
             <div className='flex absolute bottom-4 gap-2 left-1/2 -translate-x-1/2'>
