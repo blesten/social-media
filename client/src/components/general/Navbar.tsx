@@ -10,14 +10,20 @@ import Logo from './../navbar/Logo'
 import Search from './../navbar/Search'
 import Utility from './../navbar/Utility'
 import UpsertPost from '../overlay/UpsertPost'
+import { IUser } from '../../utils/interface'
+import { getDataAPI } from '../../utils/fetchData'
+import { TbError404 } from 'react-icons/tb'
+import UserCard from '../home/UserCard'
 
 const Navbar = () => {  
   const [keyword, setKeyword] = useState('')
   const [openSidebar, setOpenSidebar] = useState(false)
   const [openUpsertPostOverlay, setOpenUpsertPostOverlay] = useState(false)
   const [openNotification, setOpenNotification] = useState(false)
+  const [users, setUsers] = useState<IUser[]>([])
 
   const sidebarRef = useRef() as React.MutableRefObject<HTMLDivElement>
+  const searchResultRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const upsertPostOverlayRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const notificationRef = useRef() as React.MutableRefObject<HTMLDivElement>
 
@@ -27,6 +33,23 @@ const Navbar = () => {
     setOpenSidebar(false)
     setOpenUpsertPostOverlay(true)
   }
+
+  useEffect(() => {
+    const searchUser = async(token: string) => {
+      try {
+        const res = await getDataAPI(`/api/v1/users/search?username=${keyword}`, token)
+        setUsers(res.data.users)
+      } catch (err: any) {
+        console.log(err.response.data.msg)
+      }
+    }
+
+    if (keyword.length > 3) {
+      if (userState.data.accessToken) {
+        searchUser(userState.data.accessToken)
+      }
+    }
+  }, [keyword, userState.data.accessToken])
 
   useEffect(() => {
     const checkIfClickedOutside = (e: MouseEvent) => {
@@ -61,6 +84,17 @@ const Navbar = () => {
     return () => document.removeEventListener('mousedown', checkIfClickedOutside)
   }, [openNotification])
 
+  useEffect(() => {
+    const checkIfClickedOutside = (e: MouseEvent) => {
+      if (keyword.length > 3 && searchResultRef.current && !searchResultRef.current.contains(e.target as Node)) {
+        setKeyword('')
+      }
+    }
+
+    document.addEventListener('mousedown', checkIfClickedOutside)
+    return () => document.removeEventListener('mousedown', checkIfClickedOutside)
+  }, [keyword])
+
   return (
     <>
       <div className='sticky top-0 shadow-light-gray shadow-sm bg-white w-full lg:px-16 px-10 py-5 flex justify-between gap-24 items-center z-10'>
@@ -83,13 +117,33 @@ const Navbar = () => {
                 <p className={`absolute top-0 text-gray-400 text-sm ${keyword.length > 0 ? 'hidden' : 'block'} pointer-events-none`}>Search for friends</p>
               </div>
             </div>
-            {/* <div className='absolute top-full left-0 w-full mt-3 bg-white shadow-md border border-gray-200 rounded-md p-4 flex flex-col gap-4 max-h-[300px] overflow-y-auto hide-scrollbar z-20'> */}
-              {/* <div className='flex items-center justify-center flex-col text-gray-500'>
-                <TbError404 className='text-7xl text-gray-400' />
-                <p className='font-semibold text-sm'>No results found</p>
-              </div> */}
-              {/* <UserCard extraStyle='bg-light-gray p-4 rounded-md mb-0' />
-            </div> */}
+            {
+              keyword.length > 3 &&
+              <div ref={searchResultRef} className='absolute top-full left-0 w-full mt-3 bg-white shadow-md border border-gray-200 rounded-md p-4 flex flex-col gap-4 max-h-[300px] overflow-y-auto hide-scrollbar z-20'>
+                {
+                  users.length < 1
+                  ? (
+                    <div className='flex items-center justify-center flex-col text-gray-500'>
+                      <TbError404 className='text-7xl text-gray-400' />
+                      <p className='font-semibold text-sm'>No results found</p>
+                    </div>
+                  )
+                  : (
+                    <>
+                      {
+                        users.map((item, idx) => (
+                          <UserCard
+                            user={item}
+                            key={idx}
+                            extraStyle='bg-light-gray p-4 rounded-md mb-0'
+                          />
+                        ))
+                      }
+                    </>
+                  )
+                }
+              </div>
+            }
           </div>
           <div className='mt-7 flex items-center justify-center gap-5'>
             <div onClick={handleClickUpsertPost} className='cursor-pointer w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center'>
@@ -107,7 +161,13 @@ const Navbar = () => {
                 {/* <NotificationCard /> */}
               </div>
             </div>
-            <Link to={`/feeds/${userState.data.user?._id}`} className='w-10 h-10 rounded-full bg-gray-100 outline-none'></Link>
+            <Link to={`/feeds/${userState.data.user?._id}`} className='w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center outline-none'>
+              {
+                !userState.data.user?.avatar
+                ? <p className='text-lg font-semibold tracking-widest'>{`${userState.data.user?.name[0]}${userState.data.user?.name.split(' ')[userState.data.user?.name.split(' ').length - 1][0]}`}</p>
+                : <img src={userState.data.user?.avatar} alt='Social Sphere' className='w-full h-full rounded-full object-cover' />
+              }
+            </Link>
           </div>
         </div>
       </div>

@@ -59,7 +59,13 @@ const Utility = () => {
             {/* <NotificationCard /> */}
           </div>
         </div>
-        <Link to={`/feeds/${userState.data.user?._id}`} className='w-10 h-10 rounded-full bg-gray-200 outline-none'></Link>
+        <Link to={`/feeds/${userState.data.user?._id}`} className='w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center outline-none'>
+          {
+            !userState.data.user?.avatar
+            ? <p className='text-lg font-semibold tracking-widest'>{`${userState.data.user?.name[0]}${userState.data.user?.name.split(' ')[userState.data.user?.name.split(' ').length - 1][0]}`}</p>
+            : <img src={userState.data.user?.avatar} alt='Social Sphere' className='w-full h-full rounded-full object-cover' />
+          }
+        </Link>
       </div>
 
       <UpsertPost

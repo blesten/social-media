@@ -523,7 +523,17 @@ const userCtrl = {
       return res.status(500).json({ msg: err.message })
     }
   },
-  
+  searchUser: async(req: IReqUser, res: Response) => {
+    try {
+      const username = req.query.username as string
+      const regex = new RegExp(username, 'i')
+      const users = await User.find({ username: { $regex: regex }, _id: { $ne: req.user?._id } }).sort('-createdAt')
+
+      return res.status(200).json({ users })
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message })
+    }
+  }
 }
 
 export default userCtrl
