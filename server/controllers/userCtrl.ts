@@ -552,6 +552,22 @@ const userCtrl = {
     } catch (err: any) {
       return res.status(500).json({ msg: err.message })
     }
+  },
+  getSimilarUsers: async(req: IReqUser, res: Response) => {
+    try {
+      const similarUsers = await User.aggregate([
+        {
+          $match: {
+            _id: { $ne: req.user?._id }
+          }
+        },
+        { $sample: { size: 5 } }
+      ])
+
+      return res.status(200).json({ similarUsers })
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message })
+    }
   }
 }
 

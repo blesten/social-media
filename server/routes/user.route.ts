@@ -16,6 +16,7 @@ router.route('/changeAccountPrivacy').patch(isAuthenticated, userCtrl.changeAcco
 router.route('/checkForgetPasswordToken').get(userCtrl.checkForgetPasswordToken)
 router.route('/followRequests').get(isAuthenticated, userCtrl.getFollowRequests)
 router.route('/search').get(isAuthenticated, userCtrl.searchUser)
+router.route('/similar').get(isAuthenticated, userCtrl.getSimilarUsers)
 router.route('/:id').get(isAuthenticated, userCtrl.getProfile)
 router.route('/:id/follow').patch(isAuthenticated, userCtrl.follow)
 router.route('/:id/unfollow').patch(isAuthenticated, userCtrl.unfollow)
