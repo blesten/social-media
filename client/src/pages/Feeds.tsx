@@ -15,6 +15,7 @@ const Feeds = () => {
   const [tab, setTab] = useState('posts')
   const [user, setUser] = useState<Partial<IUser>>({})
   const [posts, setPosts] = useState<IPost[]>([])
+  const [savedPosts, setSavedPosts] = useState<IPost[]>([])
   const [followers, setFollowers] = useState<IFollow[]>([])
   const [followings, setFollowings] = useState<IFollow[]>([])
   const [followRequests, setFollowRequests] = useState<IFollow[]>([])
@@ -86,8 +87,13 @@ const Feeds = () => {
   useEffect(() => {
     const getUserPosts = async(token: string) => {
       try {
-        const res = await getDataAPI(`/api/v1/posts/user/${id}`, token)
-        setPosts(res.data.posts)
+        if (tab === 'posts') {
+          const res = await getDataAPI(`/api/v1/posts/user/${id}`, token)
+          setPosts(res.data.posts)
+        } else if (tab === 'saved') {
+          const res = await getDataAPI(`/api/v1/saved`, token)
+          setSavedPosts(res.data.savedPosts.posts)
+        }
       } catch (err: any) {
         console.log(err.response.data.msg)
       }
@@ -95,7 +101,7 @@ const Feeds = () => {
 
     if (userState.data.accessToken)
       getUserPosts(userState.data.accessToken)
-  }, [id, userState.data.accessToken])
+  }, [id, userState.data.accessToken, tab])
 
   return (
     <>
@@ -134,19 +140,45 @@ const Feeds = () => {
                     <div className='flex items-center justify-center'>
                       <div className='xl:w-2/3 lg:w-4/5 pt-8 pb-16 grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-7 lg:px-0 px-10 gap-x-10'>
                         {
-                          posts.length > 0
-                          ? (
-                            <>
-                              {
-                                posts.map((item, idx) => (
-                                  <PostCard key={idx} post={item} posts={posts} setPosts={setPosts} />
-                                ))
-                              }
-                            </>
-                          )
-                          : (
-                            <p className='bg-red-500 w-1/2 mt-8 text-white text-center py-2 rounded-md font-semibold text-sm'>Post is empty</p>
-                          )
+                          tab === 'posts' &&
+                          <>
+                            {
+                              posts.length > 0
+                              ? (
+                                <>
+                                  {
+                                    posts.map((item, idx) => (
+                                      <PostCard key={idx} post={item} posts={posts} setPosts={setPosts} />
+                                    ))
+                                  }
+                                </>
+                              )
+                              : (
+                                <p className='bg-red-500 w-1/2 mt-8 text-white text-center py-2 rounded-md font-semibold text-sm'>Post is empty</p>
+                              )
+                            }
+                          </>
+                        }
+
+                        {
+                          tab === 'saved' &&
+                          <>
+                            {
+                              savedPosts.length > 0
+                              ? (
+                                <>
+                                  {
+                                    savedPosts.map((item, idx) => (
+                                      <PostCard key={idx} post={item} posts={savedPosts} setPosts={setSavedPosts} />
+                                    ))
+                                  }
+                                </>
+                              )
+                              : (
+                                <p className='bg-red-500 w-1/2 mt-8 text-white text-center py-2 rounded-md font-semibold text-sm'>Saved post is empty</p>
+                              )
+                            }
+                          </>
                         }
                       </div>
                     </div>

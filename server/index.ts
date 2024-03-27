@@ -21,6 +21,7 @@ app.use(cookieParser())
 app.use('/api/v1/users', routers.userRouter)
 app.use('/api/v1/posts', routers.postRouter)
 app.use('/api/v1/comments', routers.commentRouter)
+app.use('/api/v1/saved', routers.savedRouter)
 
 connectDB()
 app.listen(process.env.PORT, () => console.log(`Server is running on PORT ${process.env.PORT}`))
