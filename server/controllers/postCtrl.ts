@@ -6,8 +6,10 @@ import Following from '../models/Following'
 import User from '../models/User'
 import Saved from '../models/Saved'
 import Comment from '../models/Comment'
+import Notification from '../models/Notification'
 
 const postCtrl = {
+  // create notification
   create: async(req: IReqUser, res: Response) => {
     try {
       const { caption, images } = req.body
@@ -24,6 +26,23 @@ const postCtrl = {
         images
       })
       await post.save()
+
+      const userFollowers = await Follower.findOne({ user: req.user?._id })
+      if (!userFollowers)
+        return res.status(404).json({ msg: 'User followers not found.' })
+      
+      const followers = userFollowers.followers
+      const filteredFollowers = followers.filter(item => item.status === 1)
+
+      for (let i = 0; i < filteredFollowers.length; i++) {
+        const notification = new Notification({
+          user: filteredFollowers[i].user,
+          avatar: req.user?.avatar,
+          username: req.user?.username,
+          message: 'just post a photo, don\'t miss out',
+        })
+        await notification.save()
+      }
 
       return res.status(200).json({
         msg: 'Post has been created successfully.',

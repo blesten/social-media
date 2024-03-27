@@ -5,15 +5,16 @@ import { HiPlus } from 'react-icons/hi'
 import { IoIosNotifications } from 'react-icons/io'
 import { MdNotificationsOff } from 'react-icons/md'
 import { Link } from 'react-router-dom'
+import { INotification, IUser } from '../../utils/interface'
+import { getDataAPI } from '../../utils/fetchData'
+import { TbError404 } from 'react-icons/tb'
 import useStore from './../../store/store'
 import Logo from './../navbar/Logo'
 import Search from './../navbar/Search'
 import Utility from './../navbar/Utility'
 import UpsertPost from '../overlay/UpsertPost'
-import { IUser } from '../../utils/interface'
-import { getDataAPI } from '../../utils/fetchData'
-import { TbError404 } from 'react-icons/tb'
 import UserCard from '../home/UserCard'
+import NotificationCard from '../navbar/NotificationCard'
 
 const Navbar = () => {  
   const [keyword, setKeyword] = useState('')
@@ -21,6 +22,7 @@ const Navbar = () => {
   const [openUpsertPostOverlay, setOpenUpsertPostOverlay] = useState(false)
   const [openNotification, setOpenNotification] = useState(false)
   const [users, setUsers] = useState<IUser[]>([])
+  const [notifications, setNotifications] = useState<INotification[]>([])
 
   const sidebarRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const searchResultRef = useRef() as React.MutableRefObject<HTMLDivElement>
@@ -33,6 +35,20 @@ const Navbar = () => {
     setOpenSidebar(false)
     setOpenUpsertPostOverlay(true)
   }
+
+  useEffect(() => {
+    const fetchNotifications = async(token: string) => {
+      try {
+        const res = await getDataAPI(`/api/v1/notifications`, token)
+        setNotifications(res.data.notifications)
+      } catch (err: any) {
+        console.log(err.response.data.msg)
+      }
+    }
+
+    if (userState.data.accessToken)
+      fetchNotifications(userState.data.accessToken)
+  }, [userState.data.accessToken])
 
   useEffect(() => {
     const searchUser = async(token: string) => {
@@ -154,11 +170,32 @@ const Navbar = () => {
                 <IoIosNotifications className='text-xl text-gray-800 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' />
               </div>
               <div className={`absolute top-full -right-24 bg-white border border-gray-300 shadow-md rounded-md w-[320px] mt-3 origin-top ${openNotification ? 'scale-y-100' : 'scale-y-0'} transition`}>
-                <div className='flex items-center justify-center p-4 flex-col'>
-                  <MdNotificationsOff className='text-gray-400 text-4xl' />
-                  <p className='text-sm text-gray-400 font-semibold mt-3'>Notification is empty</p>
-                </div>
-                {/* <NotificationCard /> */}
+                {
+                  notifications.length < 1
+                  ? (
+                    <>
+                      <div className='flex items-center justify-center p-4 flex-col'>
+                        <MdNotificationsOff className='text-gray-400 text-4xl' />
+                        <p className='text-sm text-gray-400 font-semibold mt-3'>Notification is empty</p>
+                      </div>
+                    </>
+                  )
+                  : (
+                    <>
+                      {
+                        notifications.map(item => (
+                          <NotificationCard
+                            key={item._id}
+                            username={item.username}
+                            avatar={item.avatar}
+                            message={item.message}
+                            createdAt={item.createdAt}
+                          />
+                        ))
+                      }
+                    </>
+                  )
+                }
               </div>
             </div>
             <Link to={`/feeds/${userState.data.user?._id}`} className='w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center outline-none'>

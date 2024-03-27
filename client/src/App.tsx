@@ -4,7 +4,6 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Feeds from './pages/Feeds'
-import Conversation from './pages/Conversation'
 import ForgetPassword from './pages/ForgetPassword'
 import Alert from './components/general/Alert'
 import useStore from './store/store'
@@ -28,7 +27,6 @@ const App = () => {
           <Route path='/forget-password' element={<ForgetPassword />} />
           <Route path='/reset-password' element={<ResetPassword />} />
           <Route path='/feeds/:id' element={<Feeds />} />
-          <Route path='/conversation' element={<Conversation />} />
         </Routes>
       </Router>
     </>

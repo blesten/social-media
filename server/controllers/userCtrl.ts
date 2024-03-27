@@ -11,6 +11,7 @@ import sendEmail from '../utils/mail'
 import Follower from '../models/Follower'
 import Following from '../models/Following'
 import Saved from '../models/Saved'
+import Notification from '../models/Notification'
 
 const userCtrl = {
   register: async(req: Request, res: Response) => {
@@ -333,6 +334,7 @@ const userCtrl = {
       return res.status(500).json({ msg: err.message })
     }
   },
+  // create notification
   follow: async(req: IReqUser, res: Response) => {
     try {
       const { id } = req.params
@@ -398,6 +400,14 @@ const userCtrl = {
         await targetUserFollowers.save()
       }
 
+      const notification = new Notification({
+        user: id,
+        avatar: req.user?.avatar,
+        username: req.user?.username,
+        message: 'just follow you',
+      })
+      await notification.save()
+
       const newFollowings = await Following.findOne({ user: req.user?._id }).populate('followings.user').select('-password')
 
       return res.status(200).json({ followings: newFollowings?.followings })
@@ -443,6 +453,7 @@ const userCtrl = {
       return res.status(500).json({ msg: err.message })
     }
   },
+  // create notification
   acceptFollowRequest: async(req: IReqUser, res: Response) => {
     try {
       const { id } = req.params
@@ -472,6 +483,14 @@ const userCtrl = {
 
       targetUserFollowings.followings = targetUserFollowingsList
       await targetUserFollowings.save()
+
+      const notification = new Notification({
+        user: id,
+        avatar: req.user?.avatar,
+        username: req.user?.username,
+        message: 'just accept your follow invite'
+      })
+      await notification.save()
 
       return res.status(200).json({ msg: 'Successfully accepted.' })
     } catch (err: any) {

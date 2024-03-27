@@ -64,3 +64,11 @@ export interface IComment extends IGeneralField {
   content: string
   likes: string[]
 }
+
+export interface INotification extends IGeneralField {
+  user: string
+  avatar: string
+  username: string
+  message: string
+  read: number
+}
