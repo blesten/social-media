@@ -25,6 +25,7 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
   const [openDeleteOverlay, setOpenDeleteOvelay] = useState(false)
   const [openUpsertPostOverlay, setOpenUpsertPostOverlay] = useState(false)
   const [selectedPost, setSelectedPost] = useState<Partial<IPost>>({})
+  const [commentLimit, setCommentLimit] = useState(3)
 
   const [currentPosition, setCurrentPosition] = useState(0)
 
@@ -57,6 +58,14 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
         setCurrentPosition(newIdx)
       }
     }
+  }
+
+  const handleLoadMoreComments = () => {
+    setCommentLimit(commentLimit + 3)
+  }
+
+  const handleHideComments = () => {
+    setCommentLimit(3)
   }
 
   const handleUnsavedPost = async() => {
@@ -279,7 +288,7 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
             ? (
               <>
                 {
-                  comments.map((item, idx) => (
+                  comments.slice(0, commentLimit).map((item, idx) => (
                     <Comment
                       key={idx}
                       comment={item}
@@ -296,7 +305,16 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
               </div>
             )
           }
-          {/* <p className='text-xs text-center text-gray-400 cursor-pointer'>Load more comments</p> */}
+
+          {
+            comments.length > commentLimit &&
+            <p onClick={handleLoadMoreComments} className='text-xs text-center text-gray-400 cursor-pointer'>Load more comments</p>
+          }
+
+          {
+            commentLimit >= comments.length &&
+            <p onClick={handleHideComments} className='text-xs text-center text-gray-400 cursor-pointer'>Hide comments</p>
+          }
         </div>
       </div>
 
