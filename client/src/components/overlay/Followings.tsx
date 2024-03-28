@@ -1,6 +1,7 @@
 import { AiOutlineClose } from "react-icons/ai"
 import UserCard from "../home/UserCard"
 import { IFollow } from "../../utils/interface"
+import { PiNoteBlankLight } from "react-icons/pi"
 
 interface IProps {
   openFollowingsOverlay: boolean
@@ -21,8 +22,9 @@ const Followings: React.FC<IProps> = ({ openFollowingsOverlay, setOpenFollowings
           {
             followings.length < 1
             ? (
-              <div className='bg-red-500 text-white rounded-md py-3 text-sm font-semibold text-center'>
-                <p>No followings found</p>
+              <div className='flex flex-col items-center mb-3'>
+                <PiNoteBlankLight className='text-gray-300 text-8xl' />
+                <p className='text-gray-400 font-semibold'>Following is empty</p>
               </div>
             )
             : (

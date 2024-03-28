@@ -7,7 +7,6 @@ import { MdNotificationsOff } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import { INotification, IUser } from '../../utils/interface'
 import { getDataAPI } from '../../utils/fetchData'
-import { TbError404 } from 'react-icons/tb'
 import useStore from './../../store/store'
 import Logo from './../navbar/Logo'
 import Search from './../navbar/Search'
@@ -15,6 +14,7 @@ import Utility from './../navbar/Utility'
 import UpsertPost from '../overlay/UpsertPost'
 import UserCard from '../home/UserCard'
 import NotificationCard from '../navbar/NotificationCard'
+import { PiNoteBlankLight } from 'react-icons/pi'
 
 const Navbar = () => {  
   const [keyword, setKeyword] = useState('')
@@ -140,7 +140,7 @@ const Navbar = () => {
                   users.length < 1
                   ? (
                     <div className='flex items-center justify-center flex-col text-gray-500'>
-                      <TbError404 className='text-7xl text-gray-400' />
+                      <PiNoteBlankLight className='text-gray-300 text-8xl' />
                       <p className='font-semibold text-sm'>No results found</p>
                     </div>
                   )

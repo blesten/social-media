@@ -61,7 +61,7 @@ const UserCard: React.FC<IProps> = ({ extraStyle, user, isAccept }) => {
   return (
     <div className={`flex sm:flex-row flex-col sm:items-center sm:justify-between mb-4 ${extraStyle}`}>
       <div onClick={handleClickUser} className='flex items-center gap-4 cursor-pointer'>
-        <div className='w-14 h-14 rounded-full bg-blue-500 flex items-center justify-center'>
+        <div className='w-14 h-14 rounded-full bg-blue-500 flex items-center justify-center shrink-0'>
           {
             !user?.avatar
             ? <p className='text-xl text-white font-semibold tracking-widest'>{`${user?.name[0]}${user?.name.split(' ')[user?.name.split(' ').length - 1][0]}`}</p>

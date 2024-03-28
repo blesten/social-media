@@ -4,17 +4,23 @@ import { IUser } from '../../utils/interface'
 import { getDataAPI } from '../../utils/fetchData'
 import useStore from './../../store/store'
 import UserCard from './UserCard'
+import Loader from '../general/Loader'
+import { PiNoteBlankLight } from 'react-icons/pi'
 
 const RightContent = () => {
+  const [loading, setLoading] = useState(true)
   const [users, setUsers] = useState<IUser[]>([])
 
   const { userState } = useStore()
 
   const fetchSimilarUsers = async() => {
     try {
+      setLoading(true)
       const res = await getDataAPI(`/api/v1/users/similar`, userState.data.accessToken)
       setUsers(res.data.similarUsers)
+      setLoading(false)
     } catch (err: any) {
+      setLoading(false)
       console.log(err.response.data.msg)
     }
   }
@@ -22,9 +28,12 @@ const RightContent = () => {
   useEffect(() => {
     const fetchSimilarUsers = async(token: string) => {
       try {
+        setLoading(true)
         const res = await getDataAPI(`/api/v1/users/similar`, token)
         setUsers(res.data.similarUsers)
+        setLoading(false)
       } catch (err: any) {
+        setLoading(false)
         console.log(err.response.data.msg)
       }
     }
@@ -41,12 +50,33 @@ const RightContent = () => {
       </div>
       <div className='mt-7'>
         {
-          users.map(item => (
-            <UserCard
-              key={item._id}
-              user={item}
-            />
-          ))
+          loading
+          ? <Loader size='xl' />
+          : (
+            <>
+              {
+                users.length > 0
+                ? (
+                  <>
+                    {
+                      users.map(item => (
+                        <UserCard
+                          key={item._id}
+                          user={item}
+                        />
+                      ))
+                    }
+                  </>
+                )
+                : (
+                    <div className='flex flex-col items-center gap-3'>
+                      <PiNoteBlankLight className='text-gray-300 text-8xl' />
+                      <p className='text-sm text-gray-400 font-semibold'>Similar user is currently empty</p>
+                    </div>
+                )
+              }
+            </>
+          )
         }
       </div>
     </div>

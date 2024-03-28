@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { IUser } from './../../utils/interface'
 import { getDataAPI } from '../../utils/fetchData'
-import { TbError404 } from 'react-icons/tb'
+import { PiNoteBlankLight } from 'react-icons/pi'
 import useStore from './../../store/store'
 import UserCard from '../home/UserCard'
 
@@ -53,13 +53,13 @@ const Search = () => {
       </div>
       {
         keyword.length > 3 &&
-        <div ref={searchResultRef} className='absolute top-full left-0 w-full mt-3 bg-white shadow-md border border-gray-200 rounded-md p-4 grid grid-cols-2 gap-4 max-h-[300px] overflow-y-auto hide-scrollbar'>
+        <div ref={searchResultRef} className={`absolute top-full left-0 w-full mt-3 bg-white shadow-md border border-gray-200 rounded-md p-4 grid ${users.length < 1 ? 'grid-cols-1' : 'grid-cols-2'} gap-4 max-h-[300px] overflow-y-auto hide-scrollbar`}>
           {
             users.length < 1
             ? (
               <>
                 <div className='flex items-center justify-center flex-col text-gray-500'>
-                  <TbError404 className='text-7xl text-gray-400' />
+                  <PiNoteBlankLight className='text-gray-300 text-8xl' />
                   <p className='font-semibold text-sm'>No results found</p>
                 </div>
               </>

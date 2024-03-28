@@ -1,20 +1,27 @@
 import { useState, useEffect } from 'react'
 import { INotification } from './../../utils/interface'
+import { PiNoteBlankLight } from 'react-icons/pi'
 import { getDataAPI } from './../../utils/fetchData'
 import LatestActivity from './LatestActivity'
 import ProfileOverview from './ProfileOverview'
 import useStore from './../../store/store'
+import Loader from '../general/Loader'
 
 const LeftContent = () => {
+  const [loading, setLoading] = useState(true)
   const [notifications, setNotifications] = useState<INotification[]>([])
+
   const { userState } = useStore()
 
   useEffect(() => {
     const fetchNotifications = async(token: string) => {
       try {
+        setLoading(true)
         const res = await getDataAPI(`/api/v1/notifications`, token)
         setNotifications(res.data.notifications)
+        setLoading(false)
       } catch (err: any) {
+        setLoading(false)
         console.log(err.response.data.msg)
       }
     }
@@ -30,26 +37,35 @@ const LeftContent = () => {
         <p className='font-semibold text-blue-500'>Latest Activity</p>
         <div className='mt-4'>
           {
-            notifications.length > 0
-            ? (
+            loading
+            ? <Loader size='xl' />
+            : (
               <>
                 {
-                  notifications.map(item => (
-                    <LatestActivity
-                      key={item._id}
-                      avatar={item.avatar}
-                      username={item.username}
-                      message={item.message}
-                      createdAt={item.createdAt}
-                    />
-                  ))
+                  notifications.length > 0
+                  ? (
+                    <>
+                      {
+                        notifications.map(item => (
+                          <LatestActivity
+                            key={item._id}
+                            avatar={item.avatar}
+                            username={item.username}
+                            message={item.message}
+                            createdAt={item.createdAt}
+                          />
+                        ))
+                      }
+                    </>
+                  )
+                  : (
+                    <div className='flex flex-col items-center gap-3'>
+                      <PiNoteBlankLight className='text-gray-300 text-8xl' />
+                      <p className='text-sm text-gray-400 font-semibold'>Latest activity is currently empty</p>
+                    </div>
+                  )
                 }
               </>
-            )
-            : (
-              <div className='bg-red-500 rounded-md text-sm text-white py-2 w-full text-center font-semibold'>
-                <p>No latest activity found</p>
-              </div>
             )
           }
         </div>
