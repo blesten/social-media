@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { IoMdGrid } from 'react-icons/io'
 import { HiLockClosed } from 'react-icons/hi2'
 import { FaRegBookmark } from 'react-icons/fa'
@@ -23,6 +23,8 @@ const Feeds = () => {
 
   const { userState } = useStore()
   const { id } = useParams()
+
+  const navigate = useNavigate()
 
   const handleChangeTab = (tab: string) => {
     setTab(tab)
@@ -102,6 +104,13 @@ const Feeds = () => {
     if (userState.data.accessToken)
       getUserPosts(userState.data.accessToken)
   }, [id, userState.data.accessToken, tab])
+
+  useEffect(() => {
+    if (!userState.loading) {
+      if (!userState.data.accessToken)
+        navigate('/login')
+    }
+  }, [userState.data.accessToken, navigate])
 
   return (
     <>
