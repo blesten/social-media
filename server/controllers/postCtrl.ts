@@ -9,7 +9,6 @@ import Comment from '../models/Comment'
 import Notification from '../models/Notification'
 
 const postCtrl = {
-  // create notification
   create: async(req: IReqUser, res: Response) => {
     try {
       const { caption, images } = req.body

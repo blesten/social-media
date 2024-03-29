@@ -9,6 +9,7 @@ import Comment from './../home/Comment'
 import Delete from './Delete'
 import UpsertPost from './UpsertPost'
 import useStore from './../../store/store'
+import moment from 'moment'
 
 interface IProps {
   openPostOverlay: boolean
@@ -185,7 +186,7 @@ const Post: React.FC<IProps> = ({ openPostOverlay, setOpenPostOverlay, postOverl
           <div className='flex-1 flex flex-col border-r border-gray-200'>
             <div className='flex-1 relative bg-gray-100'>
               <div className='w-full h-full'>
-                <img src={post.images[currentPosition]} alt='Social Sphere' className='w-full h-full rounded-tl-md md:rounded-tr-none rounded-tr-md pointer-events-none object-contain' />
+                <img src={post.images[currentPosition]} alt='Social Sphere' className='w-full h-full rounded-tl-md md:rounded-tr-none rounded-tr-md pointer-events-none object-cover' />
               </div>
               <div>
                 {
@@ -255,15 +256,18 @@ const Post: React.FC<IProps> = ({ openPostOverlay, setOpenPostOverlay, postOverl
               <AiOutlineClose onClick={() => setOpenPostOverlay(false)} className='cursor-pointer' />
             </div>
             <div className='flex-1 overflow-auto p-5 hide-scrollbar flex flex-col gap-5'>
-              <div className='border-b border-gray-300 pb-4 text-sm flex items-center gap-5'>
-                <div className='w-9 h-9 rounded-full flex-shrink-0 flex items-center justify-center bg-blue-500 text-white'>
-                  {
-                    !post.user.avatar
-                    ? <p className='text-5xl font-semibold tracking-widest'>{`${post.user.name[0]}${post.user.name.split(' ')[post.user.name.split(' ').length - 1][0]}`}</p>
-                    : <img src={post.user.avatar} alt='Social Sphere' className='w-full h-full rounded-full object-cover' />
-                  }
+              <div className='border-b border-gray-300 pb-4 text-sm flex items-center justify-between'>
+                <div className='flex items-center gap-5'>
+                  <div className='w-9 h-9 rounded-full flex-shrink-0 flex items-center justify-center bg-blue-500 text-white'>
+                    {
+                      !post.user.avatar
+                      ? <p className='text-5xl font-semibold tracking-widest'>{`${post.user.name[0]}${post.user.name.split(' ')[post.user.name.split(' ').length - 1][0]}`}</p>
+                      : <img src={post.user.avatar} alt='Social Sphere' className='w-full h-full rounded-full object-cover' />
+                    }
+                  </div>
+                  <p>{post.caption}</p>
                 </div>
-                <p>{post.caption}</p>
+                <p className='text-xs text-gray-500'>{moment(post.createdAt).fromNow()}</p>
               </div>
               {
                 comments.map((item, idx) => (

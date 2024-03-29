@@ -216,7 +216,7 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
           <p className='leading-relaxed text-justify'>{caption}</p>
           <div className='mt-5 relative'>
             <div className='w-full h-[300px] bg-gray-100 rounded-lg border border-gray-200'>
-              <img src={images[currentPosition]} alt='Social Sphere' className='rounded-md w-full h-full object-contain pointer-events-none' />
+              <img src={images[currentPosition]} alt='Social Sphere' className='rounded-md w-full h-full object-cover pointer-events-none' />
             </div>
             {
               images.length > 1 &&
@@ -301,7 +301,7 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
             )
             : (
               <div>
-                <p className='text-center text-sm text-gray-400'>No comments</p>
+                <p className='text-center text-sm text-gray-400'>Comment is empty</p>
               </div>
             )
           }
@@ -312,7 +312,7 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
           }
 
           {
-            commentLimit >= comments.length &&
+            (comments.length > 3 && commentLimit > 3 && comments.length < commentLimit) &&
             <p onClick={handleHideComments} className='text-xs text-center text-gray-400 cursor-pointer'>Hide comments</p>
           }
         </div>

@@ -334,7 +334,6 @@ const userCtrl = {
       return res.status(500).json({ msg: err.message })
     }
   },
-  // create notification
   follow: async(req: IReqUser, res: Response) => {
     try {
       const { id } = req.params
@@ -453,7 +452,6 @@ const userCtrl = {
       return res.status(500).json({ msg: err.message })
     }
   },
-  // create notification
   acceptFollowRequest: async(req: IReqUser, res: Response) => {
     try {
       const { id } = req.params

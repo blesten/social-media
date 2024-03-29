@@ -49,7 +49,7 @@ const PostCard: React.FC<IProps> = ({ post, posts, setPosts }) => {
   return (
     <>
       <div onClick={() => setOpenPostOverlay(true)} className='group w-64 h-64 bg-gray-200 rounded-lg cursor-pointer relative shadow-lg border border-gray-300'>
-        <img src={post.images[0]} alt='Social Sphere' className='rounded-md w-full h-full object-contain border border-gray-200 pointer-events-none cursor-pointer' />
+        <img src={post.images[0]} alt='Social Sphere' className='rounded-md w-full h-full object-cover border border-gray-200 pointer-events-none cursor-pointer' />
         <div className='absolute top-0 left-0 w-full h-full rounded-md bg-[rgba(0,0,0,.6)] flex items-center justify-center gap-8 opacity-0 group-hover:opacity-100 transition'>
           <div className='text-white flex items-center gap-2'>
             <AiOutlineHeart className='text-2xl' />

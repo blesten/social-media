@@ -250,7 +250,7 @@ const Feeds = () => {
                       : (
                         <div className='flex items-center justify-center flex-col mt-6'>
                           <HiLockClosed className='text-7xl text-gray-400' />
-                          <p className='text-lg font-semibold mt-3'>This is a private account</p>
+                          <p className='text-lg font-semibold mt-3'>This account is private</p>
                         </div>
                       )
                     }
