@@ -20,7 +20,7 @@
     <a href="https://github.com/blesten/social-media"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/blesten/social-media">View Demo</a>
+    <a href="https://youtu.be/WXP1WM1fDEg">View Demo</a>
     ·
     <a href="https://github.com/blesten/social-media/issues">Report Bug</a>
     ·
