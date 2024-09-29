@@ -22,7 +22,8 @@ const UpsertPost: React.FC<IProps> = ({ openUpsertPostOverlay, setOpenUpsertPost
   const { userState, createPost, updatePost } = useStore()
 
   const handleCloseOverlay = () => {
-    setSelectedPost!({})
+    if (setSelectedPost)
+      setSelectedPost({})
     setOpenUpsertPostOverlay(false)
   }
 

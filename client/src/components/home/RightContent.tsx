@@ -57,7 +57,7 @@ const RightContent = () => {
               {
                 users.length > 0
                 ? (
-                  <>
+                  <div className='bg-white rounded-md px-4 pt-4 pb-1 flex flex-col gap-2'>
                     {
                       users.map(item => (
                         <UserCard
@@ -66,7 +66,7 @@ const RightContent = () => {
                         />
                       ))
                     }
-                  </>
+                  </div>
                 )
                 : (
                     <div className='flex flex-col items-center gap-3'>
