@@ -50,11 +50,11 @@ const ForgetPassword = () => {
       <div className='flex min-h-screen max-h-screen'>
         <div className='flex-[2] bg-gray-200 relative md:block hidden'>
           <div className='absolute w-full h-full bg-[rgba(0,0,0,.5)]'></div>
-          <img src={`${process.env.PUBLIC_URL}/assets/images/forget-password.jpg`} className='w-full h-full object-cover' alt='Social Sphere' />
+          <img src={`${process.env.PUBLIC_URL}/assets/images/forget-password.jpg`} className='w-full h-full object-cover' alt='Byte Craft Studio - Social Media' />
         </div>
         <form onSubmit={handleSubmit} className='flex-1 px-12 flex flex-col items-center justify-center'>
           <div className='w-20 h-20'>
-            <img src={`${process.env.PUBLIC_URL}/assets/logo.png`} alt='Social Sphere' className='pointer-events-none' />
+            <img src={`${process.env.PUBLIC_URL}/assets/logo.png`} alt='Byte Craft Studio - Social Media' className='pointer-events-none' />
           </div>
           <h1 className='text-2xl font-semibold mb-10 mt-3'>Forget Password</h1>
           <div className='w-full'>

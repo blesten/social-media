@@ -99,9 +99,9 @@ const EditProfile: React.FC<IProps> = ({ openEditProfileOverlay, setOpenEditProf
           <div className='group w-24 h-24 rounded-full bg-blue-500 flex items-center justify-center m-auto mb-5 relative cursor-pointer border border-gray-300 shadow-md'>
             {
               tempAvatar
-              ? <img src={URL.createObjectURL(tempAvatar)} alt='Social Sphere' className='w-full h-full rounded-full object-cover' />
+              ? <img src={URL.createObjectURL(tempAvatar)} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover' />
               : profileData.avatar
-                ? <img src={profileData.avatar} alt='Social Sphere' className='w-full h-full rounded-full object-cover' />
+                ? <img src={profileData.avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover' />
                 : <p className='text-white text-4xl font-semibold tracking-widest'>{`${userState.data.user?.name[0]}${userState.data.user?.name.split(' ')[userState.data.user?.name.split(' ').length - 1][0]}`}</p>
             }
             <div onClick={handleClickUpload} className='absolute top-0 left-0 rounded-full w-full h-full flex items-center justify-center bg-[rgba(0,0,0,.6)] group-hover:opacity-100 opacity-0 transition'>

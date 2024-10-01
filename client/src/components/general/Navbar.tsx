@@ -15,6 +15,7 @@ import UpsertPost from '../overlay/UpsertPost'
 import UserCard from '../home/UserCard'
 import NotificationCard from '../navbar/NotificationCard'
 import { PiNoteBlankLight } from 'react-icons/pi'
+import Info from '../sampleWorks/Info'
 
 const Navbar = () => {  
   const [keyword, setKeyword] = useState('')
@@ -113,11 +114,14 @@ const Navbar = () => {
 
   return (
     <>
-      <div className='sticky top-0 shadow-light-gray shadow-sm bg-white w-full lg:px-16 px-10 py-5 flex justify-between gap-24 items-center z-10'>
-        <Logo />
-        <Search />
-        <Utility />
-        <GiHamburgerMenu onClick={() => setOpenSidebar(true)} className='text-blue-500 text-lg cursor-pointer lg:hidden block' />
+      <div className='sticky top-0 z-10'>
+        <Info />
+        <div className='shadow-light-gray shadow-sm bg-white w-full lg:px-16 px-10 py-5 flex justify-between gap-24 items-center border-b border-gray-200'>
+          <Logo />
+          <Search />
+          <Utility />
+          <GiHamburgerMenu onClick={() => setOpenSidebar(true)} className='text-blue-500 text-lg cursor-pointer lg:hidden block' />
+        </div>
       </div>
 
       <div className={`fixed top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,.8)] z-10 ${openSidebar ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} transition`}>
@@ -202,7 +206,7 @@ const Navbar = () => {
               {
                 !userState.data.user?.avatar
                 ? <p className='text-lg font-semibold tracking-widest'>{`${userState.data.user?.name[0]}${userState.data.user?.name.split(' ')[userState.data.user?.name.split(' ').length - 1][0]}`}</p>
-                : <img src={userState.data.user?.avatar} alt='Social Sphere' className='w-full h-full rounded-full object-cover' />
+                : <img src={userState.data.user?.avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover' />
               }
             </Link>
           </div>

@@ -4,10 +4,8 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Feeds from './pages/Feeds'
-import ForgetPassword from './pages/ForgetPassword'
 import Alert from './components/general/Alert'
 import useStore from './store/store'
-import ResetPassword from './pages/ResetPassword'
 
 const App = () => {
   const { refreshToken } = useStore()
@@ -24,8 +22,6 @@ const App = () => {
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
-          <Route path='/forget-password' element={<ForgetPassword />} />
-          <Route path='/reset-password' element={<ResetPassword />} />
           <Route path='/feeds/:id' element={<Feeds />} />
         </Routes>
       </Router>

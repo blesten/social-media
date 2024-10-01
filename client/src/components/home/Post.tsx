@@ -185,7 +185,7 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
               {
                 !user.avatar
                 ? <p className='text-5xl font-semibold tracking-widest'>{`${user.name[0]}${user.name.split(' ')[user.name.split(' ').length - 1][0]}`}</p>
-                : <img src={user.avatar} alt='Social Sphere' className='w-full h-full rounded-full object-cover' />
+                : <img src={user.avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover' />
               }
             </div>
             <div>
@@ -216,7 +216,7 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
           <p className='leading-relaxed text-justify'>{caption}</p>
           <div className='mt-5 relative'>
             <div className='w-full h-[300px] bg-gray-100 rounded-lg border border-gray-200'>
-              <img src={images[currentPosition]} alt='Social Sphere' className='rounded-md w-full h-full object-cover pointer-events-none' />
+              <img src={images[currentPosition]} alt='Byte Craft Studio - Social Media' className='rounded-md w-full h-full object-cover pointer-events-none' />
             </div>
             {
               images.length > 1 &&

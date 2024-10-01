@@ -128,15 +128,15 @@ const userCtrl = {
       const { socialSphere_cookie: token } = req.cookies
 
       if (!token) 
-        return res.status(401).json({ msg: 'Invalid credential.' })
+        return res.status(401).json({ msg: `${process.env.IGNORE_ERR}` })
 
       const decoded = <IDecodedToken>jwt.verify(token, `${process.env.REFRESH_TOKEN_SECRET}`)
       if (!decoded.id)
-        return res.status(401).json({ msg: 'Invalid credential.' })
+        return res.status(401).json({ msg: `${process.env.IGNORE_ERR}` })
 
       const user = await User.findById(decoded.id)
       if (!user)
-        return res.status(401).json({ msg: 'Invalid credential.' })
+        return res.status(401).json({ msg: `${process.env.IGNORE_ERR}` })
 
       const accessToken = generateToken({ id: user._id }, 'accessToken')
       const refreshToken = generateToken({ id: user._id }, 'refreshToken')

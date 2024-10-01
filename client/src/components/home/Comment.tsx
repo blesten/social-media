@@ -105,7 +105,7 @@ const Comment: React.FC<IProps> = ({ comment, comments, setComments }) => {
             {
               !comment?.user.avatar
               ? <p className='text-lg font-semibold tracking-widest'>{`${comment?.user.name[0]}${comment?.user.name.split(' ')[comment?.user.name.split(' ').length - 1][0]}`}</p>
-              : <img src={comment.user.avatar} alt='Social Sphere' className='w-full h-full rounded-full object-cover' />
+              : <img src={comment.user.avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover' />
             }
           </div>
           <div className='w-full'>

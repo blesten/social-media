@@ -15,7 +15,7 @@ const NotificationCard: React.FC<IProps> = ({ username, avatar, message, created
           {
             !avatar
             ? <p className='text-lg font-semibold tracking-widest uppercase text-white'>{`${username[0]}`}</p>
-            : <img src={avatar} alt='Social Sphere' className='w-full h-full rounded-full object-cover' />
+            : <img src={avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover' />
           }
         </div>
         <p className='text-sm'><strong>@{username}</strong> {message}</p>
