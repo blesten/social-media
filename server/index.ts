@@ -23,6 +23,7 @@ app.use('/api/v1/posts', routers.postRouter)
 app.use('/api/v1/comments', routers.commentRouter)
 app.use('/api/v1/saved', routers.savedRouter)
 app.use('/api/v1/notifications', routers.notificationRouter)
+app.use('/api/v1/reset', routers.resetRouter)
 
 connectDB()
 app.listen(process.env.PORT, () => console.log(`Server is running on PORT ${process.env.PORT}`))

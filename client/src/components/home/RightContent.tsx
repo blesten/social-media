@@ -43,7 +43,7 @@ const RightContent = () => {
   }, [userState.data.accessToken])
 
   return (
-    <div className='xl:flex-1 xl:block hidden h-fit sticky top-28 px-8'>
+    <div className='xl:flex-1 xl:block hidden h-fit sticky top-36 px-8'>
       <div className='flex items-center justify-between'>
         <p className='font-semibold text-blue-500'>People you might know</p>
         <IoMdRefresh onClick={fetchSimilarUsers} className='cursor-pointer' />

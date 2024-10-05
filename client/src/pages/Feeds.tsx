@@ -129,7 +129,7 @@ const Feeds = () => {
 
   return (
     <>
-      <HeadInfo title='Feeds' />
+      <HeadInfo title={`${user.name || 'Loading ...'}`} />
       <div>
         <Navbar />
         {
