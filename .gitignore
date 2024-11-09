@@ -19,3 +19,6 @@ yarn-error.log*
 key.ts
 
 .env
+
+BCS Social Media Key.pem
+BCS Social Media Key.ppk
