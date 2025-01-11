@@ -6,7 +6,6 @@ import { validEmail, validPassword } from '../utils/validator'
 import { postDataAPI } from '../utils/fetchData'
 import useStore from './../store/store'
 import HeadInfo from '../utils/HeadInfo'
-import Info from '../components/sampleWorks/Info'
 
 const Register = () => {
   const [registerData, setRegisterData] = useState({
@@ -79,9 +78,6 @@ const Register = () => {
     <>
       <HeadInfo title='Sign Up' />
       <div className='h-screen'>
-        <div className='fixed top-0 z-20 w-full'>
-          <Info />
-        </div>
         <div className='flex h-full'>
           <div className='flex-[2] bg-gray-200 relative md:block hidden'>
             <div className='absolute w-full h-full bg-[rgba(0,0,0,.5)]'></div>

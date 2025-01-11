@@ -15,7 +15,6 @@ import UpsertPost from '../overlay/UpsertPost'
 import UserCard from '../home/UserCard'
 import NotificationCard from '../navbar/NotificationCard'
 import { PiNoteBlankLight } from 'react-icons/pi'
-import Info from '../sampleWorks/Info'
 
 const Navbar = () => {  
   const [keyword, setKeyword] = useState('')
@@ -115,7 +114,6 @@ const Navbar = () => {
   return (
     <>
       <div className='sticky top-0 z-10'>
-        <Info />
         <div className='shadow-light-gray shadow-sm bg-white w-full lg:px-16 px-10 py-5 flex justify-between gap-24 items-center border-b border-gray-200'>
           <Logo />
           <Search />

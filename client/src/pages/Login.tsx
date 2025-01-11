@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FormChanged, FormSubmitted } from './../utils/interface'
 import HeadInfo from '../utils/HeadInfo'
 import useStore from './../store/store'
-import Info from '../components/sampleWorks/Info'
 
 const Login = () => {
   const [loginData, setLoginData] = useState({
@@ -54,9 +53,6 @@ const Login = () => {
     <>
       <HeadInfo title='Sign In' />
       <div className='h-screen'>
-        <div className='fixed top-0 z-20 w-full'>
-          <Info />
-        </div>
         <div className='flex h-full'>
           <div className='flex-[2] bg-gray-200 relative md:block hidden'>
             <div className='absolute w-full h-full bg-[rgba(0,0,0,.5)]'></div>
