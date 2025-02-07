@@ -186,7 +186,7 @@ const Post: React.FC<IProps> = ({ openPostOverlay, setOpenPostOverlay, postOverl
           <div className='flex-1 flex flex-col border-r border-neutral-600'>
             <div className='flex-1 relative bg-zinc-600'>
               <div className='w-full h-full'>
-                <img src={post.images[currentPosition]} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-tl-md md:rounded-tr-none rounded-tr-md pointer-events-none object-cover' />
+                <img src={post.images[currentPosition]} alt='Post Image' className='w-full h-full rounded-tl-md md:rounded-tr-none rounded-tr-md pointer-events-none object-cover' />
               </div>
               <div>
                 {
@@ -260,7 +260,7 @@ const Post: React.FC<IProps> = ({ openPostOverlay, setOpenPostOverlay, postOverl
                     {
                       !post.user.avatar
                       ? <p className='font-semibold tracking-widest'>{`${post.user.name[0]}${post.user.name.split(' ')[post.user.name.split(' ').length - 1][0]}`}</p>
-                      : <img src={post.user.avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover' />
+                      : <img src={post.user.avatar} alt='User Avatar' className='w-full h-full rounded-full object-cover' />
                     }
                   </div>
                   <p className='text-neutral-300'>{post.caption}</p>

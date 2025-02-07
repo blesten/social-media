@@ -94,7 +94,7 @@ const UpsertPost: React.FC<IProps> = ({ openUpsertPostOverlay, setOpenUpsertPost
                   {
                     posts && posts.map((item, idx) => (
                       <div className='relative'>
-                        <img src={item instanceof File ? URL.createObjectURL(item) : `${item}`} alt='Byte Craft Studio - Social Media' className='w-24 h-24 rounded-md object-cover' />
+                        <img src={item instanceof File ? URL.createObjectURL(item) : `${item}`} alt='Post Image' className='w-24 h-24 rounded-md object-cover' />
                         <div onClick={() => handleRemoveImage(idx)} className='text-white bg-red-500 rounded-full w-5 font-semibold h-5 flex items-center justify-center text-xs -top-2 -right-2 absolute outline outline-white outline-2 cursor-pointer'>
                           <AiOutlineClose />
                         </div>

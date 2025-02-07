@@ -65,7 +65,7 @@ const UserCard: React.FC<IProps> = ({ extraStyle, user, isAccept }) => {
           {
             !user?.avatar
             ? <p className='text-neutral-300 font-semibold uppercase tracking-widest'>{`${user?.name[0]}${user?.name.split(' ')[user?.name.split(' ').length - 1][0]}`}</p>
-            : <img src={user?.avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover pointer-events-none' />
+            : <img src={user?.avatar} alt='User Avatar' className='w-full h-full rounded-full object-cover pointer-events-none' />
           }
         </div>
         <div>

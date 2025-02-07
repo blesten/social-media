@@ -207,7 +207,7 @@ const Navbar = () => {
               {
                 !userState.data.user?.avatar
                 ? <p className='font-semibold tracking-widest'>{`${userState.data.user?.name[0]}${userState.data.user?.name.split(' ')[userState.data.user?.name.split(' ').length - 1][0]}`}</p>
-                : <img src={userState.data.user?.avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover' />
+                : <img src={userState.data.user?.avatar} alt='User Avatar' className='w-full h-full rounded-full object-cover' />
               }
             </Link>
           </div>

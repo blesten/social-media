@@ -84,7 +84,7 @@ const ResetPassword = () => {
         ? (
           <div className='px-12 flex items-center justify-center flex-col h-screen overflow-hidden'>
             <div>
-              <img src={`${process.env.PUBLIC_URL}/assets/logo.png`} alt='Byte Craft Studio - Social Media' className='pointer-events-none' />
+              <img src={`${process.env.PUBLIC_URL}/assets/logo.png`} alt='Logo' className='pointer-events-none' />
             </div>
             <form onSubmit={handleSubmit} className='md:w-1/3 w-full'>
               <h1 className='text-center text-xl font-semibold mt-9'>Reset Password</h1>
@@ -115,7 +115,7 @@ const ResetPassword = () => {
         : (
           <div className='w-screen h-screen flex items-center justify-center flex-col'>
             <Link to='/'>
-              <img src={`${process.env.PUBLIC_URL}/assets/logo.png`} alt='Byte Craft Studio - Social Media' className='pointer-events-none mb-8' />
+              <img src={`${process.env.PUBLIC_URL}/assets/logo.png`} alt='Logo' className='pointer-events-none mb-8' />
             </Link>
             <h1 className='text-9xl font-bold text-gray-400'>404</h1>
             <p className='font-semibold text-3xl mt-5'>Resource not found</p>

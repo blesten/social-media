@@ -16,7 +16,7 @@ const LatestActivity: React.FC<IProps> = ({ avatar, username, message, createdAt
         {
           !avatar
           ? <p className='text-xl font-semibold tracking-widest uppercase text-neutral-300'>{`${username[0]}`}</p>
-          : <img src={avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover' />
+          : <img src={avatar} alt='User Avatar' className='w-full h-full rounded-full object-cover' />
         }
       </div>
       <div>

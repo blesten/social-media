@@ -139,7 +139,7 @@ const Header: React.FC<IProps> = ({ user, followers, followings, followRequests,
             {
               !user.avatar
               ? <p className='text-4xl font-semibold tracking-widest'>{`${user.name[0]}${user.name.split(' ')[user.name.split(' ').length - 1][0]}`}</p>
-              : <img src={user.avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover' />
+              : <img src={user.avatar} alt='User Avatar' className='w-full h-full rounded-full object-cover' />
             }
           </div>
           <div className='flex-1'>

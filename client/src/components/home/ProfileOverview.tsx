@@ -62,7 +62,7 @@ const ProfileOverview = () => {
                 <p className='text-lg text-white font-semibold tracking-wide'>{`${userState.data.user?.name[0]}${userState.data.user?.name.split(' ')[userState.data.user?.name.split(' ').length - 1][0]}`}</p>
               </div>
             )
-            : <img src={userState.data.user?.avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover border border-neutral-500 pointer-events-none' />
+            : <img src={userState.data.user?.avatar} alt='User Avatar' className='w-full h-full rounded-full object-cover border border-neutral-500 pointer-events-none' />
           }
         </div>
         <div>
