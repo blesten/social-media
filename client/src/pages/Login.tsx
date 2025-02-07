@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FormChanged, FormSubmitted } from './../utils/interface'
 import HeadInfo from '../utils/HeadInfo'
 import useStore from './../store/store'
+import { FaGlobeAmericas } from 'react-icons/fa'
 
 const Login = () => {
   const [loginData, setLoginData] = useState({
@@ -54,30 +55,21 @@ const Login = () => {
       <HeadInfo title='Sign In' />
       <div className='h-screen'>
         <div className='flex h-full'>
-          <div className='flex-[2] bg-gray-200 relative md:block hidden'>
-            <div className='absolute w-full h-full bg-[rgba(0,0,0,.5)]'></div>
-            <img src={`${process.env.PUBLIC_URL}/assets/images/login.jpg`} className='w-full h-full object-cover' alt='Byte Craft Studio - Social Media' />
-          </div>
           <form onSubmit={handleSubmit} className='flex-1 px-12 flex flex-col items-center justify-center'>
-            <div className='w-20 h-20'>
-              <img src={`${process.env.PUBLIC_URL}/assets/logo.png`} alt='Byte Craft Studio - Social Media' className='pointer-events-none' />
+            <FaGlobeAmericas className='text-7xl text-neutral-300' />
+            <h1 className='text-2xl text-neutral-300 font-semibold mb-10 mt-3'>Sign In</h1>
+            <div className='md:w-1/3 w-full'>
+              <input type='text' name='username' onChange={handleChange} autoComplete='off' placeholder='Username' className='border border-neutral-600 bg-zinc-700 text-neutral-300 rounded-md w-full text-sm px-2 py-3 outline-none' />
             </div>
-            <h1 className='text-2xl font-semibold mb-10 mt-3'>Sign In</h1>
-            <div className='w-full'>
-              <input type='text' name='username' onChange={handleChange} autoComplete='off' placeholder='Username' className='border border-gray-300 rounded-md w-full text-sm px-2 py-3 outline-none' />
-            </div>
-            <div className='border w-full mt-6 border-gray-300 rounded-md flex px-2 py-3 items-center gap-4'>
-              <input type={showPassword ? 'text' : 'password'} name='password' onChange={handleChange} placeholder='Password' className='flex-1 bg-transparent text-sm outline-none' />
+            <div className='border md:w-1/3 w-full mt-6 border-neutral-600 bg-zinc-700 rounded-md flex px-2 py-3 items-center gap-4'>
+              <input type={showPassword ? 'text' : 'password'} name='password' onChange={handleChange} placeholder='Password' className='flex-1 bg-transparent text-sm outline-none text-neutral-300' />
               {
                 showPassword
                 ? <AiFillEyeInvisible onClick={() => setShowPassword(false)} className='cursor-pointer text-gray-400' />
                 : <AiFillEye onClick={() => setShowPassword(true)} className='cursor-pointer text-gray-400' />
               }
             </div>
-            {/* <div className='mt-2 self-end'>
-              <Link to='/forget-password' className='hover:underline text-right text-gray-500 text-sm cursor-pointer'>Forget password?</Link>
-            </div> */}
-            <button type='submit' disabled={loading || !loginData.username || !loginData.password} className={`${loading || !loginData.username || !loginData.password ? 'bg-gray-300 hover:bg-gray-300 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600 cursor-pointer'} transition text-white outline-none font-semibold w-full rounded-full mt-8 h-10 text-sm`}>
+            <button type='submit' disabled={loading || !loginData.username || !loginData.password} className={`${loading || !loginData.username || !loginData.password ? 'bg-gray-300 hover:bg-gray-300 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600 cursor-pointer'} transition text-white outline-none font-semibold md:w-1/3 w-full rounded-full mt-10 h-10 text-sm`}>
               {
                 loading ? 'Loading ...' : 'Sign In'
               }

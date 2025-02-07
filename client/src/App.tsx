@@ -6,6 +6,7 @@ import Register from './pages/Register'
 import Feeds from './pages/Feeds'
 import Alert from './components/general/Alert'
 import useStore from './store/store'
+import NotFound from './pages/NotFound'
 
 const App = () => {
   const { refreshToken } = useStore()
@@ -23,6 +24,7 @@ const App = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/feeds/:id' element={<Feeds />} />
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </Router>
     </>

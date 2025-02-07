@@ -114,36 +114,39 @@ const Navbar = () => {
   return (
     <>
       <div className='sticky top-0 z-10'>
-        <div className='shadow-light-gray shadow-sm bg-white w-full lg:px-16 px-10 py-5 flex justify-between gap-24 items-center border-b border-gray-200'>
+        <div className='bg-zinc-900 w-full lg:px-16 px-10 py-5 flex justify-between gap-24 items-center'>
           <Logo />
           <Search />
           <Utility />
-          <GiHamburgerMenu onClick={() => setOpenSidebar(true)} className='text-blue-500 text-lg cursor-pointer lg:hidden block' />
+          <GiHamburgerMenu onClick={() => setOpenSidebar(true)} className='text-neutral-300 text-lg cursor-pointer lg:hidden block' />
         </div>
       </div>
 
       <div className={`fixed top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,.8)] z-10 ${openSidebar ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} transition`}>
-        <div ref={sidebarRef} className={`fixed top-0 right-0 w-[300px] h-screen bg-gray-200 z-10 px-6 py-6 ${openSidebar ? 'scale-x-100' : 'scale-x-0'} origin-right transition`}>
+        <div ref={sidebarRef} className={`fixed top-0 right-0 w-[300px] h-screen bg-zinc-800 z-10 px-6 py-6 ${openSidebar ? 'scale-x-100' : 'scale-x-0'} origin-right transition`}>
           <div className='flex justify-end'>
-            <AiOutlineClose onClick={() => setOpenSidebar(false)} className='cursor-pointer w-fit' />
+            <AiOutlineClose onClick={() => setOpenSidebar(false)} className='cursor-pointer w-fit text-neutral-300' />
           </div>
           <div className='relative'>
-            <div className='flex items-center gap-3 bg-light-gray rounded-full py-3 px-5 mt-6'>
-              <AiOutlineSearch />
+            <div className='flex items-center gap-3 bg-zinc-700 rounded-full py-3 px-5 mt-6'>
+              <AiOutlineSearch className='text-neutral-500' />
               <div className='w-full relative'>
-                <input type='text' className='outline-none w-full bg-transparent text-sm' value={keyword} onChange={e => setKeyword(e.target.value)} />
-                <p className={`absolute top-0 text-gray-400 text-sm ${keyword.length > 0 ? 'hidden' : 'block'} pointer-events-none`}>Search for friends</p>
+                <input type='text' className='outline-none text-neutral-300 w-full bg-transparent text-sm' value={keyword} onChange={e => setKeyword(e.target.value)} />
+                <p className={`absolute pt-[2px] top-0 ${keyword ? 'text-neutral-300' : 'text-neutral-500'} text-sm ${keyword.length > 0 ? 'hidden' : 'block'} pointer-events-none`}>Search for friends</p>
               </div>
             </div>
             {
               keyword.length > 3 &&
-              <div ref={searchResultRef} className='absolute top-full left-0 w-full mt-3 bg-white shadow-md border border-gray-200 rounded-md p-4 flex flex-col gap-4 max-h-[300px] overflow-y-auto hide-scrollbar z-20'>
+              <div ref={searchResultRef} className='absolute top-full left-0 w-full mt-3 bg-zinc-700 rounded-md p-4 flex flex-col gap-4 max-h-[300px] overflow-y-auto hide-scrollbar z-20'>
                 {
                   users.length < 1
                   ? (
-                    <div className='flex items-center justify-center flex-col text-gray-500'>
-                      <PiNoteBlankLight className='text-gray-300 text-8xl' />
-                      <p className='font-semibold text-sm'>No results found</p>
+                    <div className='flex flex-col items-center gap-3 text-neutral-500'>
+                      <div className='relative'>
+                        <PiNoteBlankLight className='text-6xl' />
+                        <div className='absolute -top-3 left-6 w-1 h-20 bg-neutral-600 rotate-45' />
+                      </div>
+                      <p className='text-xs font-semibold'>No results found</p>
                     </div>
                   )
                   : (
@@ -153,7 +156,7 @@ const Navbar = () => {
                           <UserCard
                             user={item}
                             key={idx}
-                            extraStyle='bg-light-gray p-4 rounded-md mb-0'
+                            extraStyle='bg-zinc-600 p-4 rounded-md mb-0'
                           />
                         ))
                       }
@@ -164,21 +167,21 @@ const Navbar = () => {
             }
           </div>
           <div className='mt-7 flex items-center justify-center gap-5'>
-            <div onClick={handleClickUpsertPost} className='cursor-pointer w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center'>
-              <HiPlus className='text-lg text-gray-800' />
+            <div onClick={handleClickUpsertPost} className='cursor-pointer w-10 h-10 rounded-full bg-neutral-700 flex items-center justify-center'>
+              <HiPlus className='text-lg text-neutral-300' />
             </div>
             <div className='relative'>
-              <div ref={notificationRef} onClick={() => setOpenNotification(!openNotification)} className='cursor-pointer w-10 h-10 rounded-full bg-gray-100 flex items-cen ter justify-center relative'>
-                <IoIosNotifications className='text-xl text-gray-800 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' />
+              <div ref={notificationRef} onClick={() => setOpenNotification(!openNotification)} className='cursor-pointer w-10 h-10 rounded-full bg-neutral-700 flex items-cen ter justify-center relative'>
+                <IoIosNotifications className='text-xl text-neutral-300 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' />
               </div>
-              <div className={`absolute top-full -right-24 bg-white border border-gray-300 shadow-md rounded-md w-[320px] mt-3 origin-top ${openNotification ? 'scale-y-100' : 'scale-y-0'} transition`}>
+              <div className={`absolute top-full -right-24 bg-zinc-700 rounded-md w-[320px] mt-3 origin-top ${openNotification ? 'scale-y-100' : 'scale-y-0'} transition`}>
                 {
                   notifications.length < 1
                   ? (
                     <>
-                      <div className='flex items-center justify-center p-4 flex-col'>
-                        <MdNotificationsOff className='text-gray-400 text-4xl' />
-                        <p className='text-sm text-gray-400 font-semibold mt-3'>Notification is empty</p>
+                      <div className='flex items-center justify-center p-4 flex-col text-neutral-500'>
+                        <MdNotificationsOff className='text-4xl' />
+                        <p className='text-sm font-semibold mt-3'>Notification is empty</p>
                       </div>
                     </>
                   )
@@ -200,10 +203,10 @@ const Navbar = () => {
                 }
               </div>
             </div>
-            <Link to={`/feeds/${userState.data.user?._id}`} className='w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center outline-none'>
+            <Link to={`/feeds/${userState.data.user?._id}`} className='w-10 h-10 rounded-full bg-zinc-700 text-neutral-300 flex items-center justify-center outline-none'>
               {
                 !userState.data.user?.avatar
-                ? <p className='text-lg font-semibold tracking-widest'>{`${userState.data.user?.name[0]}${userState.data.user?.name.split(' ')[userState.data.user?.name.split(' ').length - 1][0]}`}</p>
+                ? <p className='font-semibold tracking-widest'>{`${userState.data.user?.name[0]}${userState.data.user?.name.split(' ')[userState.data.user?.name.split(' ').length - 1][0]}`}</p>
                 : <img src={userState.data.user?.avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover' />
               }
             </Link>

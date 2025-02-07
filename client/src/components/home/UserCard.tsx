@@ -61,21 +61,21 @@ const UserCard: React.FC<IProps> = ({ extraStyle, user, isAccept }) => {
   return (
     <div className={`flex sm:flex-row flex-col sm:items-center sm:justify-between mb-4 ${extraStyle}`}>
       <div onClick={handleClickUser} className='flex items-center gap-4 cursor-pointer'>
-        <div className='w-14 h-14 rounded-full bg-blue-500 flex items-center justify-center shrink-0'>
+        <div className='w-12 h-12 rounded-full bg-zinc-600 flex items-center justify-center shrink-0'>
           {
             !user?.avatar
-            ? <p className='text-xl text-white font-semibold tracking-widest'>{`${user?.name[0]}${user?.name.split(' ')[user?.name.split(' ').length - 1][0]}`}</p>
-            : <img src={user?.avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover' />
+            ? <p className='text-neutral-300 font-semibold uppercase tracking-widest'>{`${user?.name[0]}${user?.name.split(' ')[user?.name.split(' ').length - 1][0]}`}</p>
+            : <img src={user?.avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover pointer-events-none' />
           }
         </div>
         <div>
-          <p className='font-semibold text-sm'>{user?.name}</p>
-          <p className='text-xs text-gray-500'>@{user?.username}</p>
+          <p className='font-semibold text-neutral-300 text-sm'>{user?.name}</p>
+          <p className='text-xs text-neutral-500'>@{user?.username}</p>
         </div>
       </div>
       {
         userState.data.user?._id !== user?._id &&
-        <button onClick={handleClickFollow} className={`${!isAccepted && followStatus === 'Unfollow' ? 'bg-blue-50 text-blue-500 hover:bg-blue-100 border border-blue-100' : !isAccepted && followStatus === 'Follow' ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-gray-200 text-gray-400 cursor-not-allowed'} text-xs sm:mt-0 mt-3 outline-none transition font-semibold rounded-md px-4 py-2`}>
+        <button onClick={handleClickFollow} className={`${!isAccepted && followStatus === 'Unfollow' ? 'bg-blue-50 text-blue-500 hover:bg-blue-100 border border-blue-100' : !isAccepted && followStatus === 'Follow' ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-zinc-700 text-neutral-400 cursor-not-allowed'} text-xs sm:mt-0 mt-3 outline-none transition font-semibold rounded-md px-4 py-2`}>
           {!isAccept ? followStatus : isAccepted ? 'Accepted' : 'Accept'}
         </button>
       }

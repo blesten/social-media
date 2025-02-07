@@ -22,7 +22,7 @@ const Home = () => {
   return (
     <>
       <HeadInfo title='Home' />
-      <div className='bg-light-gray'>
+      <div className='bg-zinc-900'>
         <Navbar />
         <div className='flex gap-6 min-h-screen pt-6'>
           <LeftContent />

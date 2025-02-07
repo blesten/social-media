@@ -52,6 +52,9 @@ const UpsertPost: React.FC<IProps> = ({ openUpsertPostOverlay, setOpenUpsertPost
     }
     if (setSelectedPost)
       setSelectedPost!({})
+
+    setCaption('')
+    setPosts([])
     setOpenUpsertPostOverlay(false)
     setLoading(false)
   }
@@ -63,31 +66,31 @@ const UpsertPost: React.FC<IProps> = ({ openUpsertPostOverlay, setOpenUpsertPost
         setPosts(selectedPost.images!)
       } else {
         setCaption('')
-        setPosts(selectedPost.images!)
+        setPosts([])
       }
     }
   }, [selectedPost])
 
   return (
     <div className={`z-20 fixed top-0 left-0 bottom-0 right-0 bg-[rgba(0,0,0,.8)] ${openUpsertPostOverlay ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} transition flex items-center justify-center px-12`}>
-      <div ref={upsertPostOverlayRef} className={`xl:w-1/3 md:w-2/3 w-full bg-white rounded-md ${openUpsertPostOverlay ? 'translate-y-0' : '-translate-y-16'} transition`}>
-        <div className='flex items-center justify-between px-5 py-3 border-b border-gray-300'>
-          <h1 className='font-semibold'>Create Post</h1>
+      <div ref={upsertPostOverlayRef} className={`xl:w-1/3 md:w-2/3 w-full bg-zinc-700 rounded-md ${openUpsertPostOverlay ? 'translate-y-0' : '-translate-y-16'} transition`}>
+        <div className='flex items-center justify-between px-5 py-3 border-b border-neutral-600 text-neutral-300'>
+          <h1 className='font-semibold'>{selectedPost ? 'Edit' : 'Create'} Post</h1>
           <AiOutlineClose onClick={handleCloseOverlay} className='cursor-pointer' />
         </div>
         <div className='px-5 py-3'>
           {
             posts && posts.length < 1
             ? (
-              <div className='w-full h-[250px] bg-gray-200 rounded-md flex items-center justify-center flex-col'>
-                <MdFileUpload className='text-gray-300 text-9xl' />
-                <p className='text-sm font-semibold text-gray-500'><span onClick={handleClickUpload} className='underline text-blue-500 cursor-pointer'>Upload</span> images/videos from device</p>
+              <div className='w-full h-[250px] bg-zinc-600 rounded-md flex items-center justify-center flex-col'>
+                <MdFileUpload className='text-neutral-400 text-9xl' />
+                <p className='text-sm font-semibold text-neutral-400'><span onClick={handleClickUpload} className='underline text-blue-400 cursor-pointer'>Upload</span> images/videos from device</p>
                 <input type='file' ref={fileInputRef} onChange={handleChangeImages} className='hidden pointer-events-none' accept='image/*' multiple />
               </div>
             )
             : (
               <>
-                <div className='w-full h-[250px] bg-gray-100 rounded-md grid grid-cols-4 gap-5 p-4 overflow-y-auto hide-scrollbar'>
+                <div className='w-full h-[250px] bg-zinc-600 rounded-md grid grid-cols-4 gap-5 p-4 overflow-y-auto hide-scrollbar'>
                   {
                     posts && posts.map((item, idx) => (
                       <div className='relative'>
@@ -100,15 +103,15 @@ const UpsertPost: React.FC<IProps> = ({ openUpsertPostOverlay, setOpenUpsertPost
                   }
                 </div>
                 <input type='file' ref={fileInputRef} onChange={handleChangeImages} className='hidden pointer-events-none' accept='image/*' multiple />
-                <p onClick={handleClickUpload} className='underline text-xs mt-2 w-fit text-blue-500 cursor-pointer'>Upload</p>
+                <p onClick={handleClickUpload} className='underline text-xs mt-2 w-fit text-blue-400 cursor-pointer'>Upload</p>
               </>
             )
           }
           <div className='mt-5'>
-            <label htmlFor='caption' className='text-sm'>Caption</label>
-            <textarea name='caption' id='caption' value={caption} onChange={e => setCaption(e.target.value)} className='w-full resize-none border border-gray-300 rounded-md h-24 outline-none text-sm p-3 mt-2' />
+            <label htmlFor='caption' className='text-neutral-300 text-sm'>Caption</label>
+            <textarea name='caption' id='caption' placeholder='Caption goes here with minimal 5 characters' value={caption} onChange={e => setCaption(e.target.value)} className='w-full resize-none bg-zinc-600 text-neutral-300 rounded-md h-24 outline-none text-sm p-3 mt-2' />
           </div>  
-          <button onClick={handleSubmit} disabled={loading || caption.length < 5 || posts.length < 1} className={`${loading || caption.length < 5 || posts.length < 1 ? 'bg-gray-300 hover:bg-gray-300 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600 cursor-pointer'} mt-4 rounded-full text-white text-sm font-semibold py-2 w-full transition outline-none`}>
+          <button onClick={handleSubmit} disabled={loading || caption.length < 5 || posts.length < 1} className={`${loading || caption.length < 5 || posts.length < 1 ? 'bg-zinc-300 hover:bg-zinc-300 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600 cursor-pointer'} mt-4 rounded-full text-white text-sm font-semibold py-2 w-full transition outline-none`}>
             {
               loading
               ? 'Loading ...'

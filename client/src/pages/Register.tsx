@@ -6,6 +6,7 @@ import { validEmail, validPassword } from '../utils/validator'
 import { postDataAPI } from '../utils/fetchData'
 import useStore from './../store/store'
 import HeadInfo from '../utils/HeadInfo'
+import { FaGlobeAmericas } from 'react-icons/fa'
 
 const Register = () => {
   const [registerData, setRegisterData] = useState({
@@ -79,41 +80,35 @@ const Register = () => {
       <HeadInfo title='Sign Up' />
       <div className='h-screen'>
         <div className='flex h-full'>
-          <div className='flex-[2] bg-gray-200 relative md:block hidden'>
-            <div className='absolute w-full h-full bg-[rgba(0,0,0,.5)]'></div>
-            <img src={`${process.env.PUBLIC_URL}/assets/images/register.jpg`} className='w-full h-full object-cover' alt='Byte Craft Studio - Social Media' />
-          </div>
           <form onSubmit={handleSubmit} className='flex-1 px-12 flex flex-col items-center justify-center'>
-            <div className='w-20 h-20'>
-              <img src={`${process.env.PUBLIC_URL}/assets/logo.png`} alt='Byte Craft Studio - Social Media' className='pointer-events-none' />
+            <FaGlobeAmericas className='text-7xl text-neutral-300' />
+            <h1 className='text-2xl text-neutral-300 font-semibold mb-10 mt-3'>Sign Up</h1>
+            <div className='md:w-1/3 w-full'>
+              <input type='text' name='name' onChange={handleChange} placeholder='Name' autoComplete='off' className='border border-neutral-600 bg-zinc-700 rounded-md w-full text-sm px-2 text-neutral-300 py-3 outline-none' />
             </div>
-            <h1 className='text-2xl font-semibold mb-10 mt-3'>Sign Up</h1>
-            <div className='w-full'>
-              <input type='text' name='name' onChange={handleChange} placeholder='Name' autoComplete='off' className='border border-gray-300 rounded-md w-full text-sm px-2 py-3 outline-none' />
+            <div className='md:w-1/3 w-full mt-6'>
+              <input type='text' name='username' onChange={handleChange} placeholder='Username' autoComplete='off' className='border border-neutral-600 rounded-md w-full bg-zinc-700 text-neutral-300 text-sm px-2 py-3 outline-none' />
             </div>
-            <div className='w-full mt-6'>
-              <input type='text' name='username' onChange={handleChange} placeholder='Username' autoComplete='off' className='border border-gray-300 rounded-md w-full text-sm px-2 py-3 outline-none' />
+            <div className='md:w-1/3 w-full mt-6'>
+              <input type='text' name='email' onChange={handleChange} placeholder='Email' autoComplete='off' className='border border-neutral-600 text-neutral-300 bg-zinc-700 rounded-md w-full text-sm px-2 py-3 outline-none' />
             </div>
-            <div className='w-full mt-6'>
-              <input type='text' name='email' onChange={handleChange} placeholder='Email' autoComplete='off' className='border border-gray-300 rounded-md w-full text-sm px-2 py-3 outline-none' />
-            </div>
-            <div className='border w-full mt-6 border-gray-300 rounded-md flex px-2 py-3 items-center gap-4'>
-              <input type={showPassword ? 'text' : 'password'} name='password' onChange={handleChange} placeholder='Password' className='flex-1 bg-transparent text-sm outline-none' />
+            <div className='border md:w-1/3 w-full mt-6 border-neutral-600 rounded-md flex px-2 py-3 items-center gap-4 bg-zinc-700'>
+              <input type={showPassword ? 'text' : 'password'} name='password' onChange={handleChange} placeholder='Password' className='flex-1 bg-transparent text-sm outline-none text-neutral-300' />
               {
                 showPassword
                 ? <AiFillEyeInvisible onClick={() => setShowPassword(false)} className='text-gray-400 cursor-pointer' />
                 : <AiFillEye onClick={() => setShowPassword(true)} className='text-gray-400 cursor-pointer' />
               }
             </div>
-            <div className='border w-full mt-6 border-gray-300 rounded-md flex px-2 py-3 items-center gap-4'>
-              <input type={showPasswordConfirmation ? 'text' : 'password'} name='passwordConfirmation' onChange={handleChange} placeholder='Password Confirmation' className='flex-1 bg-transparent text-sm outline-none' />
+            <div className='border md:w-1/3 w-full mt-6 border-neutral-600 bg-zinc-700 rounded-md flex px-2 py-3 items-center gap-4'>
+              <input type={showPasswordConfirmation ? 'text' : 'password'} name='passwordConfirmation' onChange={handleChange} placeholder='Password Confirmation' className='flex-1 bg-transparent text-sm outline-none text-neutral-300' />
               {
                 showPasswordConfirmation
                 ? <AiFillEyeInvisible onClick={() => setShowPasswordConfirmation(false)} className='text-gray-400 cursor-pointer' />
                 : <AiFillEye onClick={() => setShowPasswordConfirmation(true)} className='text-gray-400 cursor-pointer' />
               }
             </div>
-            <button type='submit' disabled={loading || !registerData.name || !registerData.email || !registerData.username || !registerData.password || !registerData.passwordConfirmation} className={`${loading || !registerData.name || !registerData.email || !registerData.username || !registerData.password || !registerData.passwordConfirmation ? 'bg-gray-300 hover:bg-gray-300 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600 cursor-pointer'} outline-none transition text-white font-semibold w-full rounded-full mt-8 h-10 text-sm`}>
+            <button type='submit' disabled={loading || !registerData.name || !registerData.email || !registerData.username || !registerData.password || !registerData.passwordConfirmation} className={`${loading || !registerData.name || !registerData.email || !registerData.username || !registerData.password || !registerData.passwordConfirmation ? 'bg-gray-300 hover:bg-gray-300 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600 cursor-pointer'} outline-none transition text-white font-semibold md:w-1/3 w-full rounded-full mt-10 h-10 text-sm`}>
               {
                 loading ? 'Loading ...' : 'Sign Up'
               }

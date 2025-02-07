@@ -182,9 +182,9 @@ const Post: React.FC<IProps> = ({ openPostOverlay, setOpenPostOverlay, postOverl
   return (
     <>
       <div className={`fixed top-0 left-0 bottom-0 right-0 bg-[rgba(0,0,0,.8)] z-20 flex items-center justify-center ${openPostOverlay ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} transition px-10`}>
-        <div ref={postOverlayRef} className={`lg:w-2/3 w-full rounded-md bg-white h-[90vh] flex md:flex-row flex-col ${openPostOverlay ? 'translate-y-0 ' : '-translate-y-16'} transition overflow-auto`}>
-          <div className='flex-1 flex flex-col border-r border-gray-200'>
-            <div className='flex-1 relative bg-gray-100'>
+        <div ref={postOverlayRef} className={`lg:w-2/3 w-full rounded-md bg-zinc-800 h-[90vh] flex md:flex-row flex-col ${openPostOverlay ? 'translate-y-0 ' : '-translate-y-16'} transition overflow-auto`}>
+          <div className='flex-1 flex flex-col border-r border-neutral-600'>
+            <div className='flex-1 relative bg-zinc-600'>
               <div className='w-full h-full'>
                 <img src={post.images[currentPosition]} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-tl-md md:rounded-tr-none rounded-tr-md pointer-events-none object-cover' />
               </div>
@@ -215,33 +215,31 @@ const Post: React.FC<IProps> = ({ openPostOverlay, setOpenPostOverlay, postOverl
                   {
                     likes.includes(userState.data.user?._id as string)
                     ? <AiFillHeart onClick={handleUnlikePost} className='text-xl cursor-pointer text-red-500' />
-                    : <AiOutlineHeart onClick={handleLikePost} className='text-xl cursor-pointer' />
+                    : <AiOutlineHeart onClick={handleLikePost} className='text-xl text-neutral-500 cursor-pointer' />
                   }
-                  <p className='font-semibold'>{likes.length}</p>
+                  <p className='text-neutral-300 font-semibold'>{likes.length}</p>
                 </div>
                 <div className='flex items-center gap-2'>
-                  <FaCommentDots className='text-blue-500 text-lg' />
-                  <p className='text-sm'>{comments.length}</p>
+                  <FaCommentDots className='text-neutral-500 text-lg' />
+                  <p className='text-neutral-300 text-sm'>{comments.length}</p>
                 </div>
               </div>
               <div className='flex items-center gap-3'>
                 {
                   isSaved
                   ? <FaBookmark onClick={handleUnsavedPost} className='cursor-pointer text-blue-500' />
-                  : <FaRegBookmark onClick={handleSavedPost} className='cursor-pointer' />
+                  : <FaRegBookmark onClick={handleSavedPost} className='text-neutral-500 cursor-pointer' />
                 }
                 
                 {
                   userState.data.user?._id === post.user._id &&
                   <div ref={openMoreRef} className='relative'>
-                    <IoEllipsisVerticalSharp onClick={() => setOpenMore(!openMore)} className='cursor-pointer' />
-                    <div className={`absolute bottom-full right-0 mb-5 bg-white rounded-md w-[150px] border border-gray-300 shadow-md ${openMore ? 'scale-y-100' : 'scale-y-0'} transition origin-bottom`}>
-                      <div onClick={handleClickEdit} className='flex items-center gap-3 px-3 py-2 cursor-pointer rounded-t-md hover:bg-light-gray border-b border-gray-300'>
-                        <FiEdit className='text-lg text-orange-500' />
+                    <IoEllipsisVerticalSharp onClick={() => setOpenMore(!openMore)} className='text-neutral-500 cursor-pointer' />
+                    <div className={`absolute bottom-full right-0 mb-5 bg-zinc-600 rounded-md w-[150px] ${openMore ? 'scale-y-100' : 'scale-y-0'} transition origin-bottom`}>
+                      <div onClick={handleClickEdit} className='flex items-center gap-3 px-3 py-2 cursor-pointer rounded-t-md text-neutral-300 hover:bg-zinc-500 border-b border-neutral-500'>
                         <p>Edit</p>
                       </div>
-                      <div onClick={handleClickDelete} className='flex items-center gap-3 px-3 py-2 cursor-pointer rounded-b-md hover:bg-light-gray'>
-                        <FaTrash className='text-lg text-red-500' />
+                      <div onClick={handleClickDelete} className='flex items-center gap-3 px-3 py-2 cursor-pointer rounded-b-md text-neutral-300 hover:bg-zinc-500'>
                         <p>Delete</p>
                       </div>
                     </div>
@@ -251,23 +249,23 @@ const Post: React.FC<IProps> = ({ openPostOverlay, setOpenPostOverlay, postOverl
             </div>
           </div>
           <div className='flex-1 flex flex-col'>
-            <div className='flex items-center justify-between border-b border-gray-200 px-5 py-3'>
+            <div className='flex items-center justify-between border-b border-neutral-600 px-5 py-3 text-neutral-300'>
               <h1 className='font-semibold'>Comments</h1>
-              <AiOutlineClose onClick={() => setOpenPostOverlay(false)} className='cursor-pointer' />
+              <AiOutlineClose onClick={() => setOpenPostOverlay(false)} className='md:block hidden cursor-pointer' />
             </div>
             <div className='flex-1 overflow-auto p-5 hide-scrollbar flex flex-col gap-5'>
-              <div className='border-b border-gray-300 pb-4 text-sm flex items-center justify-between'>
+              <div className='border-b border-neutral-600 pb-4 text-sm flex items-center justify-between'>
                 <div className='flex items-center gap-5'>
-                  <div className='w-9 h-9 rounded-full flex-shrink-0 flex items-center justify-center bg-blue-500 text-white'>
+                  <div className='w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center bg-zinc-500 text-neutral-300'>
                     {
                       !post.user.avatar
-                      ? <p className='text-5xl font-semibold tracking-widest'>{`${post.user.name[0]}${post.user.name.split(' ')[post.user.name.split(' ').length - 1][0]}`}</p>
+                      ? <p className='font-semibold tracking-widest'>{`${post.user.name[0]}${post.user.name.split(' ')[post.user.name.split(' ').length - 1][0]}`}</p>
                       : <img src={post.user.avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover' />
                     }
                   </div>
-                  <p>{post.caption}</p>
+                  <p className='text-neutral-300'>{post.caption}</p>
                 </div>
-                <p className='text-xs text-gray-500'>{moment(post.createdAt).fromNow()}</p>
+                <p className='text-xs text-neutral-500'>{moment(post.createdAt).fromNow()}</p>
               </div>
               {
                 comments.map((item, idx) => (
@@ -280,8 +278,8 @@ const Post: React.FC<IProps> = ({ openPostOverlay, setOpenPostOverlay, postOverl
                 ))
               }
             </div>
-            <div className='border-t border-gray-200 py-4 px-5'>
-              <form onSubmit={handlePostComment} className='relative rounded-full bg-gray-100 border border-gray-200 h-10'>
+            <div className='border-t border-neutral-600 py-4 px-5'>
+              <form onSubmit={handlePostComment} className='relative rounded-full bg-neutral-600 border border-neutral-500 text-neutral-300 h-10'>
                 <input type='text' value={comment} onChange={e => setComment(e.target.value)} className='outline-none bg-transparent w-full px-4 h-10 text-sm' />
                 {
                   !comment &&

@@ -58,21 +58,21 @@ const Utility = () => {
   return (
     <>
       <div className='flex-1 lg:flex hidden justify-end gap-6'>
-        <div onClick={() => setOpenUpsertPostOverlay(true)} className='cursor-pointer w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center'>
-          <HiPlus className='text-lg text-gray-800' />
+        <div onClick={() => setOpenUpsertPostOverlay(true)} className='cursor-pointer w-10 h-10 rounded-full bg-zinc-700 flex items-center justify-center'>
+          <HiPlus className='text-lg text-neutral-300' />
         </div>
         <div className='relative'>
-          <div ref={notificationRef} onClick={() => setOpenNotification(!openNotification)} className='cursor-pointer w-10 h-10 rounded-full bg-gray-100 flex items-cen ter justify-center relative'>
-            <IoIosNotifications className='text-xl text-gray-800 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' />
+          <div ref={notificationRef} onClick={() => setOpenNotification(!openNotification)} className='cursor-pointer w-10 h-10 rounded-full bg-zinc-700 flex items-cen ter justify-center relative'>
+            <IoIosNotifications className='text-xl text-neutral-300 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' />
           </div>
-          <div className={`absolute top-full right-0 bg-white border border-gray-300 shadow-md rounded-md w-[450px] mt-3 origin-top ${openNotification ? 'scale-y-100' : 'scale-y-0'} transition`}>
+          <div className={`absolute top-full right-0 bg-zinc-700 shadow-md rounded-md w-[450px] mt-3 origin-top ${openNotification ? 'scale-y-100' : 'scale-y-0'} transition`}>
             {
               notifications.length < 1
               ? (
                 <>
-                  <div className='flex items-center justify-center p-4 flex-col'>
-                    <MdNotificationsOff className='text-gray-400 text-4xl' />
-                    <p className='text-sm text-gray-400 font-semibold mt-3'>Notification is empty</p>
+                  <div className='flex items-center justify-center p-4 flex-col text-neutral-500'>
+                    <MdNotificationsOff className='text-4xl' />
+                    <p className='text-sm font-semibold mt-3'>Notification is empty</p>
                   </div>
                 </>
               )
@@ -94,10 +94,10 @@ const Utility = () => {
             }
           </div>
         </div>
-        <Link to={`/feeds/${userState.data.user?._id}`} className='w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center outline-none'>
+        <Link to={`/feeds/${userState.data.user?._id}`} className='w-10 h-10 rounded-full bg-zinc-700 text-neutral-300 flex items-center justify-center outline-none'>
           {
             !userState.data.user?.avatar
-            ? <p className='text-lg font-semibold tracking-widest'>{`${userState.data.user?.name[0]}${userState.data.user?.name.split(' ')[userState.data.user?.name.split(' ').length - 1][0]}`}</p>
+            ? <p className='font-semibold tracking-widest'>{`${userState.data.user?.name[0]}${userState.data.user?.name.split(' ')[userState.data.user?.name.split(' ').length - 1][0]}`}</p>
             : <img src={userState.data.user?.avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover' />
           }
         </Link>

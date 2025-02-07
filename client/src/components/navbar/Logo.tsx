@@ -1,10 +1,11 @@
+import { FaGlobeAmericas } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
 const Logo = () => {
   return (
-    <Link to='/' className='flex-1 flex items-center gap-4 outline-none'>
-      <img src={`${process.env.PUBLIC_URL}/assets/logo.png`} alt='Byte Craft Studio - Social Media' className='w-10' />
-      <p className='text-lg font-semibold text-blue-500'>Social Sphere</p>
+    <Link to='/' className='flex-1 flex items-center gap-3 outline-none text-zinc-300'>
+      <FaGlobeAmericas className='text-2xl' />
+      <p className='font-semibold'>Social Sphere</p>
     </Link>
   )
 }

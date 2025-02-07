@@ -158,13 +158,13 @@ const Feeds = () => {
                       ? (
                         <>
                           <div className='flex items-center justify-center gap-20 pb-5'>
-                            <div onClick={() => handleChangeTab('posts')} className={`flex items-center gap-2 text-lg cursor-pointer relative after:content-[ ] after:absolute after:w-[140%] after:left-1/2 after:-translate-x-1/2 after:h-[2px] ${tab === 'posts' ? 'after:bg-black' : 'after:bg-transparent'} after:-bottom-2`}>
+                            <div onClick={() => handleChangeTab('posts')} className={`flex items-center gap-2 text-lg cursor-pointer relative after:content-[ ] after:absolute after:w-[140%] after:left-1/2 after:-translate-x-1/2 after:h-[2px] ${tab === 'posts' ? 'after:bg-neutral-300' : 'after:bg-transparent'} after:-bottom-2 ${tab === 'posts' ? 'text-neutral-300' : 'text-neutral-600'}`}>
                               <IoMdGrid />
                               <p>Posts</p>
                             </div>
                             {
                               userState.data.user?._id === id &&
-                              <div onClick={() => handleChangeTab('saved')} className={`flex items-center gap-2 text-lg cursor-pointer relative after:content-[ ] after:absolute after:w-[140%] after:left-1/2 after:-translate-x-1/2 after:h-[2px] ${tab === 'saved' ? 'after:bg-black' : 'after:bg-transparent'} after:-bottom-2`}>
+                              <div onClick={() => handleChangeTab('saved')} className={`flex items-center gap-2 text-lg cursor-pointer relative after:content-[ ] after:absolute after:w-[140%] after:left-1/2 after:-translate-x-1/2 after:h-[2px] ${tab === 'saved' ? 'after:bg-neutral-300' : 'after:bg-transparent'} after:-bottom-2 ${tab === 'saved' ? 'text-neutral-300' : 'text-neutral-600'}`}>
                                 <FaRegBookmark />
                                 <p>Saved</p>
                               </div>
@@ -196,9 +196,12 @@ const Feeds = () => {
                                             </>
                                           )
                                           : (
-                                            <div className='flex flex-col items-center ga-3 col-span-3'>
-                                              <PiNoteBlankLight className='text-gray-300 text-9xl' />
-                                              <p className='text-gray-400 font-semibold'>Post is empty</p>
+                                            <div className='flex flex-col col-span-3 items-center gap-3 my-8 text-neutral-500'>
+                                              <div className='relative'>
+                                                <PiNoteBlankLight className='text-9xl' />
+                                                <div className='absolute -top-3 left-16 w-1 h-40 bg-neutral-600 rotate-45' />
+                                              </div>
+                                              <p className='mt-2 font-semibold'>Post is currently empty</p>
                                             </div>
                                           )
                                         }
@@ -232,9 +235,12 @@ const Feeds = () => {
                                             </>
                                           )
                                           : (
-                                            <div className='flex flex-col items-center ga-3 col-span-3'>
-                                              <PiNoteBlankLight className='text-gray-300 text-9xl' />
-                                              <p className='text-gray-400 font-semibold'>Saved post is empty</p>
+                                            <div className='flex flex-col col-span-3 items-center gap-3 my-8 text-neutral-500'>
+                                              <div className='relative'>
+                                                <PiNoteBlankLight className='text-9xl' />
+                                                <div className='absolute -top-3 left-16 w-1 h-40 bg-neutral-600 rotate-45' />
+                                              </div>
+                                              <p className='mt-2 font-semibold'>Saved post is currently empty</p>
                                             </div>
                                           )
                                         }
@@ -248,18 +254,18 @@ const Feeds = () => {
                         </>
                       )
                       : (
-                        <div className='flex items-center justify-center flex-col mt-6'>
-                          <HiLockClosed className='text-7xl text-gray-400' />
-                          <p className='text-lg font-semibold mt-3'>This account is private</p>
+                        <div className='flex items-center justify-center flex-col mt-10 text-neutral-500'>
+                          <HiLockClosed className='text-7xl' />
+                          <p className='font-semibold mt-3'>This account is private</p>
                         </div>
                       )
                     }
                   </>
                 )
                 : (
-                  <div className='flex items-center flex-col justify-center gap-3 mt-24'>
-                    <FaUserAltSlash className='text-9xl text-gray-400' />
-                    <p className='text-gray-500 text-xl'>User not found</p>
+                  <div className='flex items-center flex-col justify-center gap-3 mt-24 text-neutral-500'>
+                    <FaUserAltSlash className='text-8xl' />
+                    <p className='text-lg'>User not found</p>
                   </div>
                 )
               }

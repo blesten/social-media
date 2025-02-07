@@ -39,9 +39,12 @@ const MiddleContent = () => {
                 </>
               )
               : (
-                <div className='flex flex-col items-center gap-3'>
-                  <PiNoteBlankLight className='text-gray-300 text-8xl' />
-                  <p className='text-sm text-gray-400 font-semibold'>Post is currently empty</p>
+                <div className='flex flex-col items-center gap-5 mt-8 text-neutral-500'>
+                  <div className='relative'>
+                    <PiNoteBlankLight className='text-6xl' />
+                    <div className='absolute -top-3 left-6 w-1 h-20 bg-neutral-600 rotate-45' />
+                  </div>
+                  <p className='text-xs font-semibold'>Post is currently empty</p>
                 </div>
               )
             }

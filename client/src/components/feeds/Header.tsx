@@ -135,41 +135,41 @@ const Header: React.FC<IProps> = ({ user, followers, followings, followRequests,
     <>
       <div className='xl:w-1/2 lg:w-2/3 w-full m-auto lg:py-10 py-7 lg:px-0 px-10'>
         <div className='flex gap-10 items-center  '>
-          <div className='md:w-36 md:h-36 w-24 h-24 rounded-full flex-shrink-0 flex items-center justify-center bg-blue-500 text-white'>
+          <div className='md:w-32 md:h-32 w-24 h-24 rounded-full flex-shrink-0 flex items-center justify-center bg-zinc-800 text-neutral-300'>
             {
               !user.avatar
-              ? <p className='text-5xl font-semibold tracking-widest'>{`${user.name[0]}${user.name.split(' ')[user.name.split(' ').length - 1][0]}`}</p>
+              ? <p className='text-4xl font-semibold tracking-widest'>{`${user.name[0]}${user.name.split(' ')[user.name.split(' ').length - 1][0]}`}</p>
               : <img src={user.avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover' />
             }
           </div>
           <div className='flex-1'>
-            <div className='flex md:flex-row flex-col md:items-center justify-between'>
-              <div className='flex items-center gap-3'>
-                <p className='text-lg font-semibold'>{user.name}</p>
-                <p className='text-sm font-semibold bg-blue-50 text-blue-500 rounded-md py-1 px-3'>{user.username}</p>
+            <div className='flex md:flex-row flex-col md:items-start justify-between'>
+              <div className='flex flex-col gap-1'>
+                <p className='text-lg text-neutral-300 font-semibold'>{user.name}</p>
+                <p className='text-sm font-semibold rounded-md text-neutral-500'>@{user.username}</p>
               </div>
               {
                 userState.data.user?._id === user._id
                 ? (
                   <div className='md:mt-0 mt-5 flex items-center gap-5'>
-                    <button onClick={() => setOpenFollowRequestsOverlay(true)} className='bg-blue-50 text-blue-500 hover:bg-blue-100 transition text-sm font-semibold px-4 py-2 rounded-md sm:block hidden'>Follow Requests</button>
+                    <button onClick={() => setOpenFollowRequestsOverlay(true)} className='text-neutral-300 bg-zinc-700 transition text-sm font-semibold px-4 py-2 rounded-md sm:block hidden'>Follow Requests</button>
                     <button onClick={() => setOpenEditProfileOverlay(true)} className='bg-blue-500 rounded-md text-sm outline-none transition hover:bg-blue-600 px-6 py-2 text-white font-semibold sm:block hidden'>Edit Profile</button>
                     <IoMdSettings onClick={() => setOpenSettingOverlay(true)} className='text-xl text-gray-500 cursor-pointer sm:block hidden' />
                     {/* mobile version utility button */}
-                    <button onClick={() => setOpenFollowRequestsOverlay(true)} className='bg-blue-50 text-blue-500 hover:bg-blue-100 transition text-sm font-semibold px-6 py-2 rounded-md sm:hidden block'><FaUsers /></button>
+                    <button onClick={() => setOpenFollowRequestsOverlay(true)} className='text-neutral-300 bg-zinc-700 transition text-sm font-semibold px-6 py-2 rounded-md sm:hidden block'><FaUsers /></button>
                     <button onClick={() => setOpenEditProfileOverlay(true)} className='bg-blue-500 rounded-md text-sm outline-none transition hover:bg-blue-600 px-6 py-2 text-white font-semibold sm:hidden block'><FiEdit /></button>
                     <IoMdSettings onClick={() => setOpenSettingOverlay(true)} className='text-xl text-gray-500 cursor-pointer sm:hidden block' />
                   </div>
                 )
                 : (
-                  <button onClick={handleClickFollow} className={`${followStatus === 'Unfollow' ? 'bg-blue-50 text-blue-500 hover:bg-blue-100 border border-blue-100' : followStatus === 'Follow' ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-gray-200 text-gray-400 cursor-not-allowed'} rounded-md text-sm outline-none transition px-6 py-2 font-semibold sm:mt-0 mt-3`}>
+                  <button onClick={handleClickFollow} className={`${followStatus === 'Unfollow' ? 'bg-blue-50 text-blue-500 hover:bg-blue-100 border border-blue-100' : followStatus === 'Follow' ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-zinc-600 text-neutral-400 cursor-not-allowed'} rounded-md text-sm outline-none transition px-6 py-2 font-semibold sm:mt-0 mt-3`}>
                     {followStatus}
                   </button>
                 )
               }
             </div>
             <div className='md:block hidden'>
-              <div className='flex items-center gap-14 mt-3'>
+              <div className='flex items-center gap-14 mt-3 text-neutral-300'>
                 <div>
                   <p className='font-semibold'>{posts.length} {posts.length > 1 ? 'posts' : 'post'}</p>
                 </div>
@@ -187,7 +187,7 @@ const Header: React.FC<IProps> = ({ user, followers, followings, followRequests,
           </div>
         </div>
         <div className='md:hidden block mt-5'>
-          <div className='flex items-center gap-10 mt-3'>
+          <div className='flex items-center gap-10 mt-3 text-neutral-300'>
             <div>
               <p className='font-semibold'>{posts.length} {posts.length > 1 ? 'posts' : 'post'}</p>
             </div>

@@ -52,37 +52,37 @@ const ProfileOverview = () => {
   }, [userState.data.user?._id, userState.data.accessToken])
 
   return (
-    <div className='border boder-gray-100 bg-white rounded-lg p-4'>
+    <div className='bg-zinc-800 rounded-lg p-4'>
       <div className='flex items-center gap-4'>
         <div className='w-12 h-12 rounded-full'>
           {
             !userState.data.user?.avatar
             ? (
-              <div className='bg-blue-500 rounded-full w-full h-full flex items-center justify-center'>
-                <p className='text-2xl text-white font-semibold tracking-wide'>{`${userState.data.user?.name[0]}${userState.data.user?.name.split(' ')[userState.data.user?.name.split(' ').length - 1][0]}`}</p>
+              <div className='bg-zinc-700 rounded-full w-full h-full flex items-center justify-center'>
+                <p className='text-lg text-white font-semibold tracking-wide'>{`${userState.data.user?.name[0]}${userState.data.user?.name.split(' ')[userState.data.user?.name.split(' ').length - 1][0]}`}</p>
               </div>
             )
-            : <img src={userState.data.user?.avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover border border-gray-500 pointer-events-none' />
+            : <img src={userState.data.user?.avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover border border-neutral-500 pointer-events-none' />
           }
         </div>
         <div>
-          <h1 className='font-semibold mb-1'>{userState.data.user?.name}</h1>
-          <p className='text-gray-500 text-xs'>@{userState.data.user?.username}</p>
+          <h1 className='text-neutral-300 font-semibold mb-1'>{userState.data.user?.name}</h1>
+          <p className='text-neutral-500 text-xs'>@{userState.data.user?.username}</p>
         </div>
       </div>
-      <hr className='mt-4' />
+      <div className='w-full h-[1px] border-b border-zinc-700 mt-4' />
       <div className='flex items-center justify-between gap-6 mt-4'>
         <div className='flex items-center flex-col gap-1 flex-1'>
-          <p className='text-lg font-bold'>{followers.length}</p>
-          <p className='text-gray-500 text-xs font-semibold'>Followers</p>
+          <p className='text-lg text-neutral-300 font-bold'>{followers.length}</p>
+          <p className='text-neutral-500 text-xs font-semibold'>Followers</p>
         </div>
         <div className='flex items-center flex-col gap-1 flex-1'>
-          <p className='text-lg font-bold'>{followings.length}</p>
-          <p className='text-gray-500 text-xs font-semibold'>Followings</p>
+          <p className='text-lg text-neutral-300 font-bold'>{followings.length}</p>
+          <p className='text-neutral-500 text-xs font-semibold'>Followings</p>
         </div>
         <div className='flex items-center flex-col gap-1 flex-1'>
-          <p className='text-lg font-bold'>{posts.length}</p>
-          <p className='text-gray-500 text-xs font-semibold'>Post</p>
+          <p className='text-lg text-neutral-300 font-bold'>{posts.length}</p>
+          <p className='text-neutral-500 text-xs font-semibold'>Post</p>
         </div>
       </div>
     </div>

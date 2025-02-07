@@ -56,9 +56,9 @@ const Setting: React.FC<IProps> = ({ openSettingOverlay, setOpenSettingOverlay, 
   return (
     <>
       <div className={`fixed top-0 left-0 bottom-0 right-0 bg-[rgba(0,0,0,.8)] z-20 flex items-center justify-center transition ${openSettingOverlay ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} px-12`}>
-        <div ref={settingOverlayRef} className={`bg-white rounded-md xl:w-1/3 lg:w-1/2 w-full transition ${openSettingOverlay ? 'translate-y-0' : '-translate-y-16'} px-5 py-3`}>
+        <div ref={settingOverlayRef} className={`bg-zinc-700 rounded-md xl:w-1/3 lg:w-1/2 w-full transition ${openSettingOverlay ? 'translate-y-0' : '-translate-y-16'} px-5 py-3`}>
           <div className='flex items-center justify-between'>
-            <p className='font-semibold'>Account Privacy</p>
+            <p className='font-semibold text-neutral-300'>Account Privacy</p>
             <div onClick={() => setPrivateAccount(!privateAccount)} className='relative cursor-pointer'>
               <div className='w-12 h-6 bg-gray-200 border border-gray-300 rounded-full'/>
               <div className={`w-4 h-4 ${privateAccount ? 'bg-blue-500 right-1' : 'bg-gray-500 left-1'} rounded-full absolute top-1/2 -translate-y-1/2`} />
@@ -69,9 +69,9 @@ const Setting: React.FC<IProps> = ({ openSettingOverlay, setOpenSettingOverlay, 
               loading ? 'Loading ...' : 'Save Changes'
             }
           </button>
-          <hr className='my-5' />
+          <div className='my-5 w-full h-[1px] border-b border-neutral-500' />
           <div>
-            <button onClick={handleClickChangePassword} className='w-full mb-5 text-sm py-2 outline-none transition hover:bg-gray-100 font-semibold'>Change Password</button>
+            <button onClick={handleClickChangePassword} className='w-full mb-5 text-sm py-2 outline-none transition text-neutral-300 bg-zinc-600 rounded-md hover:bg-zinc-500 font-semibold'>Change Password</button>
             <button onClick={handleSignOut} className='bg-red-500 text-white text-sm rounded-md w-full py-2 outline-none transition hover:bg-red-600'>Sign Out</button>
           </div>
         </div>

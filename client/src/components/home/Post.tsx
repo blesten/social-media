@@ -178,44 +178,42 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
 
   return (
     <>
-      <div className='rounded-xl bg-white px-8 py-5 mb-10'>
+      <div className='rounded-xl bg-zinc-800 px-8 py-5 mb-10'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-5'>
-            <div className='w-14 h-14 rounded-full bg-blue-500 flex items-center justify-center'>
+            <div className='w-12 h-12 rounded-full bg-zinc-700 flex items-center justify-center'>
               {
                 !user.avatar
-                ? <p className='text-5xl font-semibold tracking-widest'>{`${user.name[0]}${user.name.split(' ')[user.name.split(' ').length - 1][0]}`}</p>
+                ? <p className='text-neutral-300 font-semibold tracking-widest'>{`${user.name[0]}${user.name.split(' ')[user.name.split(' ').length - 1][0]}`}</p>
                 : <img src={user.avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover' />
               }
             </div>
             <div>
-              <h1 className='font-semibold'>{user.name}</h1>
-              <p className='text-xs text-gray-500 mt-1'>{moment(createdAt).fromNow()}</p>
+              <h1 className='text-neutral-300 font-semibold'>{user.name}</h1>
+              <p className='text-xs text-neutral-500 mt-1'>{moment(createdAt).fromNow()}</p>
             </div>
           </div>
           {
             user._id === userState.data.user?._id &&
             <div ref={openMoreRef} className='relative'>
               <div onClick={() => setOpenMore(!openMore)} className='cursor-pointer'>
-                <IoEllipsisVerticalSharp />
+                <IoEllipsisVerticalSharp className='text-neutral-300' />
               </div>
-              <div className={`absolute bg-white w-[150px] shadow-md border border-gray-300 top-full mt-5 right-0 rounded-md ${openMore ? 'scale-y-100' : 'scale-y-0'} transition origin-top z-10`}>
-                <div onClick={handleClickEdit} className='flex items-center gap-3 px-3 py-2 cursor-pointer rounded-t-md hover:bg-light-gray border-b border-gray-300'>
-                  <FiEdit className='text-lg text-orange-500' />
-                  <p>Edit</p>
+              <div className={`absolute bg-zinc-700 w-[150px] shadow-md top-full mt-5 right-0 rounded-md ${openMore ? 'scale-y-100' : 'scale-y-0'} transition origin-top z-10`}>
+                <div onClick={handleClickEdit} className='flex items-center gap-3 px-3 py-2 cursor-pointer rounded-t-md hover:bg-neutral-500 border-b border-neutral-600'>
+                  <p className='text-neutral-300 text-sm'>Edit</p>
                 </div>
-                <div onClick={handleClickDelete} className='flex items-center gap-3 px-3 py-2 cursor-pointer rounded-b-md hover:bg-light-gray'>
-                  <FaTrash className='text-lg text-red-500' />
-                  <p>Delete</p>
+                <div onClick={handleClickDelete} className='flex items-center gap-3 px-3 py-2 cursor-pointer rounded-b-md hover:bg-neutral-500'>
+                  <p className='text-neutral-300 text-sm'>Delete</p>
                 </div>
               </div>
             </div>
           }
         </div>
         <div className='mt-6'>
-          <p className='leading-relaxed text-justify'>{caption}</p>
+          <p className='leading-relaxed text-neutral-300 text-justify'>{caption}</p>
           <div className='mt-5 relative'>
-            <div className='w-full h-[300px] bg-gray-100 rounded-lg border border-gray-200'>
+            <div className='w-full h-[300px] bg-gray-100 rounded-lg border border-neutral-600'>
               <img src={images[currentPosition]} alt='Byte Craft Studio - Social Media' className='rounded-md w-full h-full object-cover pointer-events-none' />
             </div>
             {
@@ -252,36 +250,36 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
               {
                 likes.includes(userState.data.user?._id as string)
                 ? <AiFillHeart onClick={() => unlikePost(id, userState.data.user?._id as string, userState.data.accessToken as string)} className='text-lg cursor-pointer text-red-500' />
-                : <AiOutlineHeart onClick={() => likePost(id, userState.data.user?._id as string, userState.data.accessToken as string)} className='text-lg cursor-pointer' />
+                : <AiOutlineHeart onClick={() => likePost(id, userState.data.user?._id as string, userState.data.accessToken as string)} className='text-lg text-neutral-500 cursor-pointer' />
               }
-              <p className='text-sm'>{likes.length}</p>
+              <p className='text-neutral-300 text-sm'>{likes.length}</p>
             </div>
             <div className='flex items-center gap-2'>
-              <FaCommentDots className='text-blue-500 text-lg' />
-              <p className='text-sm'>{comments.length}</p>
+              <FaCommentDots className='text-neutral-500 text-lg' />
+              <p className='text-neutral-300 text-sm'>{comments.length}</p>
             </div>
           </div>
-          <form onSubmit={handlePostComment} className='md:block hidden relative rounded-full bg-gray-100 border border-gray-200 flex-1 h-10'>
-            <input type='text' value={comment} onChange={e => setComment(e.target.value)} className='outline-none bg-transparent w-full px-4 h-10 text-sm' />
+          <form onSubmit={handlePostComment} className='md:block hidden relative rounded-full bg-zinc-700 border border-neutral-600 flex-1 h-10'>
+            <input type='text' value={comment} onChange={e => setComment(e.target.value)} className='outline-none text-neutral-300 bg-transparent w-full px-4 h-10 text-sm' />
             {
               !comment &&
-              <p className='absolute top-1/2 -translate-y-1/2 left-4 text-sm text-gray-400 pointer-events-none'>Write your comment</p>
+              <p className='absolute top-1/2 -translate-y-1/2 left-4 text-sm text-neutral-500 pointer-events-none'>Write your comment</p>
             }
           </form>
           {
             isSaved
             ? <FaBookmark onClick={handleUnsavedPost} className='cursor-pointer text-blue-500' />
-            : <FaRegBookmark onClick={handleSavedPost} className='cursor-pointer' />
+            : <FaRegBookmark onClick={handleSavedPost} className='cursor-pointer text-neutral-500' />
           }
         </div>
-        <form onSubmit={handlePostComment} className='relative rounded-full bg-gray-100 border border-gray-200 flex-1 h-10 mt-5 md:hidden block'>
-          <input type='text' value={comment} onChange={e => setComment(e.target.value)} className='outline-none bg-transparent w-full px-4 h-10 text-sm' />
+        <form onSubmit={handlePostComment} className='relative rounded-full bg-zinc-700 border border-neutral-600 flex-1 h-10 mt-5 md:hidden block'>
+          <input type='text' value={comment} onChange={e => setComment(e.target.value)} className='outline-none bg-transparent text-neutral-300 w-full px-4 h-10 text-sm' />
           {
             !comment &&
-            <p className='absolute top-1/2 -translate-y-1/2 left-4 text-sm text-gray-400 pointer-events-none'>Write your comment</p>
+            <p className='absolute top-1/2 -translate-y-1/2 left-4 text-sm text-neutral-500 pointer-events-none'>Write your comment</p>
           }
         </form>
-        <hr className='my-5' />
+        <div className='my-5 border-b border-neutral-700 w-full h-[1px]' />
         <div className='flex flex-col gap-8'>
           {
             comments.length > 0
@@ -301,19 +299,19 @@ const Post: React.FC<IProps> = ({ id, user, caption, images, createdAt, likes })
             )
             : (
               <div>
-                <p className='text-center text-sm text-gray-400'>Comment is empty</p>
+                <p className='text-center text-sm text-neutral-500'>Comment is empty</p>
               </div>
             )
           }
 
           {
             comments.length > commentLimit &&
-            <p onClick={handleLoadMoreComments} className='text-xs text-center text-gray-400 cursor-pointer'>Load more comments</p>
+            <p onClick={handleLoadMoreComments} className='text-xs text-center text-neutral-500 cursor-pointer'>Load more comments</p>
           }
 
           {
             (comments.length > 3 && commentLimit > 3 && comments.length < commentLimit) &&
-            <p onClick={handleHideComments} className='text-xs text-center text-gray-400 cursor-pointer'>Hide comments</p>
+            <p onClick={handleHideComments} className='text-xs text-center text-neutral-500 cursor-pointer'>Hide comments</p>
           }
         </div>
       </div>

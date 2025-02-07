@@ -101,27 +101,27 @@ const Comment: React.FC<IProps> = ({ comment, comments, setComments }) => {
     <>
       <div className='flex md:flex-row flex-col md:items-center justify-between gap-5'>
         <div className='flex items-center gap-4 flex-1'>
-          <div className='w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white flex-shrink-0'>
+          <div className='w-12 h-12 rounded-full bg-zinc-700 flex items-center justify-center text-neutral-300 flex-shrink-0'>
             {
               !comment?.user.avatar
-              ? <p className='text-lg font-semibold tracking-widest'>{`${comment?.user.name[0]}${comment?.user.name.split(' ')[comment?.user.name.split(' ').length - 1][0]}`}</p>
+              ? <p className='font-semibold tracking-widest'>{`${comment?.user.name[0]}${comment?.user.name.split(' ')[comment?.user.name.split(' ').length - 1][0]}`}</p>
               : <img src={comment.user.avatar} alt='Byte Craft Studio - Social Media' className='w-full h-full rounded-full object-cover' />
             }
           </div>
           <div className='w-full'>
-            <p className='font-semibold'>{comment?.user.name}</p>
+            <p className='font-semibold text-neutral-300'>{comment?.user.name}</p>
             {
               selectedContent
               ? (
                 <div className='mt-2'>
-                  <input type='text' value={selectedContent} onChange={e => setSelectedContent(e.target.value)} className='w-full border border-gray-300 rounded-full outline-none h-9 text-sm px-3' />
+                  <input type='text' value={selectedContent} onChange={e => setSelectedContent(e.target.value)} className='w-full text-neutral-300 bg-neutral-700 rounded-full outline-none h-9 text-sm px-3' />
                   <div className='flex items-center gap-4 text-sm mt-2'>
                     <p onClick={handleUpdateComment} className='text-blue-500 hover:text-blue-700 cursor-pointer font-semibold hover:underline'>Save</p>
-                    <p onClick={() => setSelectedContent('')} className='cursor-pointer'>Cancel</p>
+                    <p onClick={() => setSelectedContent('')} className='text-neutral-500 cursor-pointer'>Cancel</p>
                   </div>
                 </div>
               )
-              : <p className='text-xs mt-1'>{comment?.content}</p>
+              : <p className='text-xs text-neutral-400 mt-1'>{comment?.content}</p>
             }
           </div>
         </div>
@@ -129,20 +129,18 @@ const Comment: React.FC<IProps> = ({ comment, comments, setComments }) => {
           {
             comment?.likes.includes(userState.data.user?._id as string)
             ? <AiFillHeart onClick={handleUnlikeComment} className='text-lg cursor-pointer text-red-500' />
-            : <AiOutlineHeart onClick={handleLikeComment} className='text-lg cursor-pointer' />
+            : <AiOutlineHeart onClick={handleLikeComment} className='text-lg text-neutral-500 cursor-pointer' />
           }
-          <p className='text-xs'>{comment?.likes.length}</p>
+          <p className='text-xs text-neutral-300'>{comment?.likes.length}</p>
           {
             userState.data.user?._id === comment?.user._id &&
             <div className='relative'>
-            <IoEllipsisVertical onClick={() => setOpenMore(true)} className='text-sm ml-2 cursor-pointer' />
-              <div ref={openMoreRef} className={`absolute top-full right-0 bg-white shadow-md border border-gray-200 rounded-md w-[100px] mt-4 z-10 text-sm ${openMore ? 'scale-y-100' : 'scale-y-0'} transition origin-top`}>
-                <div onClick={handleClickEdit} className='cursor-pointer flex items-center gap-3 border-b border-gray-200 p-2 hover:bg-gray-100 rounded-t-md transition'>
-                  <FiEdit className='text-orange-500' />
-                  <p>Update</p>
+              <IoEllipsisVertical onClick={() => setOpenMore(true)} className='text-sm ml-2 cursor-pointer text-neutral-500' />
+              <div ref={openMoreRef} className={`absolute top-full right-0 bg-zinc-700 shadow-md rounded-md w-[100px] mt-4 z-10 text-sm ${openMore ? 'scale-y-100' : 'scale-y-0'} transition origin-top`}>
+                <div onClick={handleClickEdit} className='cursor-pointer text-neutral-300 flex items-center gap-3 border-b border-neutral-600 py-2 px-4 hover:bg-neutral-500 rounded-t-md transition'>
+                  <p>Edit</p>
                 </div>
-                <div onClick={handleClickDelete} className='cursor-pointer flex items-center gap-3 border-b border-gray-200 p-2 hover:bg-gray-100 rounded-b-md transition'>
-                  <FaTrash className='text-red-500' />
+                <div onClick={handleClickDelete} className='cursor-pointer text-neutral-300 flex items-center gap-3 py-2 px-4 hover:bg-neutral-500 rounded-b-md transition'>
                   <p>Delete</p>
                 </div>
               </div>
